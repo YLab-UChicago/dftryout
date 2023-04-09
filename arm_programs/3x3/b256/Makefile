@@ -1,5 +1,5 @@
 CC := aarch64-linux-gnu-gcc-10
-CFLAGS := -march=armv8.2-a+sve2
+CFLAGS := -march=armv8.2-a+sve2 -flax-vector-conversions
 LDFLAGS := -lstdc++
 
 SRC_DIR := src/
