@@ -3,9 +3,9 @@
 #include <math.h>
 #include <ctime>
 #include <iostream>
-#include <smmintrin.h>
-#include <immintrin.h>
-#include <x86intrin.h>
+#include <arm_neon.h>
+#include <algorithm>
+
 using namespace std;
 void binarize(float *inputMatrix, int input_size, int *binarizedMatrix)
 {
@@ -37,8 +37,9 @@ int main(int argc, char *argv[])
     int strides;
     int curr;
     int64_t *inputs;
-    short *outputs;
+    int *outputs;
     int64_t *filters;
+    int idx;
 
     int output_depth;
     int pool_size;
@@ -60,7 +61,7 @@ int main(int argc, char *argv[])
     int out_height = ceil((height - filter_height + 2 * padding) / strides + 1);
     int out_width = ceil((width - filter_width + 2 * padding) / strides + 1);
     inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);
-    outputs = (short *)malloc(sizeof(short) * out_height * out_width * num_filters);
+    outputs = (int *)malloc(sizeof(int) * out_height * out_width * num_filters);
     filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);
     uint64x2x2_t data1;
     uint64x2x2_t data2;
@@ -73,18 +74,18 @@ int main(int argc, char *argv[])
         {
             for (int w = 0; w < width; w++)
             {
-                idx = h * width * depth + w * depth;
-                input = inputs[idx];
+                idx = (h * width * depth + w * depth)/64;
+                data1 = vld1q_u64_x2((const uint64_t *) &inputs[idx]);
                 for (int i = 0; i < filter_height; i++)
                 {
                     for (int j = 0; j < filter_width; j++)
                     {
                         int output_h = (h + padding - i) / strides;
                         int output_w = (w + padding - j) / strides;
-                        filter = filters[f * filter_height * filter_width * depth + i * filter_width + j];
-                        data_to_process = _mm256_xor_si256(input, filter);
-                        data_to_process = _mm256_popcnt_epi64(data_to_process);
-                        outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (data_to_process[0] + data_to_process[1] + data_to_process[2] + data_to_process[3]);
+                        data2 = vld1q_u64_x2((const uint64_t *)&filters[(f * filter_height * filter_width * depth + i * filter_width + j)*depth/64]);
+                        data1.val[0] = veorq_u64(data1.val[0], data2.val[0]);
+                        data1.val[1] = veorq_u64(data1.val[1], data2.val[1]);
+                        outputs[output_h * out_width * num_filters + output_w * num_filters + f] +=  256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
                     }
                 }
             }

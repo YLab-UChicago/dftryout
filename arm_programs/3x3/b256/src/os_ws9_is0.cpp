@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     int strides;
     int curr;
     int64_t *inputs;
-    short *outputs;
+    int *outputs;
     int64_t *filters;
 
     int output_depth;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     int out_height = ceil((height - filter_height + 2 * padding) / strides + 1);
     int out_width = ceil((width - filter_width + 2 * padding) / strides + 1);
     inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);
-    outputs = (short *)malloc(sizeof(short) * out_height * out_width * num_filters);
+    outputs = (int *)malloc(sizeof(int) * out_height * out_width * num_filters);
     filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);
     uint64x2x2_t data1;
     uint64x2x2_t data2;

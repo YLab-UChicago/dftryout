@@ -1,4 +1,3 @@
-
 CC := aarch64-linux-gnu-gcc-10
 CFLAGS := -march=armv8.2-a+sve2
 LDFLAGS := -lstdc++
@@ -14,9 +13,13 @@ OBJ := $(SRC:.cpp=.o)
 .PHONY: all clean
 
 all: $(TARGET)
+	@rm -f $(OBJ)
 
 $(TARGET): $(OBJ)
+	mkdir -p $(TARGET_BASE)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+.INTERMEDIATE: $(OBJ)
 
 $(OBJ): $(SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
