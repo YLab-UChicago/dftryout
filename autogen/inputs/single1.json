@@ -1,0 +1,17 @@
+{
+    "name": "alex1",
+    "body": {
+        "layer1": {
+            "type": "convolution",
+            "batch_size": "1",
+            "input_height": "56",
+            "input_width": "56",
+            "input_depth": "32",
+            "filter_width": "11",
+            "filter_height": "11",
+            "filter_depth": "32",
+            "padding": "0",
+            "stride": "4"
+        }
+    }
+}
