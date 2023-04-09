@@ -3,21 +3,30 @@
 #include <math.h>
 #include <ctime>
 #include <iostream>
-#include <arm_neon.h>
-#include <algorithm>
-
+#include <smmintrin.h>
+#include <immintrin.h>
+#include <x86intrin.h>
 using namespace std;
+void binarize(float *inputMatrix, int input_size, int *binarizedMatrix)
+{
+    for (int i = 0; i < input_size; i++)
+    {
+        binarizedMatrix[i] = (int)((unsigned int)inputMatrix[i] >> 31);
+    }
+}
 
-
+int xnor_popcount(int a, int b)
+{
+    return __builtin_popcount(~(a ^ b));
+}
 
 int main(int argc, char *argv[])
 {
-
-    /* Please type the following in the command line
+     /* Please type the following in the command line
         ./<program_name> <input_height> <input_width> <input_depth (plase use 256)> <num_filters>
     */
 
-    FILE *pFile = fopen("durations/simd_os.txt", "a");
+    FILE *pFile = fopen("../durations/is_os0_ws0.txt", "a");
     int height;
     int width;
     int depth;
@@ -55,35 +64,29 @@ int main(int argc, char *argv[])
     filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);
     uint64x2x2_t data1;
     uint64x2x2_t data2;
-    
 
     c_start = std::clock();
 
-
-    for (int h = 0; h < out_height; h++)
+    for (int f = 0; f < num_filters; f++)
     {
-        for (int w = 0; w < out_width; w++)
+        for (int h = 0; h < height; h++)
         {
-            for (int f = 0; f < num_filters; f++)
-                {
-                int sum_block = 0;
+            for (int w = 0; w < width; w++)
+            {
+                idx = h * width * depth + w * depth;
+                input = inputs[idx];
                 for (int i = 0; i < filter_height; i++)
-                    {
+                {
                     for (int j = 0; j < filter_width; j++)
-                        {
-                        int input_h = h * strides + i - padding;
-                        int input_w = w * strides + j - padding;
-                        if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {
-                            data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
-                            data2 = vld1q_u64_x2((const uint64_t*) &filters[f * filter_height * filter_width + i * filter_width + j]);
-                            data1.val[0] = veorq_u64(data1.val[0], data2.val[0]);
-                            data1.val[1] = veorq_u64(data1.val[1], data2.val[1]);
-                            sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
-                        }
-
+                    {
+                        int output_h = (h + padding - i) / strides;
+                        int output_w = (w + padding - j) / strides;
+                        filter = filters[f * filter_height * filter_width * depth + i * filter_width + j];
+                        data_to_process = _mm256_xor_si256(input, filter);
+                        data_to_process = _mm256_popcnt_epi64(data_to_process);
+                        outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (data_to_process[0] + data_to_process[1] + data_to_process[2] + data_to_process[3]);
                     }
                 }
-                outputs[h * out_width * num_filters + w * num_filters + f] = (short) max(sum_block,255);
             }
         }
     }
