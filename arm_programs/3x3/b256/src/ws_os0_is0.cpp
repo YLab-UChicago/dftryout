@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     for (int f = 0; f < num_filters; f++) {
         for (int i = 0; i < filter_height; i ++) {
             for (int j = 0; j < filter_width; j ++) {
-                data2 = vld1q_u64_x2((const uint64_t *) &filters[f * filter_height * filter_width + i * filter_width + j]);
+                data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 for (int h = 0; h < out_height; h++) {
                     for (int w = 0; w < out_width; w++) {
                         int input_h = h * strides + i - padding;

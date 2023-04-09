@@ -77,15 +77,15 @@ int main(int argc, char *argv[])
     for (int f = 0; f < num_filters; f++)
     {
         
-        weight_cache_1 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 0)]);
-        weight_cache_2 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 1)]);
-        weight_cache_3 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 2)]);
-        weight_cache_4 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 3)]);
-        weight_cache_5 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 4)]);
-        weight_cache_6 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 5)]);
-        weight_cache_7 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 6)]);
-        weight_cache_8 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 7)]);
-        weight_cache_9 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 8)]);
+        weight_cache_1 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 0)*4]);
+        weight_cache_2 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 1)*4]);
+        weight_cache_3 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 2)*4]);
+        weight_cache_4 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 3)*4]);
+        weight_cache_5 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 4)*4]);
+        weight_cache_6 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 5)*4]);
+        weight_cache_7 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 6)*4]);
+        weight_cache_8 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 7)*4]);
+        weight_cache_9 = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width + 8)*4]);
 
         input_cache_1 = vld1q_u64_x2((const uint64_t *) &inputs[((0-padding) * width * depth /256 + (0-padding) * depth /256) * depth /64]);
         input_cache_2 = vld1q_u64_x2((const uint64_t *) &inputs[((1-padding) * width * depth /256 + (1-padding) * depth /256) * depth /64]);
