@@ -5,6 +5,7 @@
 #include <iostream>
 #include <arm_neon.h>
 #include <algorithm>
+#include <m5ops.h>
 
 using namespace std;
 
@@ -35,8 +36,6 @@ int main(int argc, char *argv[])
     int pool_size;
 
 
-    std::clock_t c_start;
-    std::clock_t c_end;
     double time_elapsed_ms;
     height = atoi(argv[1]);
     width = atoi(argv[2]);
@@ -72,7 +71,7 @@ int main(int argc, char *argv[])
     uint64x2x2_t input_cache_6;
 
 
-    c_start = std::clock();
+    m5_reset_stats(0, 0);
 
     for (int f = 0; f < num_filters; f++)
     {
@@ -134,7 +133,6 @@ int main(int argc, char *argv[])
 
                 input_h = h + 1 - padding;
                 input_w = w + 0 - padding;
-                data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_u64(input_cache_3.val[0], weight_cache_4.val[0]);
                 data1.val[1] = veorq_u64(input_cache_3.val[1], weight_cache_4.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
@@ -142,7 +140,6 @@ int main(int argc, char *argv[])
                 input_h = h  + 1 - padding;
                 input_w = w  + 1 - padding;
                 input_cache_3 = input_cache_4;
-                data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_u64(input_cache_4.val[0], weight_cache_5.val[0]);
                 data1.val[1] = veorq_u64(input_cache_4.val[1], weight_cache_5.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
@@ -157,7 +154,6 @@ int main(int argc, char *argv[])
 
                 input_h = h  + 2 - padding;
                 input_w = w  + 0 - padding;
-                data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_u64(input_cache_5.val[0], weight_cache_7.val[0]);
                 data1.val[1] = veorq_u64(input_cache_5.val[1], weight_cache_7.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
@@ -165,7 +161,6 @@ int main(int argc, char *argv[])
                 input_h = h  + 2 - padding;
                 input_w = w  + 1 - padding;
                 input_cache_5 = input_cache_6;
-                data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_u64(input_cache_6.val[0], weight_cache_8.val[0]);
                 data1.val[1] = veorq_u64(input_cache_6.val[1], weight_cache_8.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
@@ -183,8 +178,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    c_end = std::clock();
-    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+    m5_dump_reset_stats(0, 0);
     std::fprintf(pFile, "%lf\n", time_elapsed_ms);
 
     std::free(inputs);

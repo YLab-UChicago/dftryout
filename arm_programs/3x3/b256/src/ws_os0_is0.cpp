@@ -5,6 +5,7 @@
 #include <iostream>
 #include <arm_neon.h>
 #include <algorithm>
+#include <m5ops.h>
 
 using namespace std;
 
@@ -36,8 +37,6 @@ int main(int argc, char *argv[])
 
     int input_size;
 
-    std::clock_t c_start;
-    std::clock_t c_end;
     int layer_counter = 0;
     double time_elapsed_ms;
     height = atoi(argv[1]);
@@ -57,7 +56,7 @@ int main(int argc, char *argv[])
     uint64x2x2_t data2;
     
 
-    c_start = std::clock();
+    m5_reset_stats(0, 0);
 
 
     for (int f = 0; f < num_filters; f++) {
@@ -78,8 +77,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    c_end = std::clock();
-    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+    m5_dump_reset_stats(0, 0);
     std::fprintf(pFile, "%lf\n", time_elapsed_ms);
 
     std::free(inputs);

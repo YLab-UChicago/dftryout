@@ -5,6 +5,7 @@
 #include <iostream>
 #include <arm_neon.h>
 #include <algorithm>
+#include <m5ops.h>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ int main(int argc, char *argv[])
     */
 
     FILE *pFile = fopen("../durations/is_os6_v_ws9.txt", "a");
+    printf("started simulation - program");
     int height;
     int width;
     int depth;
@@ -37,8 +39,6 @@ int main(int argc, char *argv[])
     int input_size;
     int idx;
 
-    std::clock_t c_start;
-    std::clock_t c_end;
     int layer_counter = 0;
     double time_elapsed_ms;
     height = atoi(argv[1]);
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     int output_w;
     
 
-    c_start = std::clock();
+    m5_reset_stats(0, 0);
 
     for (int f = 0; f < num_filters; f ++)
     {
@@ -196,8 +196,7 @@ int main(int argc, char *argv[])
     }
 
 
-    c_end = std::clock();
-    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+    m5_dump_reset_stats(0, 0);
     std::fprintf(pFile, "%lf\n", time_elapsed_ms);
 
     std::free(inputs);

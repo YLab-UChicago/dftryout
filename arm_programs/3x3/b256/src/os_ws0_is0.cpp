@@ -5,6 +5,7 @@
 #include <iostream>
 #include <arm_neon.h>
 #include <algorithm>
+#include <m5ops.h>
 
 using namespace std;
 
@@ -36,8 +37,6 @@ int main(int argc, char *argv[])
 
     int input_size;
 
-    std::clock_t c_start;
-    std::clock_t c_end;
     int layer_counter = 0;
     double time_elapsed_ms;
     height = atoi(argv[1]);
@@ -57,7 +56,7 @@ int main(int argc, char *argv[])
     uint64x2x2_t data2;
     
 
-    c_start = std::clock();
+    m5_reset_stats(0, 0);
 
 
     for (int h = 0; h < out_height; h++)
@@ -73,14 +72,11 @@ int main(int argc, char *argv[])
                         {
                         int input_h = h * strides + i - padding;
                         int input_w = w * strides + j - padding;
-                        if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {
-                            data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
-                            data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
-                            data1.val[0] = veorq_u64(data1.val[0], data2.val[0]);
-                            data1.val[1] = veorq_u64(data1.val[1], data2.val[1]);
-                            sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
-                        }
-
+                        data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
+                        data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                        data1.val[0] = veorq_u64(data1.val[0], data2.val[0]);
+                        data1.val[1] = veorq_u64(data1.val[1], data2.val[1]);
+                        sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
                     }
                 }
                 outputs[h * out_width * num_filters + w * num_filters + f] =sum_block;
@@ -88,8 +84,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    c_end = std::clock();
-    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+    m5_dump_reset_stats(0, 0);
     std::fprintf(pFile, "%lf\n", time_elapsed_ms);
 
     std::free(inputs);

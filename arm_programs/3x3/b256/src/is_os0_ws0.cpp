@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <arm_neon.h>
+#include <m5ops.h>
 #include <algorithm>
 
 using namespace std;
@@ -17,7 +18,7 @@ int main(int argc, char *argv[])
         ./<program_name> <input_height> <input_width> <input_depth (plase use 256)> <num_filters>
     */
 
-    FILE *pFile = fopen("../durations/is_os0_ws0.txt", "a");
+    std::printf("started simulating the main function\n");
     int height;
     int width;
     int depth;
@@ -37,8 +38,6 @@ int main(int argc, char *argv[])
     int input_size;
     int idx;
 
-    std::clock_t c_start;
-    std::clock_t c_end;
     int layer_counter = 0;
     double time_elapsed_ms;
     height = atoi(argv[1]);
@@ -58,7 +57,7 @@ int main(int argc, char *argv[])
     uint64x2x2_t data2;
     
 
-    c_start = std::clock();
+    m5_reset_stats(0, 0);
 
     for (int f = 0; f < num_filters; f ++)
     {
@@ -85,9 +84,7 @@ int main(int argc, char *argv[])
     }
 
 
-    c_end = std::clock();
-    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
-    std::fprintf(pFile, "%lf\n", time_elapsed_ms);
+    m5_dump_reset_stats(0, 0);
 
     std::free(inputs);
     std::free(outputs);
