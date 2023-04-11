@@ -116,16 +116,14 @@ int main(int argc, char *argv[])
 
                 input_h = h + 0 - padding;
                 input_w = w + 1 - padding;
-                input_cache_1 = input_cache_2;
                 data1.val[0] = veorq_u64(input_cache_2.val[0], weight_cache_2.val[0]);
                 data1.val[1] = veorq_u64(input_cache_2.val[1], weight_cache_2.val[1]);
-                input_cache_1 = input_cache_2;
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
 
                 input_h = h + 0 - padding;
                 input_w = w + 2 - padding;
                 data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
-                input_cache_2 = data1;
+                input_cache_1 = data1;
                 data1.val[0] = veorq_u64(data1.val[0], weight_cache_3.val[0]);
                 data1.val[1] = veorq_u64(data1.val[1], weight_cache_3.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
@@ -139,7 +137,6 @@ int main(int argc, char *argv[])
 
                 input_h = h  + 1 - padding;
                 input_w = w  + 1 - padding;
-                input_cache_3 = input_cache_4;
                 data1.val[0] = veorq_u64(input_cache_4.val[0], weight_cache_5.val[0]);
                 data1.val[1] = veorq_u64(input_cache_4.val[1], weight_cache_5.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
@@ -147,7 +144,7 @@ int main(int argc, char *argv[])
                 input_h = h + 1 - padding;
                 input_w = w + 2 - padding;
                 data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
-                input_cache_4 = data1;
+                input_cache_3 = data1;
                 data1.val[0] = veorq_u64(data1.val[0], weight_cache_6.val[0]);
                 data1.val[1] = veorq_u64(data1.val[1], weight_cache_6.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
@@ -160,9 +157,77 @@ int main(int argc, char *argv[])
 
                 input_h = h  + 2 - padding;
                 input_w = w  + 1 - padding;
-                input_cache_5 = input_cache_6;
                 data1.val[0] = veorq_u64(input_cache_6.val[0], weight_cache_8.val[0]);
                 data1.val[1] = veorq_u64(input_cache_6.val[1], weight_cache_8.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+                input_h = h + 2 - padding;
+                input_w = w + 2 - padding;
+                data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
+                input_cache_5 = data1;
+                data1.val[0] = veorq_u64(data1.val[0], weight_cache_9.val[0]);
+                data1.val[1] = veorq_u64(data1.val[1], weight_cache_9.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+                outputs[h * out_width * num_filters + w * num_filters + f] = sum_block;
+
+                w++;
+
+                sum_block = 0;
+                
+                input_h = h + 0 - padding;
+                input_w = w + 0 - padding;
+
+                data1.val[0] = veorq_u64(input_cache_2.val[0], weight_cache_1.val[0]);
+                data1.val[1] = veorq_u64(input_cache_2.val[1], weight_cache_1.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+
+                input_h = h + 0 - padding;
+                input_w = w + 1 - padding;
+                data1.val[0] = veorq_u64(input_cache_1.val[0], weight_cache_2.val[0]);
+                data1.val[1] = veorq_u64(input_cache_1.val[1], weight_cache_2.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+                input_h = h + 0 - padding;
+                input_w = w + 2 - padding;
+                data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
+                input_cache_2 = data1;
+                data1.val[0] = veorq_u64(data1.val[0], weight_cache_3.val[0]);
+                data1.val[1] = veorq_u64(data1.val[1], weight_cache_3.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+
+                input_h = h + 1 - padding;
+                input_w = w + 0 - padding;
+                data1.val[0] = veorq_u64(input_cache_4.val[0], weight_cache_4.val[0]);
+                data1.val[1] = veorq_u64(input_cache_4.val[1], weight_cache_4.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+                input_h = h  + 1 - padding;
+                input_w = w  + 1 - padding;
+                data1.val[0] = veorq_u64(input_cache_3.val[0], weight_cache_5.val[0]);
+                data1.val[1] = veorq_u64(input_cache_3.val[1], weight_cache_5.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+                input_h = h + 1 - padding;
+                input_w = w + 2 - padding;
+                data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
+                input_cache_4 = data1;
+                data1.val[0] = veorq_u64(data1.val[0], weight_cache_6.val[0]);
+                data1.val[1] = veorq_u64(data1.val[1], weight_cache_6.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+                input_h = h  + 2 - padding;
+                input_w = w  + 0 - padding;
+                data1.val[0] = veorq_u64(input_cache_6.val[0], weight_cache_7.val[0]);
+                data1.val[1] = veorq_u64(input_cache_6.val[1], weight_cache_7.val[1]);
+                sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
+
+                input_h = h  + 2 - padding;
+                input_w = w  + 1 - padding;
+                data1.val[0] = veorq_u64(input_cache_5.val[0], weight_cache_8.val[0]);
+                data1.val[1] = veorq_u64(input_cache_5.val[1], weight_cache_8.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
 
                 input_h = h + 2 - padding;
