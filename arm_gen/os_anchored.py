@@ -30,7 +30,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     num_input_cache = aux_stationarity["IS"]
     name = str(precision)+"_"+str(vec_len)+"_os_ws"+str(num_weight_cache)+"_is"+str(num_input_cache)
 
-    num_vec_op = vec_len / 8
+    num_vec_op = int(vec_len / 128)
     
     cw.add_line("#include <stdio.h>")
     cw.add_line("#include <string.h>")
@@ -61,7 +61,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("int d_block;")
     cw.add_line("int curr;")
     cw.add_line("int64_t* inputs;")
-    cw.add_line("short* outputs;")
+    cw.add_line("int64_t* outputs;")
     cw.add_line("int64_t* filters;")
     cw.add_line("int output_depth;")
     cw.add_line("")
@@ -98,10 +98,10 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.indent()
 
     for i in range(num_input_cache):
-        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const uint64_t *) &inputs[((0-padding) * width * depth /256 + ("+str(i)+"-padding) * depth /256) * depth /64]);")
+        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[((0-padding) * width * depth /256 + ("+str(i)+"-padding) * depth /256) * depth /64]);")
 
     for i in range(num_weight_cache):
-        cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const uint64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")]);")
+        cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")]);")
 
     cw.add_line("for (int h = 0; h < height; h++) {")
     cw.indent()
@@ -124,6 +124,8 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             if count < num_input_cache:
                 input_cache_indices.append(i*fw+j)
                 count += 1
+
+    print(input_cache_indices)
     
     input_var_name = "data1"
     weight_var_name = "data2"
@@ -137,27 +139,29 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             should_inc_w = True
         for i in range(fh):
             for j in range(fw):
+                cw.add_line("i = "+str(i)+";")
+                cw.add_line("j = "+str(j)+";")
                 cw.add_line("input_h = h * strides +" + str(i) +" - padding;")
                 cw.add_line("input_w = w * strides +" + str(j) +" - padding;")
-                idx = (i * fw + j - 1)
+                idx = (i * fw + j)
                 if idx in input_cache_indices:
                     input_var_name = "input_cache_"+str(input_cache_indices.index(idx))
                 else: 
                     input_var_name = "data1"
-                    cw.add_line("data1 = "+ load_func+ "((const uint64_t *) &inputs[(input_h * width * depth /"+vec_len+" + input_w * depth /"+vec_len+") * depth /64]);")
+                    cw.add_line("data1 = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
 
                 if idx < num_weight_cache and idx >= 0:
                     weight_var_name = "weight_cache_"+str(idx)
                 else:
                     weight_var_name = "data2"
-                    cw.add_line("data2 = "+load_func+"((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
+                    cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
 
-                for n in num_vec_op:
-                    cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)"],"+weight_var_name+".val["+str(n)"]);")
+                for n in range(num_vec_op):
+                    cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
 
                 if precision == 1:
                     res_string = "sum_block += 256 - 2 * ("
-                    for n in num_vec_op:
+                    for n in range(num_vec_op):
                         res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
@@ -165,9 +169,9 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     res_string += ");"
                 elif precision == 8:
                     res_string = "sum_block += "
-                    for n in num_vec_op:
+                    for n in range(num_vec_op):
                         res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
-                        if n < num_vec_op - 1:
+                        if n < range(num_vec_op) - 1:
                             res_string += "+"
 
                     res_string += ";"
@@ -175,7 +179,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 cw.add_line(res_string)
                 cw.add_line("")
 
-        curr_input_base += 1 % fw
+        curr_input_base += 1
 
     cw.dedent()
     cw.add_line("}")
@@ -204,6 +208,5 @@ def gen_OS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 #test
 
 cw = CodeWriter()
-gen_OS_anchored_program(cw, 1, 256, 3, 3, {"WS":4,"IS":3},1)
-cw.write_to_file("test.cpp")
-
+gen_OS_anchored_program(cw, 1, 256, 3,3, {"WS":9,"IS":6},1)
+cw.write_to_file("gen_os_ws9_is6.cpp")
