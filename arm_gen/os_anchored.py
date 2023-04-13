@@ -47,8 +47,6 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
     cw.add_line("int main (int argc, char *argv[]) {")
     cw.indent()
-    cw.add_line("FILE* pFile = fopen(\"" +
-                "out/durations/"+name+".txt\", \"a\");")
     cw.add_line("int height;")
     cw.add_line("int width;")
     cw.add_line("int depth;")
@@ -66,9 +64,6 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("short* outputs;")
     cw.add_line("int64_t* filters;")
     cw.add_line("int output_depth;")
-    cw.add_line("std::clock_t c_start;")
-    cw.add_line("std::clock_t c_end;")
-    cw.add_line("double time_elapsed_ms;")
     cw.add_line("")
 
     cw.add_line("height = atoi(argv[1]);")
@@ -82,7 +77,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("int out_height = ceil((height - filter_height + 2 * padding) / strides + 1);")
     cw.add_line("int out_width = ceil((width - filter_width + 2 * padding) / strides + 1);")
     cw.add_line("inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);")
-    cw.add_line("outputs = (short *)malloc(sizeof(short) * out_height * out_width * num_filters);")
+    cw.add_line("outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);")
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
     cw.add_line("")
 
@@ -149,7 +144,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     input_var_name = "input_cache_"+str(input_cache_indices.index(idx))
                 else: 
                     input_var_name = "data1"
-                    cw.add_line("data1 = "+ load_func+ "((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);")
+                    cw.add_line("data1 = "+ load_func+ "((const uint64_t *) &inputs[(input_h * width * depth /"+vec_len+" + input_w * depth /"+vec_len+") * depth /64]);")
 
                 if idx < num_weight_cache and idx >= 0:
                     weight_var_name = "weight_cache_"+str(idx)
@@ -160,14 +155,22 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 for n in num_vec_op:
                     cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)"],"+weight_var_name+".val["+str(n)"]);")
 
+                if precision == 1:
+                    res_string = "sum_block += 256 - 2 * ("
+                    for n in num_vec_op:
+                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        if n < num_vec_op - 1:
+                            res_string += "+"
 
-                res_string = "sum_block += 256 - 2 * ("
-                for n in num_vec_op:
-                    res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
-                    if n < num_vec_op - 1:
-                        res_string += "+"
+                    res_string += ");"
+                elif precision == 8:
+                    res_string = "sum_block += "
+                    for n in num_vec_op:
+                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        if n < num_vec_op - 1:
+                            res_string += "+"
 
-                res_string += ");"
+                    res_string += ";"
 
                 cw.add_line(res_string)
                 cw.add_line("")
