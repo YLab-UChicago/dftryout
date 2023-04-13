@@ -164,7 +164,6 @@ int main(int argc, char *argv[])
     }
 
    m5_dump_reset_stats(0, 0);
-    std::fprintf(pFile, "%lf\n", time_elapsed_ms);
 
     std::free(inputs);
     std::free(outputs);

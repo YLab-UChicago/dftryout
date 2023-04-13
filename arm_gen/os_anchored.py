@@ -1,9 +1,36 @@
 from csnake import CodeWriter
 
+
+
+
 def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
+
+    if vec_len == 128:
+        vec_type = "int64x2_t"
+        load_func = "vld1q_s64"
+    elif vec_len == 256:
+        vec_type = "int64x2x2_t"
+        load_func = "vld1q_s64_x2"
+    elif vec_len == 512:
+        vec_type = "int64x2x4_t"
+        load_func = "vld1q_s64_x4"
+    else:
+        raise ValueError("invalid vector length")
+
+    if precision == 1:
+        operation_func = "veorq_s64"
+        getres_func_start = "vaddvq_u8(vcntq_u8"
+        getres_func_end = "))"
+    elif precision == 8:
+        operation_func = "vmul_s8"
+        getres_func_start = "vaddvq_u8"
+        getres_func_end = ")"
+
     num_weight_cache = aux_stationarity["WS"]
     num_input_cache = aux_stationarity["IS"]
     name = str(precision)+"_"+str(vec_len)+"_os_ws"+str(num_weight_cache)+"_is"+str(num_input_cache)
+
+    num_vec_op = vec_len / 8
     
     cw.add_line("#include <stdio.h>")
     cw.add_line("#include <string.h>")
@@ -59,28 +86,27 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
     cw.add_line("")
 
-    cw.add_line("uint64x2x2_t data1;")
-    cw.add_line("uint64x2x2_t data2;")
+    cw.add_line(vec_type+" data1;")
+    cw.add_line(vec_type+" data2;")
 
     for i in range(num_input_cache):
-        cw.add_line("uint64x2x2_t input_cache_"+str(i)+";")
+        cw.add_line(vec_type+" input_cache_"+str(i)+";")
     
     cw.add_line("")
     
     for i in range(num_weight_cache):
-        cw.add_line("uint64x2x2_t weight_cache_"+str(i)+";")
+        cw.add_line(vec_type+" weight_cache_"+str(i)+";")
     cw.add_line("")
-    cw.add_line("std::clock();")
 
     cw.add_line("")
     cw.add_line("for (int f = 0; f < num_filters; f++) {")
     cw.indent()
 
     for i in range(num_input_cache):
-        cw.add_line("input_cache_"+str(i)+" = vld1q_u64_x2((const uint64_t *) &inputs[((0-padding) * width * depth /256 + ("+str(i)+"-padding) * depth /256) * depth /64]);")
+        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const uint64_t *) &inputs[((0-padding) * width * depth /256 + ("+str(i)+"-padding) * depth /256) * depth /64]);")
 
     for i in range(num_weight_cache):
-        cw.add_line("weight_cache_"+str(i)+" = vld1q_u64_x2((const uint64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")]);")
+        cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const uint64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")]);")
 
     cw.add_line("for (int h = 0; h < height; h++) {")
     cw.indent()
@@ -123,18 +149,27 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     input_var_name = "input_cache_"+str(input_cache_indices.index(idx))
                 else: 
                     input_var_name = "data1"
-                    cw.add_line("data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);")
+                    cw.add_line("data1 = "+ load_func+ "((const uint64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);")
 
                 if idx < num_weight_cache and idx >= 0:
                     weight_var_name = "weight_cache_"+str(idx)
                 else:
                     weight_var_name = "data2"
-                    cw.add_line("data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
+                    cw.add_line("data2 = "+load_func+"((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
 
-                
-                cw.add_line("data1.val[0] = veorq_u64("+input_var_name+".val[0],"+weight_var_name+".val[0]);")
-                cw.add_line("data1.val[1] = veorq_u64("+input_var_name+".val[1],"+weight_var_name+".val[1]);")
-                cw.add_line("sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8("+input_var_name+".val[0])) + vaddvq_u8(vcntq_u8("+input_var_name+".val[1])));")
+                for n in num_vec_op:
+                    cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)"],"+weight_var_name+".val["+str(n)"]);")
+
+
+                res_string = "sum_block += 256 - 2 * ("
+                for n in num_vec_op:
+                    res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                    if n < num_vec_op - 1:
+                        res_string += "+"
+
+                res_string += ");"
+
+                cw.add_line(res_string)
                 cw.add_line("")
 
         curr_input_base += 1 % fw
