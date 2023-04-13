@@ -23,6 +23,22 @@ def get_simulation_dicts(filename):
         return simulation_dicts
 
 
+def run_basic_tests(simulation_dicts):
+    """Prints the length of the simulation dictionary and the first and last
+    data values.
+
+    Inputs: simulation_dicts {name: [data1], name: [data, data, data]], ...}
+
+    Output: None
+    """
+    for i, simulation_dict in enumerate(simulation_dicts):
+        print("\n")
+        print("Simulation", i)
+        print("lines of data:", len(simulation_dict))
+        print("simSeconds:", simulation_dict["simSeconds"])
+        print("system.cpu.tickCycles", simulation_dict["system.cpu.tickCycles"])
+
+
 def _get_simulations(list_of_lines):
     """Takes an unformatted file as a list of lines and returns just the data as 
     a list of simulations
@@ -71,19 +87,3 @@ def _make_into_dict(simulation):
         simulation_dict[name] = data
 
     return simulation_dict
-
-
-def run_basic_tests(simulation_dicts):
-    """Prints the length of the simulation dictionary and the first and last
-    data values.
-
-    Inputs: simulation_dicts {name: [data1], name: [data, data, data]], ...}
-
-    Output: None
-    """
-    for i, simulation_dict in enumerate(simulation_dicts):
-        print("\n")
-        print("Simulation", i)
-        print("lines of data:", len(simulation_dict))
-        print("simSeconds:", simulation_dict["simSeconds"])
-        print("system.cpu.tickCycles", simulation_dict["system.cpu.tickCycles"])
