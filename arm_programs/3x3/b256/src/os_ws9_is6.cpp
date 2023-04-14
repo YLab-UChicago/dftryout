@@ -100,20 +100,21 @@ int main(int argc, char *argv[])
             {
 
                 int sum_block = 0;
-                int i = 0;
-                int j = 0;
+                int i;
+                int j;
 
                 int input_h;
                 int input_w;
                 
                 input_h = h + 0 - padding;
                 input_w = w + 0 - padding;
-
+                
+ 
                 data1.val[0] = veorq_u64(input_cache_1.val[0], weight_cache_1.val[0]);
                 data1.val[1] = veorq_u64(input_cache_1.val[1], weight_cache_1.val[1]);
                 sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
 
-
+                
                 input_h = h + 0 - padding;
                 input_w = w + 1 - padding;
                 data1.val[0] = veorq_u64(input_cache_2.val[0], weight_cache_2.val[0]);

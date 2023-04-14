@@ -132,7 +132,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
     should_inc_w = False
 
-    for a in range(fw):
+    for a in range(fw-stride):
         if (should_inc_w):
             cw.add_line("w ++;")
         else: 
@@ -145,10 +145,15 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 cw.add_line("input_w = w * strides +" + str(j) +" - padding;")
                 idx = (i * fw + j)
                 if idx in input_cache_indices:
-                    input_var_name = "input_cache_"+str(input_cache_indices.index(idx))
+                    input_var_name = "input_cache_"+str(curr_input_base+input_cache_indices.index(idx))
                 else: 
                     input_var_name = "data1"
                     cw.add_line("data1 = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
+                    
+                    takeover_idx = (curr_input_base + idx) % fw + i * (fw-stride)
+                    if takeover_idx in input_cache_indices:
+                        print(takeover_idx)
+                        cw.add_line("input_cache_"+ str(input_cache_indices.index(takeover_idx))+" = data1;")
 
                 if idx < num_weight_cache and idx >= 0:
                     weight_var_name = "weight_cache_"+str(idx)
