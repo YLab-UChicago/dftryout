@@ -77,15 +77,15 @@ int main (int argc, char *argv[]) {
         int64x2x2_t output_cache_4.val[1]=vdupq_n_u64(0);
         int64x2x2_t output_cache_5.val[0]=vdupq_n_u64(0);
         int64x2x2_t output_cache_5.val[1]=vdupq_n_u64(0);
-        int64x2x2_t input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (0-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (1-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (2-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[((1-padding) * width * depth /256 + (0-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[((1-padding) * width * depth /256 + (1-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_5 = vld1q_s64_x2((const int64_t *) &inputs[((1-padding) * width * depth /256 + (2-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_6 = vld1q_s64_x2((const int64_t *) &inputs[((2-padding) * width * depth /256 + (0-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_7 = vld1q_s64_x2((const int64_t *) &inputs[((2-padding) * width * depth /256 + (1-padding) * depth /256) * depth /64]);
-        int64x2x2_t input_cache_8 = vld1q_s64_x2((const int64_t *) &inputs[((2-padding) * width * depth /256 + (2-padding) * depth /256) * depth /64]);
+        int64x2x2_t input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (0-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (1-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (2-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[((1-padding) * width * depth /256 + (0-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[((1-padding) * width * depth /256 + (1-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_5 = vld1q_s64_x2((const int64_t *) &inputs[((1-padding) * width * depth /256 + (2-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_6 = vld1q_s64_x2((const int64_t *) &inputs[((2-padding) * width * depth /256 + (0-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_7 = vld1q_s64_x2((const int64_t *) &inputs[((2-padding) * width * depth /256 + (1-padding) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_8 = vld1q_s64_x2((const int64_t *) &inputs[((2-padding) * width * depth /256 + (2-padding) * depth /256) * 256 /64]);
         int i;
         int j;
         for (i = 0; i < filter_height - 1; i ++) {
@@ -94,7 +94,7 @@ int main (int argc, char *argv[]) {
                 int w = 0;
                 int input_h;
                 int input_w;
-                data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*256/64]);
                 
                 input_h = h * strides + i - padding;
                 input_w = w * strides + j - padding;
@@ -166,4 +166,3 @@ int main (int argc, char *argv[]) {
                     }
                 }
             }
-        }

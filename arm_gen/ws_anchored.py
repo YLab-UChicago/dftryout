@@ -100,7 +100,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             cw.add_line(vec_type+" output_cache_"+str(i)+".val["+str(n)+"]=vdupq_n_u64(0);")
 
     for i in range(num_input_cache):
-        cw.add_line(vec_type+" input_cache_"+str(i)+" = " + load_func + "((const int64_t *) &inputs[(("+ str(i // fw)+ "-padding) * width * depth /256 + ("+ str(i % fw)+"-padding) * depth /256) * depth /64]);")
+        cw.add_line(vec_type+" input_cache_"+str(i)+" = " + load_func + "((const int64_t *) &inputs[(("+ str(i // fw)+ "-padding) * width * depth /256 + ("+ str(i % fw)+"-padding) * depth /256) * "+str(vec_len)+" /64]);")
 
     cw.add_line("int i;")
     cw.add_line("int j;")
@@ -112,7 +112,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("int w = 0;")
     cw.add_line("int input_h;")
     cw.add_line("int input_w;")
-    cw.add_line("data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
+    cw.add_line("data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
     cw.add_line('')
 
     should_unroll_num = max(num_input_cache,num_output_cache)
@@ -128,7 +128,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             input_var_name = "input_cache_"+str(i)
         else:
             input_var_name = "data1"
-            cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
+            cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
         for n in range(num_vec_op):
             cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+"data2.val["+str(n)+"]);")
         if i < num_output_cache:
