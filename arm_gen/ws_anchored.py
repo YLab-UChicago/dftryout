@@ -383,4 +383,4 @@ def gen_WS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 
 cw = CodeWriter()
 gen_WS_anchored_program(cw, 1, 256, 3,3, {"IS":9,"OS":6},1)
-cw.write_to_file("gen_os_ws9_is6.cpp")
+cw.write_to_file("gen_ws_is9_os6.cpp")
