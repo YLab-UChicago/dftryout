@@ -1,6 +1,6 @@
 from csnake import CodeWriter
 
-def gen_IS_anchored_program(precision, vec_len, aux_stationarity):
+def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
     if vec_len == 128:
         vec_type = "int64x2_t"
         load_func = "vld1q_s64"
@@ -25,7 +25,7 @@ def gen_IS_anchored_program(precision, vec_len, aux_stationarity):
     num_weight_cache = aux_stationarity["WS"]
     num_output_cache = aux_stationarity["OS"]
 
-        num_vec_op = int(vec_len / 128)
+    num_vec_op = int(vec_len / 128)
     
     cw.add_line("#include <stdio.h>")
     cw.add_line("#include <string.h>")
@@ -79,14 +79,29 @@ def gen_IS_anchored_program(precision, vec_len, aux_stationarity):
     cw.add_line(vec_type+" data1;")
     cw.add_line(vec_type+" data2;")
 
-    for i in range(num_input_cache):
-        cw.add_line(vec_type+" input_cache_"+str(i)+";")
     
-    cw.add_line("")
     
     for i in range(num_weight_cache):
         cw.add_line(vec_type+" weight_cache_"+str(i)+";")
     cw.add_line("")
+
+    for i in range(num_output_cache):
+        cw.add_line(vec_type+" output_cache_"+str(i)+";")
+    
+    cw.add_line("")
+
+    cw.add_line("m5_reset_stats(0, 0);")
+
+    cw.add_line("")
+    cw.add_line("for (int f = 0; f < num_filters; f++) {")
+    cw.indent()
+
+    for i in range(num_output_cache):
+        for n in range(num_vec_op):
+            cw.add_line("output_cache_"+str(i)+".val["+str(n)+"]=vdupq_n_u64(0);")
+
+    for i in range(num_weight_cache):
+        cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
 def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_scheme):
     num_weight_cache = aux_stationarity["WS"]
@@ -94,5 +109,5 @@ def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 
 
 cw = CodeWriter()
-gen_OS_anchored_program(cw, 1, 256, 3,3, {"WS":9,"OS":6},1)
-cw.write_to_file("gen_os_ws9_is6.cpp")
+gen_IS_anchored_program(cw, 1, 256, 3,3, {"WS":9,"OS":6},1)
+cw.write_to_file("gen_is_ws9_os6.cpp")

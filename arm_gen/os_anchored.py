@@ -1,8 +1,6 @@
 from csnake import CodeWriter
 
 
-
-
 def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
 
     if vec_len == 128:
