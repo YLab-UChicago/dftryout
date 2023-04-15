@@ -113,14 +113,14 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("for (int w = 0; w < width; w ++) {")
     cw.indent()
     cw.add_line("idx = h * width * depth / 64 + w * depth / 64;")
-    cw.add_line("data1 = "+load_func+"((const uint64_t *)&inputs[idx]);")
+    cw.add_line("input = "+load_func+"((const uint64_t *)&inputs[idx]);")
 
     cw.add_line(" ")
 
     output_cache_end = fw - stride;
     output_cache_indices = []
     num_ocache_byrow = {}
-    curr_outpput_base = 0
+    curr_output_base = 0
     
     count = 0
     for i in range(fh):
@@ -130,7 +130,66 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 output_cache_indices.append(i*fw+j)
                 num_ocache_byrow[i] = num_ocache_byrow[i] + 1
                 count += 1
-    
+    should_inc_w = False
+
+    for a in range(fw-stride):
+        if (should_inc_w):
+            cw.add_line("w ++;")
+        else: 
+            should_inc_w = True
+        for i in range(fh):
+            for j in range(fw):
+                
+                idx = (i * fw + j)
+                if idx in output_cache_indices:
+                    output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride))
+                else: 
+                    cw.add_line("i = "+str(fh - 1 - i)+";")
+                    cw.add_line("j = "+str(fw - 1 - j)+";")
+                    cw.add_line("output_h = (h + padding - i) / strides;")
+                    cw.add_line("output_w = (w + padding - j) / strides;")
+                    if num_ocache_byrow[i] > 0:
+                        if (idx - num_icache_byrow[i]) in output_cache_indices:
+                            output_var_name = "input_cache_"+str(((curr_output_base+output_cache_indices.index(idx - num_ocache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                            cw.add_line(input_var_name+" = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
+                    else:
+                        output_var_name = "data1"
+                        cw.add_line("data1 = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
+                    
+
+                if idx < num_weight_cache and idx >= 0:
+                    weight_var_name = "weight_cache_"+str(idx)
+                else:
+                    weight_var_name = "data2"
+                    cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
+
+                for n in range(num_vec_op):
+                    cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
+
+                if precision == 1:
+                    res_string = "sum_block += 256 - 2 * ("
+                    for n in range(num_vec_op):
+                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        if n < num_vec_op - 1:
+                            res_string += "+"
+
+                    res_string += ");"
+                elif precision == 8:
+                    res_string = "sum_block += "
+                    for n in range(num_vec_op):
+                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        if n < range(num_vec_op) - 1:
+                            res_string += "+"
+
+                    res_string += ";"
+
+                cw.add_line(res_string)
+                cw.add_line("")
+        cw.add_line("outputs[h * out_width * num_filters + w * num_filters + f] = sum_block;")
+        cw.add_line("")
+
+        curr_input_base += 1
+
 
 
     input_var_name = "data1"
