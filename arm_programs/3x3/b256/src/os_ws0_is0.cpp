@@ -59,12 +59,13 @@ int main(int argc, char *argv[])
     m5_reset_stats(0, 0);
 
 
-    for (int h = 0; h < out_height; h++)
+    for (int f = 0; f < num_filters; f++)
     {
-        for (int w = 0; w < out_width; w++)
-        {
-            for (int f = 0; f < num_filters; f++)
+            for (int h = 0; h < out_height; h++)
+            {
+                for (int w = 0; w < out_width; w++)
                 {
+            
                 int sum_block = 0;
                 for (int i = 0; i < filter_height; i++)
                     {

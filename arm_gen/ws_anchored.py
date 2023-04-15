@@ -77,6 +77,10 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);")
     cw.add_line("outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);")
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
+    cw.add_line("int h;")
+    cw.add_line("int w;")
+    cw.add_line("int input_h;")
+    cw.add_line("int input_w;")
     cw.add_line("")
 
     cw.add_line(vec_type+" data1;")
@@ -97,7 +101,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
     for i in range(num_output_cache):
         for n in range(num_vec_op):
-            cw.add_line(vec_type+" output_cache_"+str(i)+".val["+str(n)+"]=vdupq_n_u64(0);")
+            cw.add_line("output_cache_"+str(i)+".val["+str(n)+"]=vdupq_n_u64(0);")
 
     for i in range(num_input_cache):
         cw.add_line(vec_type+" input_cache_"+str(i)+" = " + load_func + "((const int64_t *) &inputs[(("+ str(i // fw)+ "-padding) * width * depth /256 + ("+ str(i % fw)+"-padding) * depth /256) * "+str(vec_len)+" /64]);")
@@ -108,10 +112,8 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.indent()
     cw.add_line("for (j = 0; j < filter_width; j ++) {")
     cw.indent()
-    cw.add_line("int h = 0;")
-    cw.add_line("int w = 0;")
-    cw.add_line("int input_h;")
-    cw.add_line("int input_w;")
+    cw.add_line("h = 0;")
+    cw.add_line("w = 0;")
     cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
     cw.add_line('')
 
@@ -131,7 +133,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             input_var_name = "data1"
             cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
         for n in range(num_vec_op):
-            cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+"data2.val["+str(n)+"]);")
+            cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+",data2.val["+str(n)+"]);")
         if i < num_output_cache:
             for n in range(num_vec_op):
                 cw.add_line("output_cache_"+str(i)+".val["+str(n)+"] = vaddq_u8(output_cache_"+str(i)+".val["+str(n)+"],data1.val["+str(n)+"]);")
@@ -210,7 +212,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             input_var_name = "data1"
             cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
         for n in range(num_vec_op):
-            cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+"data2.val["+str(n)+"]);")
+            cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+", data2.val["+str(n)+"]);")
         if i < num_output_cache:
             for n in range(num_vec_op):
                 cw.add_line("output_cache_"+str(i)+".val["+str(n)+"] = vaddq_u8(output_cache_"+str(i)+".val["+str(n)+"],data1.val["+str(n)+"]);")
@@ -285,7 +287,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             input_var_name = "data1"
             cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
         for n in range(num_vec_op):
-            cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+"data2.val["+str(n)+"]);")
+            cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+",data2.val["+str(n)+"]);")
         if i < num_output_cache:
             for n in range(num_vec_op):
                 cw.add_line("output_cache_"+str(i)+".val["+str(n)+"] = vaddq_u8(output_cache_"+str(i)+".val["+str(n)+"],data1.val["+str(n)+"]);")
