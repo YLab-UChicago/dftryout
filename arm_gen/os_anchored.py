@@ -72,8 +72,8 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("num_filters = atoi(argv[4]);")
     cw.add_line("filter_height = "+ str(fh) +";")
     cw.add_line("filter_width = "+ str(fw)+";")
-    cw.add_line("padding = atoi(argv[5]);")
-    cw.add_line("strides = atoi(argv[6]);")
+    cw.add_line("padding = "+str(fh-1)+";")
+    cw.add_line("strides = "+str(stride)+";")
     cw.add_line("int out_height = ceil((height - filter_height + 2 * padding) / strides + 1);")
     cw.add_line("int out_width = ceil((width - filter_width + 2 * padding) / strides + 1);")
     cw.add_line("inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);")
@@ -141,14 +141,15 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             should_inc_w = True
         for i in range(fh):
             for j in range(fw):
-                cw.add_line("i = "+str(i)+";")
-                cw.add_line("j = "+str(j)+";")
-                cw.add_line("input_h = h * strides +" + str(i) +" - padding;")
-                cw.add_line("input_w = w * strides +" + str(j) +" - padding;")
+                
                 idx = (i * fw + j)
                 if idx in input_cache_indices:
                     input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride))
                 else: 
+                    cw.add_line("i = "+str(i)+";")
+                    cw.add_line("j = "+str(j)+";")
+                    cw.add_line("input_h = h * strides +" + str(i) +" - padding;")
+                    cw.add_line("input_w = w * strides +" + str(j) +" - padding;")
                     if num_icache_byrow[i] > 0:
                         if (idx - num_icache_byrow[i]) in input_cache_indices:
                             input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx - num_icache_byrow[i])) % (fw-stride))+i*(fw-stride))
