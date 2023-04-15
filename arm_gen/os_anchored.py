@@ -28,7 +28,6 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
     num_weight_cache = aux_stationarity["WS"]
     num_input_cache = aux_stationarity["IS"]
-    name = str(precision)+"_"+str(vec_len)+"_os_ws"+str(num_weight_cache)+"_is"+str(num_input_cache)
 
     num_vec_op = int(vec_len / 128)
     
@@ -92,6 +91,8 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     for i in range(num_weight_cache):
         cw.add_line(vec_type+" weight_cache_"+str(i)+";")
     cw.add_line("")
+
+    cw.add_line("m5_reset_stats(0, 0);")
 
     cw.add_line("")
     cw.add_line("for (int f = 0; f < num_filters; f++) {")
