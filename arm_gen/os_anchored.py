@@ -98,10 +98,10 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.indent()
 
     for i in range(num_input_cache):
-        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[((0-padding) * width * depth /256 + ("+str(i)+"-padding) * depth /256) * depth /64]);")
+        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[((0-padding) * width * depth /256 + ("+str(i)+"-padding) * depth /256) * "+str(vec_len)+" /64]);")
 
     for i in range(num_weight_cache):
-        cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")]);")
+        cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
     cw.add_line("for (int h = 0; h < height; h++) {")
     cw.indent()
@@ -135,6 +135,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     for a in range(fw-stride):
         if (should_inc_w):
             cw.add_line("w ++;")
+            cw.add_line("sumblock = 0;")
         else: 
             should_inc_w = True
         for i in range(fh):
@@ -182,6 +183,8 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     res_string += ";"
 
                 cw.add_line(res_string)
+                cw.add_line("")
+                cw.add_line("outputs[h * out_width * num_filters + w * num_filters + f] = sum_block;")
                 cw.add_line("")
 
         curr_input_base += 1
