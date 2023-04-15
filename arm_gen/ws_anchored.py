@@ -269,6 +269,100 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("}")
     cw.dedent()
     cw.add_line("}")
+    cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
+    cw.add_line("")
+    
+
+    for i in range(should_unroll_num):
+        cw.add_line("")
+        if i > 0:
+            cw.add_line("w++;")
+        cw.add_line("input_h = h * strides + i - padding;")
+        cw.add_line("input_w = w * strides + j - padding;")
+        if i < num_input_cache:
+            input_var_name = "input_cache_"+str(i)
+        else:
+            input_var_name = "data1"
+            cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
+        for n in range(num_vec_op):
+            cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+"data2.val["+str(n)+"]);")
+        if i < num_output_cache:
+            for n in range(num_vec_op):
+                cw.add_line("output_cache_"+str(i)+".val["+str(n)+"] = vaddq_u8(output_cache_"+str(i)+".val["+str(n)+"],data1.val["+str(n)+"]);")
+            if precision == 1:
+                res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
+                for n in range(num_vec_op):
+                    res_string += getres_func_start+"(output_cache_"+str(i)+".val["+str(n)+"]"+getres_func_end
+                    if n < num_vec_op - 1:
+                        res_string += "+"
+                res_string += ");"
+            elif precision == 8:
+                res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
+                for n in range(num_vec_op):
+                    res_string += getres_func_start+"(output_cache_"+str(i)+".val["+str(n)+"]"+getres_func_end
+                    if n < range(num_vec_op) - 1:
+                        res_string += "+"
+
+                res_string += ";"
+
+            cw.add_line(res_string)
+            cw.add_line("")
+                
+        else:
+            if precision == 1:
+                res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
+                for n in range(num_vec_op):
+                    res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                    if n < num_vec_op - 1:
+                        res_string += "+"
+                res_string += ");"
+            elif precision == 8:
+                res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
+                for n in range(num_vec_op):
+                    res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                    if n < range(num_vec_op) - 1:
+                        res_string += "+"
+
+                res_string += ";"
+
+            cw.add_line(res_string)
+            cw.add_line("")
+
+    cw.add_line("")
+        
+    cw.add_line("for (h = 0; h < out_height; h++) {")
+    cw.indent()
+    cw.add_line("for (w = "+ str(should_unroll_num)+"; w < out_width; w++) {")
+    cw.indent()
+    cw.add_line("input_h = h * strides + i - padding;")
+    cw.add_line("input_w = w * strides + j - padding;")
+    cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * "+str(vec_len)+" /64]);")
+
+    for n in range(num_vec_op):
+        cw.add_line("data1.val["+str(n)+"] = "+operation_func+"(data1.val["+str(n)+"],data2.val["+str(n)+"]);")
+
+    if precision == 1:
+        res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
+        for n in range(num_vec_op):
+            res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+            if n < num_vec_op - 1:
+                res_string += "+"
+        res_string += ");"
+    elif precision == 8:
+        res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
+        for n in range(num_vec_op):
+            res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+ getres_func_end
+            if n < range(num_vec_op) - 1:
+                res_string += "+"
+
+        res_string += ";"
+    cw.add_line(res_string)
+    cw.dedent()
+    cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
     cw.dedent()
     cw.add_line("}")
 
