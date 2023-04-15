@@ -55,9 +55,14 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("int f_block;")
     cw.add_line("int d_block;")
     cw.add_line("int curr;")
+    cw.add_line("int idx;")
     cw.add_line("int64_t* inputs;")
     cw.add_line("int64_t* outputs;")
     cw.add_line("int64_t* filters;")
+    cw.add_line("int i = 0;")
+    cw.add_line("int j = 0;")
+    cw.add_line("int input_h;")
+    cw.add_line("int input_w;")
     cw.add_line("int output_depth;")
     cw.add_line("")
 
@@ -102,6 +107,35 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
+
+    cw.add_line("for (int h = 0; h < height; h++) {")
+    cw.indent()
+    cw.add_line("for (int w = 0; w < width; w ++) {")
+    cw.indent()
+    cw.add_line("idx = h * width * depth / 64 + w * depth / 64;")
+    cw.add_line("data1 = "+load_func+"((const uint64_t *)&inputs[idx]);")
+
+    cw.add_line(" ")
+
+    output_cache_end = fw - stride;
+    output_cache_indices = []
+    num_ocache_byrow = {}
+    curr_outpput_base = 0
+    
+    count = 0
+    for i in range(fh):
+        num_ocache_byrow[i] = 0
+        for j in range(output_cache_end):
+            if count < num_output_cache:
+                output_cache_indices.append(i*fw+j)
+                num_ocache_byrow[i] = num_ocache_byrow[i] + 1
+                count += 1
+    
+
+
+    input_var_name = "data1"
+    weight_var_name = "data2"
+
 
 def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_scheme):
     num_weight_cache = aux_stationarity["WS"]

@@ -24,9 +24,14 @@ int main (int argc, char *argv[]) {
     int f_block;
     int d_block;
     int curr;
+    int idx;
     int64_t* inputs;
     int64_t* outputs;
     int64_t* filters;
+    int i = 0;
+    int j = 0;
+    int input_h;
+    int input_w;
     int output_depth;
     
     height = atoi(argv[1]);
@@ -86,3 +91,8 @@ int main (int argc, char *argv[]) {
         weight_cache_6 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +6)*256/64]);
         weight_cache_7 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +7)*256/64]);
         weight_cache_8 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +8)*256/64]);
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w ++) {
+                idx = h * width * depth / 64 + w * depth / 64;
+                data1 = vld1q_s64_x2((const uint64_t *)&inputs[idx]);
+                 

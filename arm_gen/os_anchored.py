@@ -102,9 +102,9 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
-    cw.add_line("for (int h = 0; h < height; h++) {")
+    cw.add_line("for (int h = 0; h < out_height; h++) {")
     cw.indent()
-    cw.add_line("for (int w = 0; w < width; w ++) {")
+    cw.add_line("for (int w = 0; w < out_width; w ++) {")
     cw.indent()
     cw.add_line("int sum_block = 0;")
     cw.add_line("int i = 0;")
