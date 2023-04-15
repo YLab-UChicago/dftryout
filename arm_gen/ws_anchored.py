@@ -120,6 +120,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     input_var_name = "data1"
 
     for i in range(should_unroll_num):
+        cw.add_line("")
         if i > 0:
             cw.add_line("w++;")
         cw.add_line("input_h = h * strides + i - padding;")
@@ -162,6 +163,9 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("input_w = w * strides + j - padding;")
     cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * "+str(vec_len)+" /64]);")
 
+    for n in range(num_vec_op):
+        cw.add_line("data1.val["+str(n)+"] = "+operation_func+"(data1.val["+str(n)+"],data2.val["+str(n)+"]);")
+
     if precision == 1:
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
         for n in range(num_vec_op):
@@ -177,8 +181,18 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string += "+"
 
         res_string += ";"
+    cw.add_line(res_string)
     cw.dedent()
     cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
+
+    cw.add_line("")
+    cw.add_line("")
     cw.dedent()
     cw.add_line("}")
     cw.dedent()
