@@ -149,8 +149,13 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 if idx in input_cache_indices:
                     input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride))
                 else: 
-                    input_var_name = "data1"
-                    cw.add_line("data1 = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
+                    if num_icache_byrow[i] > 0:
+                        if (idx - num_icache_byrow[i]) in input_cache_indices:
+                            input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx - num_icache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                            cw.add_line(input_var_name+" = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
+                    else:
+                        input_var_name = "data1"
+                        cw.add_line("data1 = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
                     
 
                 if idx < num_weight_cache and idx >= 0:
