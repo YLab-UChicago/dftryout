@@ -215,9 +215,14 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
 
 
-    input_var_name = "data1"
-    weight_var_name = "data2"
-
+    cw.dedent()
+    cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
+    cw.dedent()
+    cw.add_line("}")
 
 def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_scheme):
     num_weight_cache = aux_stationarity["WS"]
