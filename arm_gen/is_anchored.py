@@ -130,13 +130,10 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 output_cache_indices.append(i*fw+j)
                 num_ocache_byrow[i] = num_ocache_byrow[i] + 1
                 count += 1
-    should_inc_w = False
 
     for a in range(fw-stride):
-        if (should_inc_w):
+        if a > 0:
             cw.add_line("w ++;")
-        else: 
-            should_inc_w = True
         for i in range(fh):
             for j in range(fw):
                 

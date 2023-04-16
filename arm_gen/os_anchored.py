@@ -130,14 +130,11 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     input_var_name = "data1"
     weight_var_name = "data2"
 
-    should_inc_w = False
-
     for a in range(fw-stride):
-        if (should_inc_w):
+        if a > 0:
             cw.add_line("w ++;")
             cw.add_line("sum_block = 0;")
-        else: 
-            should_inc_w = True
+
         for i in range(fh):
             for j in range(fw):
                 
