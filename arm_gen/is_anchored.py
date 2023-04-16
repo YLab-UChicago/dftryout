@@ -81,6 +81,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
     cw.add_line("")
 
+
+    cw.add_line(vec_type+" input;")
     cw.add_line(vec_type+" data1;")
     cw.add_line(vec_type+" data2;")
 
@@ -176,14 +178,14 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 if set_new_cache:
                     if precision == 1:
                         for n in range(num_vec_op):
-                            cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"]")
+                            cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];")
                     elif precision == 8:
                         for n in range(num_vec_op):
-                            cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"]") 
+                            cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];") 
 
                 elif add_to_cache:
                     for n in range(num_vec_op):
-                        cw.add_line(output_var_name+".val["+str(n)+ "]= addq_u8("+output_var_name+".val["+str(n)+"],data1.val["+str(n)+"])")
+                        cw.add_line(output_var_name+".val["+str(n)+ "]= vaddq_u8("+output_var_name+".val["+str(n)+"],data1.val["+str(n)+"]);")
                 
                 if write_output:
                     if precision == 1:
