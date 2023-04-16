@@ -167,7 +167,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 if precision == 1:
                     res_string = "sum_block += 256 - 2 * ("
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"(data1.val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
 
@@ -175,7 +175,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 elif precision == 8:
                     res_string = "sum_block += "
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"(data1.val["+str(n)+"]"+getres_func_end
                         if n < range(num_vec_op) - 1:
                             res_string += "+"
 
