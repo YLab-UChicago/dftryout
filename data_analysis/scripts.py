@@ -139,7 +139,7 @@ def _make_into_dict(simulation):
         data = name_and_data[1:]
 
         if len(data) == 1:
-            simulation_dict[name] = data[0]
+            simulation_dict[name] = float(data[0])
         else:
             simulation_dict[name] = data
 
