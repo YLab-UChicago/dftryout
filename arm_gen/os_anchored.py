@@ -102,11 +102,13 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
+
+    cw.add_line(vec_type+" output;")
+
     cw.add_line("for (int h = 0; h < out_height; h++) {")
     cw.indent()
     cw.add_line("for (int w = 0; w < out_width; w ++) {")
     cw.indent()
-    cw.add_line("int sum_block = 0;")
     cw.add_line("int i = 0;")
     cw.add_line("int j = 0;")
     cw.add_line("int input_h;")
@@ -133,7 +135,6 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     for a in range(fw-stride):
         if a > 0:
             cw.add_line("w ++;")
-            cw.add_line("sum_block = 0;")
 
         for i in range(fh):
             for j in range(fw):
@@ -165,25 +166,20 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
 
                 if precision == 1:
-                    res_string = "sum_block += 256 - 2 * ("
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"(data1.val["+str(n)+"]"+getres_func_end
-                        if n < num_vec_op - 1:
-                            res_string += "+"
-
-                    res_string += ");"
+                        cw.add_line("output.val["+str(n)+"] = vaddq_u8(output.val["+str(n)+"],vcntq_u8(data1.val["+str(n)+"]));")
                 elif precision == 8:
-                    res_string = "sum_block += "
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"(data1.val["+str(n)+"]"+getres_func_end
-                        if n < range(num_vec_op) - 1:
-                            res_string += "+"
+                        cw.add_line("output.val["+str(n)+"] = vaddq_u8(output.val["+str(n)+"],data1.val["+str(n)+"]);")
 
-                    res_string += ";"
-
-                cw.add_line(res_string)
                 cw.add_line("")
-        cw.add_line("outputs[h * out_width * num_filters + w * num_filters + f] = sum_block;")
+        res_string = "outputs[h * out_width * num_filters + w * num_filters + f] = "
+        for n in range(num_vec_op):
+            if n > 0:
+                res_string += " + "
+            res_string += "vaddvq_u8(output.val["+str(n)+"])"
+        res_string+=";"
+        cw.add_line(res_string)
         cw.add_line("")
 
         curr_input_base += 1
