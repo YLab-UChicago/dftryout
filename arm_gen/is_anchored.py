@@ -18,7 +18,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         getres_func_start = "vaddvq_u8(vcntq_u8"
         getres_func_end = "))"
     elif precision == 8:
-        operation_func = "vmul_s8"
+        operation_func = "vmulq_s8"
         getres_func_start = "vaddvq_u8"
         getres_func_end = ")"
     
@@ -199,7 +199,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                         for n in range(num_vec_op):
                             res_string += getres_func_start+"("+output_var_name+".val["+str(n)+"]"+getres_func_end
-                            if n < range(num_vec_op) - 1:
+                            if n < num_vec_op - 1 :
                                 res_string += "+"
 
                         res_string += ";"
@@ -232,5 +232,5 @@ def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 
 
 cw = CodeWriter()
-gen_IS_anchored_program(cw, 1, 256, 3,3, {"WS":5,"OS":6},1)
+gen_IS_anchored_program(cw, 8, 256, 3,3, {"WS":5,"OS":6},1)
 cw.write_to_file("gen_is_ws5_os6.cpp")

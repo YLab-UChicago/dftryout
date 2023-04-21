@@ -20,7 +20,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         getres_func_start = "vaddvq_u8(vcntq_u8"
         getres_func_end = "))"
     elif precision == 8:
-        operation_func = "vmul_s8"
+        operation_func = "vmulq_s8"
         getres_func_start = "vaddvq_u8"
         getres_func_end = ")"
 
