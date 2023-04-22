@@ -141,7 +141,10 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 
                 idx = (i * fw + j)
                 if idx in input_cache_indices:
-                    input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride))
+                    if num_icache_byrow[i] > stride:
+                        input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride))
+                    else:
+                        input_var_name = "input_cache_"+str(input_cache_indices.index(idx))
                 else: 
                     cw.add_line("i = "+str(i)+";")
                     cw.add_line("j = "+str(j)+";")
@@ -149,7 +152,10 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     cw.add_line("input_w = w * strides +" + str(j) +" - padding;")
                     if num_icache_byrow[i] > 0:
                         if (idx - num_icache_byrow[i]) in input_cache_indices:
-                            input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx - num_icache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                            if num_icache_byrow[i] > stride:
+                                input_var_name = "input_cache_"+str(((curr_input_base+input_cache_indices.index(idx - num_icache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                            else:
+                                input_var_name = "input_cache_"+str(((input_cache_indices.index(idx - num_icache_byrow[i])) % (fw-stride))+i*(fw-stride))
                             cw.add_line(input_var_name+" = "+ load_func+ "((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * depth /64]);")
                     else:
                         input_var_name = "data1"
@@ -211,5 +217,5 @@ def gen_OS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 #test
 
 cw = CodeWriter()
-gen_OS_anchored_program(cw, 8, 256, 3,3, {"WS":9,"IS":6},1)
-cw.write_to_file("gen_os_ws9_is6.cpp")
+gen_OS_anchored_program(cw, 8, 256, 3,3, {"WS":9,"IS":3},1)
+cw.write_to_file("gen_os_ws9_is3.cpp")

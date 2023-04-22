@@ -63,6 +63,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("int j = 0;")
     cw.add_line("int input_h;")
     cw.add_line("int input_w;")
+    cw.add_line("int output_h;")
+    cw.add_line("int output_w;")
     cw.add_line("int output_depth;")
     cw.add_line("")
 
@@ -145,16 +147,22 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 cw.add_line("j = "+str(fw - 1 - j)+";")
                 set_new_cache = False
                 add_to_cache = False
-                write_output = False
+                write_output = True
                 
                 if idx in output_cache_indices:
                     add_to_cache = True
-                    output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride)) 
-                    if idx % fw < stride:
-                        write_output = True
+                    if num_ocache_byrow[i] > stride:
+                        output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride)) 
+                    else:
+                        output_var_name = "output_cache_"+str(output_cache_indices.index(idx))
+                    if idx % fw >= stride:
+                        write_output = False
                 else: 
                     if num_ocache_byrow[i] > 0 and (idx - num_ocache_byrow[i]) in output_cache_indices:
-                        output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx - num_ocache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                        if num_ocache_byrow[i] > stride:
+                            output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx - num_ocache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                        else:
+                            output_var_name = "output_cache_"+str(((output_cache_indices.index(idx - num_ocache_byrow[i])) % (fw-stride))+i*(fw-stride))
 
                         set_new_cache = True
                         
@@ -232,5 +240,5 @@ def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 
 
 cw = CodeWriter()
-gen_IS_anchored_program(cw, 8, 256, 3,3, {"WS":5,"OS":6},1)
-cw.write_to_file("gen_is_ws5_os6.cpp")
+gen_IS_anchored_program(cw, 1, 256, 3,3, {"WS":0,"OS":1},1)
+cw.write_to_file("gen_is_ws0_os1_b.cpp")

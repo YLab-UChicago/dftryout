@@ -32,6 +32,8 @@ int main (int argc, char *argv[]) {
     int j = 0;
     int input_h;
     int input_w;
+    int output_h;
+    int output_w;
     int output_depth;
     
     height = atoi(argv[1]);
