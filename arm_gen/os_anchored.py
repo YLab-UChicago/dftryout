@@ -188,7 +188,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         cw.add_line(res_string)
         cw.add_line("")
 
-        curr_input_base += 1
+        curr_input_base += stride
 
     cw.dedent()
     cw.add_line("}")

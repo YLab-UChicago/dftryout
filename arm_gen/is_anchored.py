@@ -152,7 +152,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 if idx in output_cache_indices:
                     add_to_cache = True
                     if num_ocache_byrow[i] > stride:
-                        output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx)) % (fw-stride))+i*(fw-stride)) 
+                        output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx)) % (num_ocache_byrow[i]))+i*(fw-stride))
                     else:
                         output_var_name = "output_cache_"+str(output_cache_indices.index(idx))
                     if idx % fw >= stride:
@@ -160,7 +160,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 else: 
                     if num_ocache_byrow[i] > 0 and (idx - num_ocache_byrow[i]) in output_cache_indices:
                         if num_ocache_byrow[i] > stride:
-                            output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx - num_ocache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                            output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx - num_ocache_byrow[i])) % (num_ocache_byrow[i]))+i*(fw-stride))
+                            
                         else:
                             output_var_name = "output_cache_"+str(((output_cache_indices.index(idx - num_ocache_byrow[i])) % (fw-stride))+i*(fw-stride))
 
@@ -224,7 +225,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
         cw.add_line("")
 
-        curr_output_base += 1
+        curr_output_base += stride
 
 
 
@@ -243,5 +244,5 @@ def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 
 
 cw = CodeWriter()
-gen_IS_anchored_program(cw, 1, 256, 3,3, {"WS":0,"OS":1},1)
-cw.write_to_file("gen_is_ws0_os1_b.cpp")
+gen_IS_anchored_program(cw, 8, 256, 4,4, {"WS":0,"OS":2},1)
+cw.write_to_file("gen_is_ws0_os2_8.cpp")
