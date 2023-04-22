@@ -211,5 +211,5 @@ def gen_OS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 #test
 
 cw = CodeWriter()
-gen_OS_anchored_program(cw, 1, 256, 3,3, {"WS":9,"IS":6},1)
+gen_OS_anchored_program(cw, 8, 256, 3,3, {"WS":9,"IS":6},1)
 cw.write_to_file("gen_os_ws9_is6.cpp")

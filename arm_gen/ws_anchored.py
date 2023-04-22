@@ -149,7 +149,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                 for n in range(num_vec_op):
                     res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
-                    if n < range(num_vec_op) - 1:
+                    if n < num_vec_op - 1:
                         res_string += "+"
 
                 res_string += ";"
@@ -179,7 +179,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
         for n in range(num_vec_op):
             res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+ getres_func_end
-            if n < range(num_vec_op) - 1:
+            if n < num_vec_op - 1:
                 res_string += "+"
 
         res_string += ";"
@@ -228,7 +228,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                 for n in range(num_vec_op):
                     res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
-                    if n < range(num_vec_op) - 1:
+                    if n < num_vec_op - 1:
                         res_string += "+"
 
                 res_string += ";"
@@ -260,7 +260,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
         for n in range(num_vec_op):
             res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+ getres_func_end
-            if n < range(num_vec_op) - 1:
+            if n < num_vec_op - 1:
                 res_string += "+"
 
         res_string += ";"
@@ -302,7 +302,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                 for n in range(num_vec_op):
                     res_string += getres_func_start+"(output_cache_"+str(i)+".val["+str(n)+"]"+getres_func_end
-                    if n < range(num_vec_op) - 1:
+                    if n < num_vec_op - 1:
                         res_string += "+"
 
                 res_string += ";"
@@ -322,7 +322,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                 for n in range(num_vec_op):
                     res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
-                    if n < range(num_vec_op) - 1:
+                    if n < num_vec_op - 1:
                         res_string += "+"
 
                 res_string += ";"
@@ -354,7 +354,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
         for n in range(num_vec_op):
             res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+ getres_func_end
-            if n < range(num_vec_op) - 1:
+            if n < num_vec_op - 1:
                 res_string += "+"
 
         res_string += ";"
