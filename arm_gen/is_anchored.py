@@ -181,17 +181,20 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                
 
                 for n in range(num_vec_op):
-                    cw.add_line("data1.val["+str(n)+"] = "+operation_func+"(input.val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
+                    if set_new_cache:
+                        cw.add_line(output_var_name+".val["+str(n)+"] = "+operation_func+"(input.val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
+                    else:
+                        cw.add_line("data1.val["+str(n)+"] = "+operation_func+"(input.val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
 
-                if set_new_cache:
-                    if precision == 1:
-                        for n in range(num_vec_op):
-                            cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];")
-                    elif precision == 8:
-                        for n in range(num_vec_op):
-                            cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];") 
+                # if set_new_cache:
+                #     if precision == 1:
+                #         for n in range(num_vec_op):
+                #             cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];")
+                #     elif precision == 8:
+                #         for n in range(num_vec_op):
+                #             cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];") 
 
-                elif add_to_cache:
+                if add_to_cache:
                     for n in range(num_vec_op):
                         cw.add_line(output_var_name+".val["+str(n)+ "]= vaddq_u8("+output_var_name+".val["+str(n)+"],data1.val["+str(n)+"]);")
                 
