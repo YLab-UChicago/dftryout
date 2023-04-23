@@ -60,8 +60,8 @@ int main (int argc, char *argv[]) {
     m5_reset_stats(0, 0);
     
     for (int f = 0; f < num_filters; f++) {
-        output_cache_0=vdupq_n_u64(0);
-        output_cache_1=vdupq_n_u64(0);
+        output_cache_0=vdup_n_u64(0);
+        output_cache_1=vdup_n_u64(0);
         for (int h = 0; h < height; h++) {
             for (int w = 0; w < width; w ++) {
                 idx = h * width * depth / 64 + w * depth / 64;
