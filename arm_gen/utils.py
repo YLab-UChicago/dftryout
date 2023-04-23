@@ -1,7 +1,6 @@
 def generate_inout_sequence(filter_width,filter_height,stride,num_cache_byrow):
-    unroll_num=1
-    if stride < filter_width - stride:
-        unroll_num = filter_width - stride
+
+    unroll_num = filter_width - stride
     sequence_list = []
     num_cache_count = 0
     for un in range(unroll_num):
