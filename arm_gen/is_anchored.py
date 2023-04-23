@@ -1,4 +1,5 @@
 from csnake import CodeWriter
+from utils import generate_inout_sequence
 
 def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
     if vec_len == 128:
@@ -125,6 +126,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     output_cache_indices = []
     num_ocache_byrow = {}
     curr_output_base = 0
+
     
     count = 0
     for i in range(fh):
@@ -134,6 +136,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 output_cache_indices.append(i*fw+j)
                 num_ocache_byrow[i] = num_ocache_byrow[i] + 1
                 count += 1
+
+    ocache_unroll_sequence = generate_inout_sequence(fw,fh,stride,num_ocache_byrow)
 
     for a in range(fw-stride):
         if a > 0:
@@ -151,21 +155,18 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 
                 if idx in output_cache_indices:
                     add_to_cache = True
-                    if num_ocache_byrow[i] > stride:
-                        output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx)) % (num_ocache_byrow[i]))+i*(fw-stride))
-                    else:
-                        output_var_name = "output_cache_"+str(output_cache_indices.index(idx))
+                    output_var_name = "output_cache_"+str(ocache_unroll_sequence[a][i][j])
                     if idx % fw >= stride:
                         write_output = False
                 else: 
-                    if num_ocache_byrow[i] > 0 and (idx - num_ocache_byrow[i]) in output_cache_indices:
-                        if num_ocache_byrow[i] > stride:
-                            output_var_name = "output_cache_"+str(((curr_output_base+output_cache_indices.index(idx - num_ocache_byrow[i])) % (num_ocache_byrow[i]))+i*(fw-stride))
-                            
-                        else:
-                            output_var_name = "output_cache_"+str(((output_cache_indices.index(idx - num_ocache_byrow[i])) % (fw-stride))+i*(fw-stride))
+                    if num_ocache_byrow[i] > 0 and (idx - stride) in output_cache_indices:
+                        print(str((a+1)% (fw-stride)))
+                        print(str(i))
+                        print(str(j-stride))
+                        output_var_name = "output_cache_"+str(ocache_unroll_sequence[(a+1)%(fw-stride)][i][j-stride])
 
                         set_new_cache = True
+                        write_output = False
                         
                     else:
                         output_var_name = "data1"

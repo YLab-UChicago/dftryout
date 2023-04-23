@@ -17,7 +17,3 @@ def generate_inout_sequence(filter_width,filter_height,stride,num_cache_byrow):
         sequence_list.append(this_unroll_iter)
     return sequence_list
 
-
-#test
-print(generate_inout_sequence(3,3,1,[2,2,1]))
-print(generate_inout_sequence(4,4,2,[2,2,2,1]))
