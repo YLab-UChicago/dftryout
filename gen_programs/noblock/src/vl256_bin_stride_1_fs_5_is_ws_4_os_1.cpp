@@ -87,8 +87,6 @@ int main (int argc, char *argv[]) {
                 j = 3;
                 output_cache_0.val[0] = veorq_s64(input.val[0],weight_cache_1.val[0]);
                 output_cache_0.val[1] = veorq_s64(input.val[1],weight_cache_1.val[1]);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0.val[0]))+vaddvq_u8(vcntq_u8(output_cache_0.val[1])));
-                
                 
                 i = 4;
                 j = 2;
@@ -333,8 +331,6 @@ int main (int argc, char *argv[]) {
                 j = 3;
                 output_cache_0.val[0] = veorq_s64(input.val[0],weight_cache_1.val[0]);
                 output_cache_0.val[1] = veorq_s64(input.val[1],weight_cache_1.val[1]);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0.val[0]))+vaddvq_u8(vcntq_u8(output_cache_0.val[1])));
-                
                 
                 i = 4;
                 j = 2;
@@ -579,8 +575,6 @@ int main (int argc, char *argv[]) {
                 j = 3;
                 output_cache_0.val[0] = veorq_s64(input.val[0],weight_cache_1.val[0]);
                 output_cache_0.val[1] = veorq_s64(input.val[1],weight_cache_1.val[1]);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0.val[0]))+vaddvq_u8(vcntq_u8(output_cache_0.val[1])));
-                
                 
                 i = 4;
                 j = 2;
@@ -825,8 +819,6 @@ int main (int argc, char *argv[]) {
                 j = 3;
                 output_cache_0.val[0] = veorq_s64(input.val[0],weight_cache_1.val[0]);
                 output_cache_0.val[1] = veorq_s64(input.val[1],weight_cache_1.val[1]);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0.val[0]))+vaddvq_u8(vcntq_u8(output_cache_0.val[1])));
-                
                 
                 i = 4;
                 j = 2;
