@@ -160,9 +160,6 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                         write_output = False
                 else: 
                     if num_ocache_byrow[i] > 0 and (idx - stride) in output_cache_indices:
-                        print(str((a+1)% (fw-stride)))
-                        print(str(i))
-                        print(str(j-stride))
                         output_var_name = "output_cache_"+str(ocache_unroll_sequence[(a+1)%(fw-stride)][i][j-stride])
 
                         set_new_cache = True
