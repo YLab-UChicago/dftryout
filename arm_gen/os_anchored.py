@@ -164,22 +164,34 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     weight_var_name = "data2"
                     cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);")
 
-                for n in range(num_vec_op):
-                    cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
+                if num_vec_op > 1:
+                    for n in range(num_vec_op):
+                        cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"],"+weight_var_name+".val["+str(n)+"]);")
+                else:
+                    cw.add_line("data1 = "+operation_func+"("+input_var_name+","+weight_var_name+");")
 
                 if precision == 1:
-                    for n in range(num_vec_op):
-                        cw.add_line("output.val["+str(n)+"] = vaddq_u8(output.val["+str(n)+"],vcntq_u8(data1.val["+str(n)+"]));")
+                    if num_vec_op > 1:
+                        for n in range(num_vec_op):
+                            cw.add_line("output.val["+str(n)+"] = vaddq_u8(output.val["+str(n)+"],vcntq_u8(data1.val["+str(n)+"]));")
+                    else:
+                        cw.add_line("output = vaddq_u8(output,vcntq_u8(data1));")
                 elif precision == 8:
-                    for n in range(num_vec_op):
-                        cw.add_line("output.val["+str(n)+"] = vaddq_u8(output.val["+str(n)+"],data1.val["+str(n)+"]);")
+                    if num_vec_op > 1:
+                        for n in range(num_vec_op):
+                            cw.add_line("output.val["+str(n)+"] = vaddq_u8(output.val["+str(n)+"],data1.val["+str(n)+"]);")
+                    else:
+                        cw.add_line("output = vaddq_u8(output,data1);")
 
                 cw.add_line("")
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] = "
-        for n in range(num_vec_op):
-            if n > 0:
-                res_string += " + "
-            res_string += "vaddvq_u8(output.val["+str(n)+"])"
+        if num_vec_op > 1:
+            for n in range(num_vec_op):
+                if n > 0:
+                    res_string += " + "
+                res_string += "vaddvq_u8(output.val["+str(n)+"])"
+        else:
+            res_string += "vaddvq_u8(output)"
         res_string+=";"
         cw.add_line(res_string)
         cw.add_line("")
@@ -213,5 +225,5 @@ def gen_OS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 #test
 
 cw = CodeWriter()
-gen_OS_anchored_program(cw, 8, 256, 3,3, {"WS":0,"IS":3},1)
+gen_OS_anchored_program(cw, 8, 128, 3,3, {"WS":0,"IS":3},1)
 cw.write_to_file("gen_os_ws0_is3.cpp")
