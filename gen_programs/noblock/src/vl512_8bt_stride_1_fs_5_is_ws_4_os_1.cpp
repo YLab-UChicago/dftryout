@@ -38,8 +38,8 @@ int main (int argc, char *argv[]) {
     
     height = atoi(argv[1]);
     width = atoi(argv[2]);
-    depth = atoi(argv[3]);
-    num_filters = atoi(argv[4]);
+    depth = 512;
+    num_filters = atoi(argv[3]);
     filter_height = 5;
     filter_width = 5;
     padding = 4;

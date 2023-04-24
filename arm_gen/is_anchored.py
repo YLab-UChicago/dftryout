@@ -71,8 +71,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
     cw.add_line("height = atoi(argv[1]);")
     cw.add_line("width = atoi(argv[2]);")
-    cw.add_line("depth = atoi(argv[3]);")
-    cw.add_line("num_filters = atoi(argv[4]);")
+    cw.add_line("depth = "+str(vec_len)+";")
+    cw.add_line("num_filters = atoi(argv[3]);")
     cw.add_line("filter_height = "+ str(fh) +";")
     cw.add_line("filter_width = "+ str(fw)+";")
     cw.add_line("padding = "+str(fh-1)+";")

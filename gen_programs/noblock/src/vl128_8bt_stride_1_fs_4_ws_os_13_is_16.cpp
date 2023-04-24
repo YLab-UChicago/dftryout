@@ -31,8 +31,8 @@ int main (int argc, char *argv[]) {
     
     height = atoi(argv[1]);
     width = atoi(argv[2]);
-    depth = atoi(argv[3]);
-    num_filters = atoi(argv[4]);
+    depth = 128;
+    num_filters = atoi(argv[3]);
     filter_height = 4;
     filter_width = 4;
     padding = 3;
@@ -96,22 +96,22 @@ int main (int argc, char *argv[]) {
         output_cache_10=vdupq_n_u64(0);
         output_cache_11=vdupq_n_u64(0);
         output_cache_12=vdupq_n_u64(0);
-        int64x2_t input_cache_0 = vld1q_s64((const int64_t *) &inputs[((0-padding) * width * depth /256 + (0-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_1 = vld1q_s64((const int64_t *) &inputs[((0-padding) * width * depth /256 + (1-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_2 = vld1q_s64((const int64_t *) &inputs[((0-padding) * width * depth /256 + (2-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_3 = vld1q_s64((const int64_t *) &inputs[((0-padding) * width * depth /256 + (3-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_4 = vld1q_s64((const int64_t *) &inputs[((1-padding) * width * depth /256 + (0-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_5 = vld1q_s64((const int64_t *) &inputs[((1-padding) * width * depth /256 + (1-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_6 = vld1q_s64((const int64_t *) &inputs[((1-padding) * width * depth /256 + (2-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_7 = vld1q_s64((const int64_t *) &inputs[((1-padding) * width * depth /256 + (3-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_8 = vld1q_s64((const int64_t *) &inputs[((2-padding) * width * depth /256 + (0-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_9 = vld1q_s64((const int64_t *) &inputs[((2-padding) * width * depth /256 + (1-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_10 = vld1q_s64((const int64_t *) &inputs[((2-padding) * width * depth /256 + (2-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_11 = vld1q_s64((const int64_t *) &inputs[((2-padding) * width * depth /256 + (3-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_12 = vld1q_s64((const int64_t *) &inputs[((3-padding) * width * depth /256 + (0-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_13 = vld1q_s64((const int64_t *) &inputs[((3-padding) * width * depth /256 + (1-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_14 = vld1q_s64((const int64_t *) &inputs[((3-padding) * width * depth /256 + (2-padding) * depth /256) * 128 /64]);
-        int64x2_t input_cache_15 = vld1q_s64((const int64_t *) &inputs[((3-padding) * width * depth /256 + (3-padding) * depth /256) * 128 /64]);
+        int64x2_t input_cache_0 = vld1q_s64((const int64_t *) &inputs[((0) * width * depth /256 + (0) * depth /256) * 128 /64]);
+        int64x2_t input_cache_1 = vld1q_s64((const int64_t *) &inputs[((0) * width * depth /256 + (1) * depth /256) * 128 /64]);
+        int64x2_t input_cache_2 = vld1q_s64((const int64_t *) &inputs[((0) * width * depth /256 + (2) * depth /256) * 128 /64]);
+        int64x2_t input_cache_3 = vld1q_s64((const int64_t *) &inputs[((0) * width * depth /256 + (3) * depth /256) * 128 /64]);
+        int64x2_t input_cache_4 = vld1q_s64((const int64_t *) &inputs[((1) * width * depth /256 + (0) * depth /256) * 128 /64]);
+        int64x2_t input_cache_5 = vld1q_s64((const int64_t *) &inputs[((1) * width * depth /256 + (1) * depth /256) * 128 /64]);
+        int64x2_t input_cache_6 = vld1q_s64((const int64_t *) &inputs[((1) * width * depth /256 + (2) * depth /256) * 128 /64]);
+        int64x2_t input_cache_7 = vld1q_s64((const int64_t *) &inputs[((1) * width * depth /256 + (3) * depth /256) * 128 /64]);
+        int64x2_t input_cache_8 = vld1q_s64((const int64_t *) &inputs[((2) * width * depth /256 + (0) * depth /256) * 128 /64]);
+        int64x2_t input_cache_9 = vld1q_s64((const int64_t *) &inputs[((2) * width * depth /256 + (1) * depth /256) * 128 /64]);
+        int64x2_t input_cache_10 = vld1q_s64((const int64_t *) &inputs[((2) * width * depth /256 + (2) * depth /256) * 128 /64]);
+        int64x2_t input_cache_11 = vld1q_s64((const int64_t *) &inputs[((2) * width * depth /256 + (3) * depth /256) * 128 /64]);
+        int64x2_t input_cache_12 = vld1q_s64((const int64_t *) &inputs[((3) * width * depth /256 + (0) * depth /256) * 128 /64]);
+        int64x2_t input_cache_13 = vld1q_s64((const int64_t *) &inputs[((3) * width * depth /256 + (1) * depth /256) * 128 /64]);
+        int64x2_t input_cache_14 = vld1q_s64((const int64_t *) &inputs[((3) * width * depth /256 + (2) * depth /256) * 128 /64]);
+        int64x2_t input_cache_15 = vld1q_s64((const int64_t *) &inputs[((3) * width * depth /256 + (3) * depth /256) * 128 /64]);
         int i;
         int j;
         for (i = 0; i < filter_height - 1; i ++) {
@@ -121,108 +121,108 @@ int main (int argc, char *argv[]) {
                 data2 = vld1q_s64((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*128/64]);
                 
                 
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_0,data2);
                 output_cache_0 = vaddq_u8(output_cache_0,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_1,data2);
                 output_cache_1 = vaddq_u8(output_cache_1,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_2,data2);
                 output_cache_2 = vaddq_u8(output_cache_2,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_3,data2);
                 output_cache_3 = vaddq_u8(output_cache_3,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_4,data2);
                 output_cache_4 = vaddq_u8(output_cache_4,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_5,data2);
                 output_cache_5 = vaddq_u8(output_cache_5,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_6,data2);
                 output_cache_6 = vaddq_u8(output_cache_6,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_7,data2);
                 output_cache_7 = vaddq_u8(output_cache_7,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_8,data2);
                 output_cache_8 = vaddq_u8(output_cache_8,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_9,data2);
                 output_cache_9 = vaddq_u8(output_cache_9,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_10,data2);
                 output_cache_10 = vaddq_u8(output_cache_10,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_11,data2);
                 output_cache_11 = vaddq_u8(output_cache_11,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_12,data2);
                 output_cache_12 = vaddq_u8(output_cache_12,data1);
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_13,data2);
                 outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_13);
                 
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_14,data2);
                 outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_14);
                 
                 
                 w++;
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
+                input_h = h * strides + i;
+                input_w = w * strides + j;
                 data1 = vmulq_s8(input_cache_15,data2);
                 outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_15);
                 
                 for (h = 0; h < out_height; h++) {
                     for (w = 16; w < out_width; w++) {
-                        input_h = h * strides + i - padding;
-                        input_w = w * strides + j - padding;
-                        data1 = vld1q_s64((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * 128 /64]);
+                        input_h = h * strides + i;
+                        input_w = w * strides + j;
+                        data1 = vld1q_s64((const int64_t *) &inputs[(input_h * width * depth /128+ input_w * depth /128) * 128 /64]);
                         data1 = vmulq_s8(data1,data2);
                         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_15);
                     }
@@ -235,109 +235,109 @@ int main (int argc, char *argv[]) {
             data2 = vld1q_s64((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*128/64]);
             
             
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_0, data2);
             output_cache_0 = vaddq_u8(output_cache_0,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_1, data2);
             output_cache_1 = vaddq_u8(output_cache_1,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_2, data2);
             output_cache_2 = vaddq_u8(output_cache_2,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_3, data2);
             output_cache_3 = vaddq_u8(output_cache_3,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_4, data2);
             output_cache_4 = vaddq_u8(output_cache_4,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_5, data2);
             output_cache_5 = vaddq_u8(output_cache_5,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_6, data2);
             output_cache_6 = vaddq_u8(output_cache_6,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_7, data2);
             output_cache_7 = vaddq_u8(output_cache_7,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_8, data2);
             output_cache_8 = vaddq_u8(output_cache_8,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_9, data2);
             output_cache_9 = vaddq_u8(output_cache_9,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_10, data2);
             output_cache_10 = vaddq_u8(output_cache_10,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_11, data2);
             output_cache_11 = vaddq_u8(output_cache_11,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_12, data2);
             output_cache_12 = vaddq_u8(output_cache_12,data1);
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_13, data2);
             outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_13);
             
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_14, data2);
             outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_14);
             
             
             w++;
-            input_h = h * strides + i - padding;
-            input_w = w * strides + j - padding;
+            input_h = h * strides + i;
+            input_w = w * strides + j;
             data1 = vmulq_s8(input_cache_15, data2);
             outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_15);
             
             
             for (h = 0; h < out_height; h++) {
                 for (w = 16; w < out_width; w++) {
-                    input_h = h * strides + i - padding;
-                    input_w = w * strides + j - padding;
-                    data1 = vld1q_s64((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * 128 /64]);
+                    input_h = h * strides + i;
+                    input_w = w * strides + j;
+                    data1 = vld1q_s64((const int64_t *) &inputs[(input_h * width * depth /128 + input_w * depth /128) * 128 /64]);
                     data1 = vmulq_s8(data1,data2);
                     outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_15);
                 }
@@ -346,135 +346,135 @@ int main (int argc, char *argv[]) {
         data2 = vld1q_s64((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*128/64]);
         
         
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_0,data2);
         output_cache_0 = vaddq_u8(output_cache_0,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_0);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_1,data2);
         output_cache_1 = vaddq_u8(output_cache_1,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_1);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_2,data2);
         output_cache_2 = vaddq_u8(output_cache_2,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_2);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_3,data2);
         output_cache_3 = vaddq_u8(output_cache_3,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_3);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_4,data2);
         output_cache_4 = vaddq_u8(output_cache_4,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_4);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_5,data2);
         output_cache_5 = vaddq_u8(output_cache_5,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_5);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_6,data2);
         output_cache_6 = vaddq_u8(output_cache_6,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_6);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_7,data2);
         output_cache_7 = vaddq_u8(output_cache_7,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_7);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_8,data2);
         output_cache_8 = vaddq_u8(output_cache_8,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_8);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_9,data2);
         output_cache_9 = vaddq_u8(output_cache_9,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_9);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_10,data2);
         output_cache_10 = vaddq_u8(output_cache_10,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_10);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_11,data2);
         output_cache_11 = vaddq_u8(output_cache_11,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_11);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_12,data2);
         output_cache_12 = vaddq_u8(output_cache_12,data1);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output_cache_12);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_13,data2);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_13);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_14,data2);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_14);
         
         
         w++;
-        input_h = h * strides + i - padding;
-        input_w = w * strides + j - padding;
+        input_h = h * strides + i;
+        input_w = w * strides + j;
         data1 = vmulq_s8(input_cache_15,data2);
         outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_15);
         
         
         for (h = 0; h < out_height; h++) {
             for (w = 16; w < out_width; w++) {
-                input_h = h * strides + i - padding;
-                input_w = w * strides + j - padding;
-                data1 = vld1q_s64((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * 128 /64]);
+                input_h = h * strides + i;
+                input_w = w * strides + j;
+                data1 = vld1q_s64((const int64_t *) &inputs[(input_h * width * depth /128+ input_w * depth /128) * 128 /64]);
                 data1 = vmulq_s8(data1,data2);
                 outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(input_cache_15);
             }
