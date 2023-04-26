@@ -97,7 +97,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.indent()
 
     for i in range(num_input_cache):
-        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[((0-padding) * width * depth /256 + ("+str(i)+"-padding) * depth /256) * "+str(vec_len)+" /64]);")
+        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[("+str(i)+" * width * depth /"+str(vec_len)+" + "+str(i)+" * "+str(vec_len)+" /256) * "+str(vec_len)+" /64]);")
 
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
@@ -147,8 +147,8 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 if idx in input_cache_indices:
                     input_var_name = "input_cache_"+str(icache_unroll_sequence[a][i][j])
                 else: 
-                    cw.add_line("input_h = h * strides +" + str(i) +" - padding;")
-                    cw.add_line("input_w = w * strides +" + str(j) +" - padding;")
+                    cw.add_line("input_h = h * strides +" + str(i)+";" )
+                    cw.add_line("input_w = w * strides +" + str(j)+";")
                     if num_icache_byrow[i] > 0:
                         if (idx - stride) in input_cache_indices:
                             input_var_name = "input_cache_"+str(icache_unroll_sequence[(a+1)%(fw-stride)][i][j-stride])
@@ -225,5 +225,5 @@ def gen_OS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
 #test
 
 cw = CodeWriter()
-gen_OS_anchored_program(cw, 8, 128, 3,3, {"WS":0,"IS":3},1)
-cw.write_to_file("gen_os_ws0_is3.cpp")
+gen_OS_anchored_program(cw, 8, 128, 4,4, {"WS":2,"IS":3},1)
+cw.write_to_file("os_flt4_test.cpp")

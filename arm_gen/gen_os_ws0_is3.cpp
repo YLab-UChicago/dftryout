@@ -53,9 +53,9 @@ int main (int argc, char *argv[]) {
     m5_reset_stats(0, 0);
     
     for (int f = 0; f < num_filters; f++) {
-        input_cache_0 = vld1q_s64((const int64_t *) &inputs[((0-padding) * width * depth /256 + (0-padding) * depth /256) * 128 /64]);
-        input_cache_1 = vld1q_s64((const int64_t *) &inputs[((0-padding) * width * depth /256 + (1-padding) * depth /256) * 128 /64]);
-        input_cache_2 = vld1q_s64((const int64_t *) &inputs[((0-padding) * width * depth /256 + (2-padding) * depth /256) * 128 /64]);
+        input_cache_0 = vld1q_s64((const int64_t *) &inputs[(0 * width * depth /256 + 0 * depth /256) * 128 /64]);
+        input_cache_1 = vld1q_s64((const int64_t *) &inputs[(1 * width * depth /256 + 1 * depth /256) * 128 /64]);
+        input_cache_2 = vld1q_s64((const int64_t *) &inputs[(2 * width * depth /256 + 2 * depth /256) * 128 /64]);
         int64x2_t output;
         for (int h = 0; h < out_height; h++) {
             for (int w = 0; w < out_width; w ++) {

@@ -436,13 +436,19 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         res_string += ";"
     cw.add_line(res_string)
     cw.dedent()
+    
     cw.add_line("}")
     cw.dedent()
     cw.add_line("}")
     cw.dedent()
     cw.add_line("}")
     cw.dedent()
+    cw.add_line("m5_dump_reset_stats(0, 0);")
+    cw.add_line("free(inputs);")
+    cw.add_line("free(outputs);")
+    cw.add_line("free(filters);")
     cw.add_line("}")
+
 
 
 

@@ -63,11 +63,11 @@ int main (int argc, char *argv[]) {
     m5_reset_stats(0, 0);
     
     for (int f = 0; f < num_filters; f++) {
-        input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (0-padding) * depth /256) * 256 /64]);
-        input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (1-padding) * depth /256) * 256 /64]);
-        input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (2-padding) * depth /256) * 256 /64]);
-        input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (3-padding) * depth /256) * 256 /64]);
-        input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[((0-padding) * width * depth /256 + (4-padding) * depth /256) * 256 /64]);
+        input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width * depth /256 + 0 * 256 /256) * 256 /64]);
+        input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[(1 * width * depth /256 + 1 * 256 /256) * 256 /64]);
+        input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[(2 * width * depth /256 + 2 * 256 /256) * 256 /64]);
+        input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[(3 * width * depth /256 + 3 * 256 /256) * 256 /64]);
+        input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[(4 * width * depth /256 + 4 * 256 /256) * 256 /64]);
         weight_cache_0 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +0)*256/64]);
         weight_cache_1 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +1)*256/64]);
         weight_cache_2 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +2)*256/64]);
@@ -114,8 +114,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 0;
                 j = 4;
-                input_h = h * strides +0 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +0;
+                input_w = w * strides +4;
                 input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_0.val[0],weight_cache_4.val[0]);
                 data1.val[1] = veorq_s64(input_cache_0.val[1],weight_cache_4.val[1]);
@@ -131,8 +131,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 1;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +1;
                 input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_6.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_6.val[1]);
@@ -141,8 +141,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 2;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +2;
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_7.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_7.val[1]);
                 output.val[0] = vaddq_u8(output.val[0],vcntq_u8(data1.val[0]));
@@ -150,8 +150,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 3;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +3;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -160,8 +160,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 4;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +4;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -170,8 +170,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 0;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -181,8 +181,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 1;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -192,8 +192,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 2;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -203,8 +203,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 3;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -214,8 +214,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 4;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -225,8 +225,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 0;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -236,8 +236,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 1;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -247,8 +247,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 2;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -258,8 +258,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 3;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -269,8 +269,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 4;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -280,8 +280,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 0;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -291,8 +291,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 1;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -302,8 +302,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 2;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -313,8 +313,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 3;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -324,8 +324,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 4;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -366,8 +366,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 0;
                 j = 4;
-                input_h = h * strides +0 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +0;
+                input_w = w * strides +4;
                 input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_1.val[0],weight_cache_4.val[0]);
                 data1.val[1] = veorq_s64(input_cache_1.val[1],weight_cache_4.val[1]);
@@ -383,8 +383,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 1;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +1;
                 input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_6.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_6.val[1]);
@@ -393,8 +393,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 2;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +2;
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_7.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_7.val[1]);
                 output.val[0] = vaddq_u8(output.val[0],vcntq_u8(data1.val[0]));
@@ -402,8 +402,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 3;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +3;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -412,8 +412,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 4;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +4;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -422,8 +422,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 0;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -433,8 +433,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 1;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -444,8 +444,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 2;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -455,8 +455,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 3;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -466,8 +466,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 4;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -477,8 +477,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 0;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -488,8 +488,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 1;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -499,8 +499,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 2;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -510,8 +510,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 3;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -521,8 +521,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 4;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -532,8 +532,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 0;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -543,8 +543,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 1;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -554,8 +554,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 2;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -565,8 +565,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 3;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -576,8 +576,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 4;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -618,8 +618,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 0;
                 j = 4;
-                input_h = h * strides +0 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +0;
+                input_w = w * strides +4;
                 input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_2.val[0],weight_cache_4.val[0]);
                 data1.val[1] = veorq_s64(input_cache_2.val[1],weight_cache_4.val[1]);
@@ -635,8 +635,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 1;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +1;
                 input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_6.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_6.val[1]);
@@ -645,8 +645,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 2;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +2;
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_7.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_7.val[1]);
                 output.val[0] = vaddq_u8(output.val[0],vcntq_u8(data1.val[0]));
@@ -654,8 +654,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 3;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +3;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -664,8 +664,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 4;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +4;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -674,8 +674,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 0;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -685,8 +685,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 1;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -696,8 +696,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 2;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -707,8 +707,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 3;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -718,8 +718,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 4;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -729,8 +729,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 0;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -740,8 +740,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 1;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -751,8 +751,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 2;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -762,8 +762,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 3;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -773,8 +773,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 4;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -784,8 +784,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 0;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -795,8 +795,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 1;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -806,8 +806,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 2;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -817,8 +817,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 3;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -828,8 +828,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 4;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -870,8 +870,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 0;
                 j = 4;
-                input_h = h * strides +0 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +0;
+                input_w = w * strides +4;
                 input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_3.val[0],weight_cache_4.val[0]);
                 data1.val[1] = veorq_s64(input_cache_3.val[1],weight_cache_4.val[1]);
@@ -887,8 +887,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 1;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +1;
                 input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_6.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_6.val[1]);
@@ -897,8 +897,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 2;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +2;
                 data1.val[0] = veorq_s64(input_cache_4.val[0],weight_cache_7.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],weight_cache_7.val[1]);
                 output.val[0] = vaddq_u8(output.val[0],vcntq_u8(data1.val[0]));
@@ -906,8 +906,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 3;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +3;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -916,8 +916,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 4;
-                input_h = h * strides +1 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +1;
+                input_w = w * strides +4;
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input_cache_4.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input_cache_4.val[1],data2.val[1]);
@@ -926,8 +926,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 0;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -937,8 +937,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 1;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -948,8 +948,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 2;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -959,8 +959,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 3;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -970,8 +970,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 4;
-                input_h = h * strides +2 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +2;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -981,8 +981,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 0;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -992,8 +992,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 1;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1003,8 +1003,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 2;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1014,8 +1014,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 3;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1025,8 +1025,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 3;
                 j = 4;
-                input_h = h * strides +3 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +3;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1036,8 +1036,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 0;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +0 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +0;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1047,8 +1047,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 1;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +1 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +1;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1058,8 +1058,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 2;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +2 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +2;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1069,8 +1069,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 3;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +3 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +3;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
@@ -1080,8 +1080,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 4;
                 j = 4;
-                input_h = h * strides +4 - padding;
-                input_w = w * strides +4 - padding;
+                input_h = h * strides +4;
+                input_w = w * strides +4;
                 data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * depth /64]);
                 data2 = vld1q_s64_x2((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
