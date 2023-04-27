@@ -175,6 +175,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         
     cw.add_line("for (h = 0; h < out_height; h++) {")
     cw.indent()
+    input_var_name = "data1"
     cw.add_line("for (w = "+ str(should_unroll_num)+"; w < out_width; w++) {")
     cw.indent()
     cw.add_line("input_h = h * strides + i;")
@@ -274,7 +275,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             cw.add_line("")
 
     cw.add_line("")
-        
+    input_var_name = "data1"
     cw.add_line("for (h = 0; h < out_height; h++) {")
     cw.indent()
     cw.add_line("for (w = "+ str(should_unroll_num)+"; w < out_width; w++) {")
@@ -394,7 +395,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
             cw.add_line(res_string)
             cw.add_line("")
-
+    input_var_name = "data1"
     cw.add_line("")
         
     cw.add_line("for (h = 0; h < out_height; h++) {")
