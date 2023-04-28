@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     double time_elapsed_ms;
     height = atoi(argv[1]);
     width = atoi(argv[2]);
-    depth = 512;
+    depth = 256;
     num_filters = atoi(argv[3]);
     filter_height = atoi(argv[4]);
     filter_width = atoi(argv[5]);
@@ -53,32 +53,29 @@ int main(int argc, char *argv[])
     inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);
     outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);
     filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);
-    uint64x2x4_t data1;
-    uint64x2x4_t data2;
+    uint64x2x2_t data1;
+    uint64x2x2_t data2;
     
 
     m5_reset_stats(0, 0);
 
     for (int f = 0; f < num_filters; f ++)
     {
-        for (int h = 0; h < height; h++) 
+        for (int i = 0; i < filter_height; i++)
         {
-            for (int w = 0; w < width; w ++) 
-            {
-                idx = h * width * depth / 64 + w * depth / 64;
-                data1 = vld1q_u64_x4((const uint64_t *)&inputs[idx]);
-                for (int i = 0; i < filter_height; i ++)
+            for (int j = 0; j < filter_width; j++)
                 {
-                    for (int j = 0; j < filter_width; j ++) 
+                data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                for (int h = 0; h < out_height; h++)
+                {
+                    for (int w = 0; w < out_width; w++)
                     {
-                        int output_h = (h + padding - i) / strides;
-                        int output_w = (w + padding - j) / strides;
-                        data2 = vld1q_u64_x4((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                        int input_h = h * strides + i - padding;
+                        int input_w = w * strides + j - padding;
+                        data1 = vld1q_u64_x2((const uint64_t *)&inputs[(input_h * width + input_w) * depth /64]);  
                         data1.val[0] = veorq_u64(data1.val[0],data2.val[0]);
                         data1.val[1] = veorq_u64(data1.val[1],data2.val[1]);
-                        data1.val[2] = veorq_u64(data1.val[2],data2.val[2]);
-                        data1.val[3] = veorq_u64(data1.val[3],data2.val[3]);
-                        outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1])))+ vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[2])))+ vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[3]))));
+                        outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0])))+vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1]))));
                     }
                 }
             }

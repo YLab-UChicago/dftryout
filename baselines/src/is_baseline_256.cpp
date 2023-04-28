@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
     num_filters = atoi(argv[3]);
     filter_height = atoi(argv[4]);
     filter_width = atoi(argv[5]);
-    padding = 2;
-    strides = 1;
+    padding = atoi(argv[4])-1;
+    strides = atoi(argv[6]);
     int out_height = ceil((height - filter_height + 2 * padding) / strides + 1);
     int out_width = ceil((width - filter_width + 2 * padding) / strides + 1);
     inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);
