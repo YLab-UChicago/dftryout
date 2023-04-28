@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
                             data1 = vld1q_u64((const uint64_t *) &inputs[(input_h * width + input_w) * depth /64]);
                             data2 = vld1q_u64((const uint64_t*) &filters[f * filter_height * filter_width + i * filter_width + j]);
                             data1 = veorq_u64(data1, data2);
-                            sum_block += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));
+                            sum_block += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));
                         }
 
                     }

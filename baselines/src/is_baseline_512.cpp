@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
                         data1.val[1] = veorq_u64(data1.val[1],data2.val[1]);
                         data1.val[2] = veorq_u64(data1.val[2],data2.val[2]);
                         data1.val[3] = veorq_u64(data1.val[3],data2.val[3]);
-                        outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1])))+ vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[2])))+ vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[3]))));
+                        outputs[h * out_width * num_filters + w * num_filters + f] += 512 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[0]))) + vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[1])))+ vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[2])))+ vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1.val[3]))));
                     }
                 }
             }

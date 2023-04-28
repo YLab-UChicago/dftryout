@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
                         int output_w = (w + padding - j) / strides;
                         data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                         data1 = veorq_u64(data1,data2);
-                        outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));
+                        outputs[h * out_width * num_filters + w * num_filters + f] += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));
                     }
                 }
             }
