@@ -118,7 +118,22 @@ def _get_simulations(list_of_lines, first_only=False):
             temp.append(line)
     
     return simulations
+# def _get_simulations(list_of_lines, first_only=False):
+#     simulations = []
+#     temp = []
+#     for line in list_of_lines:
+#         if line.startswith("simulation"):
+#             if temp:  # Add this check
+#                 temp.pop()
+#                 simulations.append(temp)
+#                 temp = []
 
+#             if first_only:
+#                 break
+#         else:
+#             temp.append(line)
+
+#     return simulations
 
 def _make_into_dict(simulation):
     """Takes a simulation and returns it as a dictionary
