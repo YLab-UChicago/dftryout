@@ -1,9 +1,9 @@
 # Add the path to the m5op library
-M5OP_PATH = /home/zhouzikai/gem5/util/m5/src/abi/arm64
+M5OP_PATH = /home/zhouzikai/gem5/util/m5/src/abi
 
-CC := aarch64-linux-gnu-gcc-10
-CFLAGS := -march=armv8.2-a+sve2 -flax-vector-conversions -I /home/zhouzikai/gem5/include/gem5/ -O3
-LDFLAGS := -lstdc++ -L /home/zhouzikai/gem5/include/gem5 $(M5OP_PATH)/m5op_arm64.o
+CC := arm-linux-gnueabihf-g++
+CFLAGS := -march=armv7-a -flax-vector-conversions -I /home/zhouzikai/gem5/include/gem5/ -O3
+LDFLAGS := -lstdc++ -L /home/zhouzikai/gem5/include/gem5 $(M5OP_PATH)/m5op_arm.o
 
 SRC_DIR := src/
 TARGET_DIR := out/
@@ -23,5 +23,9 @@ $(TARGET_DIR)%: $(SRC_DIR)%.o
 $(SRC_DIR)%.o: $(SRC_DIR)%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Rule to build m5op_arm.o from m5op.S
+$(M5OP_PATH)/m5op_arm.o: $(M5OP_PATH)/m5op.S
+	$(CC) -c $< -o $@
+
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET) $(M5OP_PATH)/m5op_arm.o
