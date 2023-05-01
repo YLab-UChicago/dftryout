@@ -152,21 +152,21 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
                 if num_vec_op > 1:
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"(data1.val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
                 else:
-                    res_string += getres_func_start+"("+input_var_name+getres_func_end
+                    res_string += getres_func_start+"("+"data1"+getres_func_end
                 res_string += ");"
             elif precision == 8:
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                 if num_vec_op > 1:
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
                 else:
-                    res_string += getres_func_start+"("+input_var_name+getres_func_end
+                    res_string += getres_func_start+"("+"data1"+getres_func_end
 
                 res_string += ";"
 
@@ -192,21 +192,21 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
         if num_vec_op > 1:
             for n in range(num_vec_op):
-                res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                 if n < num_vec_op - 1:
                     res_string += "+"
         else:
-            res_string += getres_func_start+"("+input_var_name+getres_func_end
+            res_string += getres_func_start+"("+"data1"+getres_func_end
         res_string += ");"
     elif precision == 8:
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
         if num_vec_op > 1:
             for n in range(num_vec_op):
-                res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+ getres_func_end
+                res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+ getres_func_end
                 if n < num_vec_op - 1:
                     res_string += "+"
         else:
-            res_string += getres_func_start+"("+input_var_name+ getres_func_end
+            res_string += getres_func_start+"("+"data1"+ getres_func_end
         res_string += ";"
     cw.add_line(res_string)
     cw.dedent()
@@ -253,21 +253,21 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
                 if num_vec_op > 1:
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
                 else:
-                    res_string += getres_func_start+"("+input_var_name+getres_func_end
+                    res_string += getres_func_start+"("+"data1"+getres_func_end
                 res_string += ");"
             elif precision == 8:
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                 if num_vec_op > 1:
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
                 else:
-                    res_string += getres_func_start+"("+input_var_name+getres_func_end
+                    res_string += getres_func_start+"("+"data1"+getres_func_end
 
                 res_string += ";"
 
@@ -295,21 +295,21 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
         if num_vec_op > 1:
             for n in range(num_vec_op):
-                res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                 if n < num_vec_op - 1:
                     res_string += "+"
         else:
-            res_string += getres_func_start+"("+input_var_name+getres_func_end
+            res_string += getres_func_start+"("+"data1"+getres_func_end
         res_string += ");"
     elif precision == 8:
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
         if num_vec_op > 1:
             for n in range(num_vec_op):
-                res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+ getres_func_end
+                res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+ getres_func_end
                 if n < num_vec_op - 1:
                     res_string += "+"
         else:
-            res_string += getres_func_start+"("+input_var_name+ getres_func_end
+            res_string += getres_func_start+"("+"data1"+ getres_func_end
 
         res_string += ";"
     cw.add_line(res_string)
@@ -375,21 +375,21 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
                 if num_vec_op > 1:
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
                 else:
-                    res_string += getres_func_start+"("+input_var_name+getres_func_end
+                    res_string += getres_func_start+"("+"data1"+getres_func_end
                 res_string += ");"
             elif precision == 8:
                 res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
                 if num_vec_op > 1:
                     for n in range(num_vec_op):
-                        res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                        res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                         if n < num_vec_op - 1:
                             res_string += "+"
                 else:
-                    res_string += getres_func_start+"("+input_var_name+getres_func_end
+                    res_string += getres_func_start+"("+"data1"+getres_func_end
 
                 res_string += ";"
 
@@ -416,22 +416,22 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
         if num_vec_op > 1:
             for n in range(num_vec_op):
-                res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+getres_func_end
+                res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+getres_func_end
                 if n < num_vec_op - 1:
                     res_string += "+"
         else:
-            res_string += getres_func_start+"("+input_var_name+getres_func_end
+            res_string += getres_func_start+"("+"data1"+getres_func_end
 
         res_string += ");"
     elif precision == 8:
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
         if num_vec_op > 1:
             for n in range(num_vec_op):
-                res_string += getres_func_start+"("+input_var_name+".val["+str(n)+"]"+ getres_func_end
+                res_string += getres_func_start+"("+"data1"+".val["+str(n)+"]"+ getres_func_end
                 if n < num_vec_op - 1:
                     res_string += "+"
         else:
-            res_string += getres_func_start+"("+input_var_name+ getres_func_end
+            res_string += getres_func_start+"("+"data1"+ getres_func_end
 
 
         res_string += ";"
