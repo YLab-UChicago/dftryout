@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
                 {
                     for (int j = 0; j < filter_width; j ++) 
                     {
-                        int output_h = (h + padding - i) / strides;
-                        int output_w = (w + padding - j) / strides;
+                        int output_h = (h - i) / strides;
+                        int output_w = (w  - j) / strides;
                         data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                         data1.val[0] = veorq_u64(data1.val[0],data2.val[0]);
                         data1.val[1] = veorq_u64(data1.val[1],data2.val[1]);

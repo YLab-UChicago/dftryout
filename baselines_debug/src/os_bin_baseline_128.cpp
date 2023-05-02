@@ -71,11 +71,11 @@ for (int f = 0; f < num_filters; f++)
                     {
                     for (int j = 0; j < filter_width; j++)
                         {
-                        int input_h = h * strides + i - padding;
-                        int input_w = w * strides + j - padding;
+                        int input_h = h * strides + i;
+                        int input_w = w * strides + j;
                         if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {
                             data1 = vld1q_u64((const uint64_t *) &inputs[(input_h * width + input_w) * depth /64]);
-                            data2 = vld1q_u64((const uint64_t*) &filters[f * filter_height * filter_width + i * filter_width + j]);
+                            data2 = vld1q_u64((const uint64_t*) &filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                             data1 = veorq_u64(data1, data2);
                             sum_block += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));
                         }

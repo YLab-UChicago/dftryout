@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
                 {
                     for (int w = 0; w < out_width; w++)
                     {
-                        int input_h = h * strides + i - padding;
-                        int input_w = w * strides + j - padding;
+                        int input_h = h * strides + i;
+                        int input_w = w * strides + j;
                         data1 = vld1q_u64_x4((const uint64_t *)&inputs[(input_h * width + input_w) * depth /64]);  
                         data1.val[0] = veorq_u64(data1.val[0],data2.val[0]);
                         data1.val[1] = veorq_u64(data1.val[1],data2.val[1]);

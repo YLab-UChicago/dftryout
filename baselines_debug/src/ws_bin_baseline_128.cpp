@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
                 {
                     for (int w = 0; w < out_width; w++)
                     {
-                        int input_h = h * strides + i - padding;
-                        int input_w = w * strides + j - padding;
+                        int input_h = h * strides + i;
+                        int input_w = w * strides + j;
                         data1 = vld1q_u64((const uint64_t *)&inputs[(input_h * width + input_w) * depth /64]);  
                         data1 = veorq_u64(data1,data2);
                         outputs[h * out_width * num_filters + w * num_filters + f] += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));

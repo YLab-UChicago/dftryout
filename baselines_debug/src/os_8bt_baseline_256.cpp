@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
                     {
                     for (int j = 0; j < filter_width; j++)
                         {
-                        int input_h = h * strides + i - padding;
-                        int input_w = w * strides + j - padding;
+                        int input_h = h * strides + i;
+                        int input_w = w * strides + j;
                         data1 = vld1q_u64_x2((const uint64_t *) &inputs[(input_h * width  + input_w ) * depth /64]);
                         data2 = vld1q_u64_x2((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                         data1.val[0] = vmulq_s8(data1.val[0], data2.val[0]);
