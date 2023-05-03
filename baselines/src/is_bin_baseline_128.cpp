@@ -68,12 +68,12 @@ int main(int argc, char *argv[])
                 {
                     for (int j = 0; j < filter_width; j ++) 
                     {
-                        int output_h = (h - padding -  i) / strides;
-                        int output_w = (w - padding - j) / strides;
+                        int output_h = floor((h - i) / strides);
+                        int output_w = floor((w - j) / strides);
                         if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
                             uint64x2_t data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                             uint64x2_t out = veorq_u64(data1,data2);
-                            outputs[h * out_width * num_filters + w * num_filters + f] += depth - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(out))));
+                            outputs[output_h * out_width * num_filters + output_w * num_filters + f] += depth - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(out))));
                         }
                     }
                 }

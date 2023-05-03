@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
                 {
                     for (int j = 0; j < filter_width; j ++) 
                     {
-                        int output_h = (h  - i) / strides;
-                        int output_w = (w - j) / strides;
+                        int output_h = floor((h - i) / strides);
+                        int output_w = floor((w - j) / strides);
                         if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
                             uint64x2x4_t data2 = vld1q_u64_x4((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                             uint64x2x4_t output;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
                             output.val[1] = veorq_u64(data1.val[1],data2.val[1]);
                             output.val[2] = veorq_u64(data1.val[2],data2.val[2]);
                             output.val[3] = veorq_u64(data1.val[3],data2.val[3]);
-                            outputs[h * out_width * num_filters + w * num_filters + f] += 512 - 2 * (vaddvq_u8(vcntq_u8(output.val[0])) + vaddvq_u8(vcntq_u8(output.val[1]))+ vaddvq_u8(vcntq_u8(output.val[2]))+ vaddvq_u8(vcntq_u8(output.val[3])));
+                            outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 512 - 2 * (vaddvq_u8(vcntq_u8(output.val[0])) + vaddvq_u8(vcntq_u8(output.val[1]))+ vaddvq_u8(vcntq_u8(output.val[2]))+ vaddvq_u8(vcntq_u8(output.val[3])));
                         }
                     }
                 }
