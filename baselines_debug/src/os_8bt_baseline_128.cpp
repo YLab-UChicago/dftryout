@@ -71,15 +71,15 @@ int main(int argc, char *argv[])
                         int input_h = h * strides + i;
                         int input_w = w * strides + j;
                         if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {
-                            data1 = vld1q_u64((const uint64_t *) &inputs[(input_h * width + input_w) * depth /64]);
-                            data2 = vld1q_u64((const uint64_t*) &filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
-                            data1 = vmulq_s8(data1, data2);
-                            sum_block += vaddvq_u8(vreinterpretq_u8_u64(data1));
+                            uint64x2_t data1 = vld1q_u64((const uint64_t *) &inputs[(input_h * width + input_w) * depth /64]);
+                            uint64x2_t data2 = vld1q_u64((const uint64_t*) &filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                            uint64x2_t output = vmulq_s8(data1, data2);
+                            sum_block += vaddvq_u8(output);
                         }
 
                     }
                 }
-                outputs[h * out_width * num_filters + w * num_filters + f] = (short) max(sum_block,255);
+                outputs[h * out_width * num_filters + w * num_filters + f] = sum_block;
             }
         }
     }

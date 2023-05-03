@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
                             output.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
                             output.val[2] = vmulq_s8(data1.val[2],data2.val[2]);
                             output.val[3] = vmulq_s8(data1.val[3],data2.val[3]);
-                            outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(vreinterpretq_u8_u64(output.val[0])) + vaddvq_u8(vreinterpretq_u8_u64(output.val[1]))+ vaddvq_u8(vreinterpretq_u8_u64(output.val[2]))+ vaddvq_u8(vreinterpretq_u8_u64(output.val[3]));
+                            outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output.val[0]) + vaddvq_u8(output.val[1])+ vaddvq_u8(output.val[2])+ vaddvq_u8(output.val[3]);
                         }
                     }
                 }

@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
                         if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
                             uint64x2_t data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                             uint64x2_t out = veorq_u64(data1,data2);
-                            outputs[h * out_width * num_filters + w * num_filters + f] += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(out))));
+                            outputs[h * out_width * num_filters + w * num_filters + f] += depth - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(out))));
                         }
                     }
                 }

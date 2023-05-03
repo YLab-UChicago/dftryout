@@ -56,9 +56,6 @@ int main(int argc, char *argv[])
     uint64x2_t data2;
     
 
-    c_start = std::clock();
-
-
 for (int f = 0; f < num_filters; f++)
                 {
     for (int h = 0; h < out_height; h++)
@@ -74,22 +71,19 @@ for (int f = 0; f < num_filters; f++)
                         int input_h = h * strides + i;
                         int input_w = w * strides + j;
                         if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {
-                            data1 = vld1q_u64((const uint64_t *) &inputs[(input_h * width + input_w) * depth /64]);
-                            data2 = vld1q_u64((const uint64_t*) &filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
-                            data1 = veorq_u64(data1, data2);
-                            sum_block += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));
+                            uint64x2_t data1 = vld1q_u64((const uint64_t *) &inputs[(input_h * width + input_w) * depth /64]);
+                            uint64x2_t data2 = vld1q_u64((const uint64_t*) &filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                            uint64x2_t output = veorq_u64(data1, data2);
+                            sum_block += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(output))));
                         }
 
                     }
                 }
-                outputs[h * out_width * num_filters + w * num_filters + f] = (short) max(sum_block,255);
+                outputs[h * out_width * num_filters + w * num_filters + f] = sum_block;
             }
         }
     }
 
-    c_end = std::clock();
-    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
-    std::fprintf(pFile, "%lf\n", time_elapsed_ms);
 
     std::free(inputs);
     std::free(outputs);
