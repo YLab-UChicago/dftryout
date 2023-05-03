@@ -4,9 +4,8 @@
 #include <ctime>
 #include <iostream>
 #include <arm_neon.h>
-#include <m5ops.h>
 #include <algorithm>
-
+#include <m5ops.h>
 using namespace std;
 
 
@@ -53,11 +52,6 @@ int main(int argc, char *argv[])
     inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);
     outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);
     filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);
-    uint64x2_t data1;
-    uint64x2_t data2;
-    
-
-    m5_reset_stats(0, 0);
 
     for (int f = 0; f < num_filters; f ++)
     {
@@ -65,16 +59,18 @@ int main(int argc, char *argv[])
         {
             for (int j = 0; j < filter_width; j++)
                 {
-                data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                uint64x2_t  data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 for (int h = 0; h < out_height; h++)
                 {
                     for (int w = 0; w < out_width; w++)
                     {
-                        int input_h = h * strides + i - padding;
-                        int input_w = w * strides + j - padding;
-                        data1 = vld1q_u64((const uint64_t *)&inputs[(input_h * width + input_w) * depth /64]);  
-                        data1 = veorq_u64(data1,data2);
-                        outputs[h * out_width * num_filters + w * num_filters + f] += 128 - 2 * (vaddvq_u8(vcntq_u8(vreinterpretq_u8_u64(data1))));
+                        int input_h = h * strides + i;
+                        int input_w = w * strides + j;
+                        if ((input_h < height && input_h >= 0) && (input_w < width && input_w >=0)) {
+                            uint64x2_t  data1 = vld1q_u64((const uint64_t *)&inputs[(input_h * width + input_w) * depth /64]);  
+                            uint64x2_t  output = veorq_u64(data1,data2);
+                            outputs[h * out_width * num_filters + w * num_filters + f] += depth - 2 * (vaddvq_u8(vcntq_u8(output)));
+                        }
                     }
                 }
             }
@@ -82,7 +78,6 @@ int main(int argc, char *argv[])
     }
 
 
-    m5_dump_reset_stats(0, 0);
 
     std::free(inputs);
     std::free(outputs);

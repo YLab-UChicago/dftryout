@@ -4,8 +4,8 @@
 #include <ctime>
 #include <iostream>
 #include <arm_neon.h>
-#include <m5ops.h>
 #include <algorithm>
+#include <m5ops.h>
 
 using namespace std;
 
@@ -57,7 +57,6 @@ int main(int argc, char *argv[])
     uint64x2x4_t data2;
     
 
-    m5_reset_stats(0, 0);
 
     for (int f = 0; f < num_filters; f ++)
     {
@@ -66,19 +65,22 @@ int main(int argc, char *argv[])
             for (int w = 0; w < width; w ++) 
             {
                 idx = h * width * depth / 64 + w * depth / 64;
-                data1 = vld1q_u64_x4((const uint64_t *)&inputs[idx]);
+                uint64x2x4_t data1 = vld1q_u64_x4((const uint64_t *)&inputs[idx]);
                 for (int i = 0; i < filter_height; i ++)
                 {
                     for (int j = 0; j < filter_width; j ++) 
                     {
-                        int output_h = (h + padding - i) / strides;
-                        int output_w = (w + padding - j) / strides;
-                        data2 = vld1q_u64_x4((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
-                        data1.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
-                        data1.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
-                        data1.val[2] = vmulq_s8(data1.val[2],data2.val[2]);
-                        data1.val[3] = vmulq_s8(data1.val[3],data2.val[3]);
-                        outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(vreinterpretq_u8_u64(data1.val[0])) + vaddvq_u8(vreinterpretq_u8_u64(data1.val[1]))+ vaddvq_u8(vreinterpretq_u8_u64(data1.val[2]))+ vaddvq_u8(vreinterpretq_u8_u64(data1.val[3]));
+                        int output_h = (h - i) / strides;
+                        int output_w = (w  - j) / strides;
+                        if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                            uint64x2x4_t data2 = vld1q_u64_x4((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                            uint64x2x4_t output;
+                            output.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
+                            output.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
+                            output.val[2] = vmulq_s8(data1.val[2],data2.val[2]);
+                            output.val[3] = vmulq_s8(data1.val[3],data2.val[3]);
+                            outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(output.val[0]) + vaddvq_u8(output.val[1])+ vaddvq_u8(output.val[2])+ vaddvq_u8(output.val[3]);
+                        }
                     }
                 }
             }
@@ -86,7 +88,6 @@ int main(int argc, char *argv[])
     }
 
 
-    m5_dump_reset_stats(0, 0);
 
     std::free(inputs);
     std::free(outputs);
