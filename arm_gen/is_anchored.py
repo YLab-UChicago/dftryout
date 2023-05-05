@@ -210,7 +210,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 
                 if write_output:
                     if precision == 1:
-                        res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
+                        res_string = "outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * ("
                         if num_vec_op > 1:
                             for n in range(num_vec_op):
                                 res_string += getres_func_start+"("+output_var_name+".val["+str(n)+"]"+getres_func_end
@@ -220,7 +220,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                             res_string += getres_func_start+"("+output_var_name+getres_func_end
                         res_string += ");"
                     elif precision == 8:
-                        res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += "
+                        res_string = "outputs[output_h * out_width * num_filters + out_w * num_filters + f] += "
                         if num_vec_op > 1:
                             for n in range(num_vec_op):
                                 res_string += getres_func_start+"("+output_var_name+".val["+str(n)+"]"+getres_func_end

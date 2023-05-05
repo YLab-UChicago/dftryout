@@ -91,7 +91,7 @@ int main (int argc, char *argv[]) {
                 j = 2;
                 data1 = veorq_s64(input,weight_cache_0);
                 output_cache_0 = vaddq_u8(output_cache_0,data1);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0)));
+                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0)));
                 
                 
                 i = 2;
@@ -99,7 +99,7 @@ int main (int argc, char *argv[]) {
                 output_h = (h + padding - i) / strides;
                 output_w = (w + padding - j) / strides;
                 data1 = veorq_s64(input,weight_cache_1);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1)));
+                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1)));
                 
                 
                 i = 2;
@@ -110,7 +110,7 @@ int main (int argc, char *argv[]) {
                 j = 2;
                 data1 = veorq_s64(input,weight_cache_3);
                 output_cache_1 = vaddq_u8(output_cache_1,data1);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_1)));
+                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_1)));
                 
                 
                 i = 1;
@@ -118,7 +118,7 @@ int main (int argc, char *argv[]) {
                 output_h = (h + padding - i) / strides;
                 output_w = (w + padding - j) / strides;
                 data1 = veorq_s64(input,weight_cache_4);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1)));
+                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1)));
                 
                 
                 i = 1;
@@ -129,7 +129,7 @@ int main (int argc, char *argv[]) {
                 j = 2;
                 data1 = veorq_s64(input,weight_cache_6);
                 output_cache_2 = vaddq_u8(output_cache_2,data1);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_2)));
+                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_2)));
                 
                 
                 i = 0;
@@ -137,7 +137,7 @@ int main (int argc, char *argv[]) {
                 output_h = (h + padding - i) / strides;
                 output_w = (w + padding - j) / strides;
                 data1 = veorq_s64(input,weight_cache_7);
-                outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1)));
+                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1)));
                 
                 
                 i = 0;
