@@ -99,7 +99,7 @@ int main (int argc, char *argv[]) {
                 output_cache_0.val[1]= vaddq_u8(output_cache_0.val[1],data1.val[1]);
                 output_cache_0.val[2]= vaddq_u8(output_cache_0.val[2],data1.val[2]);
                 output_cache_0.val[3]= vaddq_u8(output_cache_0.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0.val[0]))+vaddvq_u8(vcntq_u8(output_cache_0.val[1]))+vaddvq_u8(vcntq_u8(output_cache_0.val[2]))+vaddvq_u8(vcntq_u8(output_cache_0.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_0.val[0]))+vaddvq_u8(vcntq_u8(output_cache_0.val[1]))+vaddvq_u8(vcntq_u8(output_cache_0.val[2]))+vaddvq_u8(vcntq_u8(output_cache_0.val[3])));
                 
                 
                 i = 4;
@@ -157,7 +157,7 @@ int main (int argc, char *argv[]) {
                 output_cache_4.val[1]= vaddq_u8(output_cache_4.val[1],data1.val[1]);
                 output_cache_4.val[2]= vaddq_u8(output_cache_4.val[2],data1.val[2]);
                 output_cache_4.val[3]= vaddq_u8(output_cache_4.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
                 
                 
                 i = 3;
@@ -177,7 +177,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -189,7 +189,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -201,7 +201,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -213,7 +213,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -225,7 +225,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -237,7 +237,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -249,7 +249,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -261,7 +261,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -273,7 +273,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -285,7 +285,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -297,7 +297,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -309,7 +309,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -321,7 +321,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -333,7 +333,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -345,7 +345,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -357,7 +357,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -369,7 +369,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -381,7 +381,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 
@@ -397,7 +397,7 @@ int main (int argc, char *argv[]) {
                 output_cache_1.val[1]= vaddq_u8(output_cache_1.val[1],data1.val[1]);
                 output_cache_1.val[2]= vaddq_u8(output_cache_1.val[2],data1.val[2]);
                 output_cache_1.val[3]= vaddq_u8(output_cache_1.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_1.val[0]))+vaddvq_u8(vcntq_u8(output_cache_1.val[1]))+vaddvq_u8(vcntq_u8(output_cache_1.val[2]))+vaddvq_u8(vcntq_u8(output_cache_1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_1.val[0]))+vaddvq_u8(vcntq_u8(output_cache_1.val[1]))+vaddvq_u8(vcntq_u8(output_cache_1.val[2]))+vaddvq_u8(vcntq_u8(output_cache_1.val[3])));
                 
                 
                 i = 4;
@@ -455,7 +455,7 @@ int main (int argc, char *argv[]) {
                 output_cache_4.val[1]= vaddq_u8(output_cache_4.val[1],data1.val[1]);
                 output_cache_4.val[2]= vaddq_u8(output_cache_4.val[2],data1.val[2]);
                 output_cache_4.val[3]= vaddq_u8(output_cache_4.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
                 
                 
                 i = 3;
@@ -475,7 +475,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -487,7 +487,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -499,7 +499,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -511,7 +511,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -523,7 +523,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -535,7 +535,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -547,7 +547,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -559,7 +559,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -571,7 +571,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -583,7 +583,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -595,7 +595,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -607,7 +607,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -619,7 +619,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -631,7 +631,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -643,7 +643,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -655,7 +655,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -667,7 +667,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -679,7 +679,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 
@@ -695,7 +695,7 @@ int main (int argc, char *argv[]) {
                 output_cache_2.val[1]= vaddq_u8(output_cache_2.val[1],data1.val[1]);
                 output_cache_2.val[2]= vaddq_u8(output_cache_2.val[2],data1.val[2]);
                 output_cache_2.val[3]= vaddq_u8(output_cache_2.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_2.val[0]))+vaddvq_u8(vcntq_u8(output_cache_2.val[1]))+vaddvq_u8(vcntq_u8(output_cache_2.val[2]))+vaddvq_u8(vcntq_u8(output_cache_2.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_2.val[0]))+vaddvq_u8(vcntq_u8(output_cache_2.val[1]))+vaddvq_u8(vcntq_u8(output_cache_2.val[2]))+vaddvq_u8(vcntq_u8(output_cache_2.val[3])));
                 
                 
                 i = 4;
@@ -753,7 +753,7 @@ int main (int argc, char *argv[]) {
                 output_cache_4.val[1]= vaddq_u8(output_cache_4.val[1],data1.val[1]);
                 output_cache_4.val[2]= vaddq_u8(output_cache_4.val[2],data1.val[2]);
                 output_cache_4.val[3]= vaddq_u8(output_cache_4.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
                 
                 
                 i = 3;
@@ -773,7 +773,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -785,7 +785,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -797,7 +797,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -809,7 +809,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -821,7 +821,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -833,7 +833,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -845,7 +845,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -857,7 +857,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -869,7 +869,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -881,7 +881,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -893,7 +893,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -905,7 +905,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -917,7 +917,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -929,7 +929,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -941,7 +941,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -953,7 +953,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -965,7 +965,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -977,7 +977,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 
@@ -993,7 +993,7 @@ int main (int argc, char *argv[]) {
                 output_cache_3.val[1]= vaddq_u8(output_cache_3.val[1],data1.val[1]);
                 output_cache_3.val[2]= vaddq_u8(output_cache_3.val[2],data1.val[2]);
                 output_cache_3.val[3]= vaddq_u8(output_cache_3.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_3.val[0]))+vaddvq_u8(vcntq_u8(output_cache_3.val[1]))+vaddvq_u8(vcntq_u8(output_cache_3.val[2]))+vaddvq_u8(vcntq_u8(output_cache_3.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_3.val[0]))+vaddvq_u8(vcntq_u8(output_cache_3.val[1]))+vaddvq_u8(vcntq_u8(output_cache_3.val[2]))+vaddvq_u8(vcntq_u8(output_cache_3.val[3])));
                 
                 
                 i = 4;
@@ -1051,7 +1051,7 @@ int main (int argc, char *argv[]) {
                 output_cache_4.val[1]= vaddq_u8(output_cache_4.val[1],data1.val[1]);
                 output_cache_4.val[2]= vaddq_u8(output_cache_4.val[2],data1.val[2]);
                 output_cache_4.val[3]= vaddq_u8(output_cache_4.val[3],data1.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(output_cache_4.val[0]))+vaddvq_u8(vcntq_u8(output_cache_4.val[1]))+vaddvq_u8(vcntq_u8(output_cache_4.val[2]))+vaddvq_u8(vcntq_u8(output_cache_4.val[3])));
                 
                 
                 i = 3;
@@ -1071,7 +1071,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -1083,7 +1083,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 3;
@@ -1095,7 +1095,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -1107,7 +1107,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -1119,7 +1119,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -1131,7 +1131,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -1143,7 +1143,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 2;
@@ -1155,7 +1155,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -1167,7 +1167,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -1179,7 +1179,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -1191,7 +1191,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -1203,7 +1203,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 1;
@@ -1215,7 +1215,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -1227,7 +1227,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -1239,7 +1239,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -1251,7 +1251,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -1263,7 +1263,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 i = 0;
@@ -1275,7 +1275,7 @@ int main (int argc, char *argv[]) {
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],data2.val[2]);
                 data1.val[3] = veorq_s64(input.val[3],data2.val[3]);
-                outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
+                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * (vaddvq_u8(vcntq_u8(data1.val[0]))+vaddvq_u8(vcntq_u8(data1.val[1]))+vaddvq_u8(vcntq_u8(data1.val[2]))+vaddvq_u8(vcntq_u8(data1.val[3])));
                 
                 
                 
