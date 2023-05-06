@@ -210,7 +210,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 
                 if write_output:
                     if precision == 1:
-                        res_string = "outputs[output_h * out_width * num_filters + out_w * num_filters + f] += 256 - 2 * ("
+                        res_string = "outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * ("
                         if num_vec_op > 1:
                             for n in range(num_vec_op):
                                 res_string += getres_func_start+"("+output_var_name+".val["+str(n)+"]"+getres_func_end
@@ -220,7 +220,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                             res_string += getres_func_start+"("+output_var_name+getres_func_end
                         res_string += ");"
                     elif precision == 8:
-                        res_string = "outputs[output_h * out_width * num_filters + out_w * num_filters + f] += "
+                        res_string = "outputs[output_h * out_width * num_filters + output_w * num_filters + f] += "
                         if num_vec_op > 1:
                             for n in range(num_vec_op):
                                 res_string += getres_func_start+"("+output_var_name+".val["+str(n)+"]"+getres_func_end
@@ -257,7 +257,3 @@ def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
     num_weight_cache = aux_stationarity["WS"]
     num_output_cache = aux_stationarity["OS"]
 
-
-cw = CodeWriter()
-gen_IS_anchored_program(cw, 8, 128, 4,4, {"WS":0,"OS":2},1)
-cw.write_to_file("gen_is_ws0_os2_8.cpp")

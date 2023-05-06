@@ -221,9 +221,3 @@ def gen_OS_anchored_program_block(precision, vec_len, aux_stationarity, block_sc
     num_weight_cache = aux_stationarity["WS"]
     num_input_cache = aux_stationarity["IS"]
 
-
-#test
-
-cw = CodeWriter()
-gen_OS_anchored_program(cw, 8, 128, 4,4, {"WS":2,"IS":3},1)
-cw.write_to_file("os_flt4_test.cpp")
