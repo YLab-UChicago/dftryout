@@ -100,7 +100,6 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     
     cw.add_line("")
 
-    cw.add_line("m5_reset_stats(0, 0);")
 
     cw.add_line("")
     cw.add_line("for (int f = 0; f < num_filters; f++) {")
@@ -251,7 +250,6 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.dedent()
     cw.add_line("}")
     cw.dedent()
-    cw.add_line("m5_dump_reset_stats(0, 0);")
     cw.add_line("std::free(inputs);")
     cw.add_line("std::free(outputs);")
     cw.add_line("std::free(filters);")
