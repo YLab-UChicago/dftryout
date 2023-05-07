@@ -1,8 +1,0 @@
-{
-    "platform": "Darwin",
-    "platform-release": "20.6.0",
-    "platform-version": "Darwin Kernel Version 20.6.0: Tue Oct 12 18:33:42 PDT 2021; root:xnu-7195.141.8~1/RELEASE_X86_64",
-    "architecture": "x86_64",
-    "processor": "i386",
-    "ram": "16 GB"
-}

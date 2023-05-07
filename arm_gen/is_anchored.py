@@ -241,7 +241,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         cw.add_line("")
 
         curr_output_base += stride
-
+   
 
 
     cw.dedent()
@@ -251,6 +251,10 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.dedent()
     cw.add_line("}")
     cw.dedent()
+    cw.add_line("m5_dump_reset_stats(0, 0);")
+    cw.add_line("std::free(inputs);")
+    cw.add_line("std::free(outputs);")
+    cw.add_line("std::free(filters);")
     cw.add_line("}")
 
 def gen_IS_anchored_program_block(precision, vec_len, aux_stationarity, block_scheme):
