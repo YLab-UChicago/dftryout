@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
         ./<program_name> <input_height> <input_width> <input_depth (plase use 256)> <num_filters>
     */
 
-    std::printf("started simulating the main function\n");
     int height;
     int width;
     int depth;

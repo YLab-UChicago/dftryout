@@ -151,6 +151,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
                 cw.add_line("i = "+str(fh - 1 - i)+";")
                 cw.add_line("j = "+str(fw - 1 - j)+";")
+                cw.add_line("output_h = floor((h - i) / strides);")
+                cw.add_line("output_w = floor((w - j) / strides);")
                 set_new_cache = False
                 add_to_cache = False
                 write_output = True
@@ -172,7 +174,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                         cw.add_line("output_h = (h + padding - i) / strides;")
                         cw.add_line("output_w = (w + padding - j) / strides;")
 
-
+            
     
                 if idx < num_weight_cache and idx >= 0:
                     weight_var_name = "weight_cache_"+str(idx)
@@ -192,13 +194,6 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     else:
                         cw.add_line("data1 = "+operation_func+"(input,"+weight_var_name+");")
 
-                # if set_new_cache:
-                #     if precision == 1:
-                #         for n in range(num_vec_op):
-                #             cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];")
-                #     elif precision == 8:
-                #         for n in range(num_vec_op):
-                #             cw.add_line(output_var_name + ".val["+str(n)+"] = data1.val["+str(n)+"];") 
 
                 if add_to_cache:
                     if num_vec_op > 1:
@@ -208,6 +203,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                         cw.add_line(output_var_name+" = vaddq_u8("+output_var_name+",data1);")
                 
                 if write_output:
+
                     if precision == 1:
                         res_string = "outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * ("
                         if num_vec_op > 1:

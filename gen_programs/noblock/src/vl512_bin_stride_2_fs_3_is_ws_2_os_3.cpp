@@ -83,6 +83,8 @@ int main (int argc, char *argv[]) {
                  
                 i = 2;
                 j = 2;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 data1.val[0] = veorq_s64(input.val[0],weight_cache_0.val[0]);
                 data1.val[1] = veorq_s64(input.val[1],weight_cache_0.val[1]);
                 data1.val[2] = veorq_s64(input.val[2],weight_cache_0.val[2]);
@@ -96,6 +98,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 1;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 output_h = (h + padding - i) / strides;
                 output_w = (w + padding - j) / strides;
                 data1.val[0] = veorq_s64(input.val[0],weight_cache_1.val[0]);
@@ -107,6 +111,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 2;
                 j = 0;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 data2 = vld1q_s64_x4((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 output_cache_0.val[0] = veorq_s64(input.val[0],data2.val[0]);
                 output_cache_0.val[1] = veorq_s64(input.val[1],data2.val[1]);
@@ -115,6 +121,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 2;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 data2 = vld1q_s64_x4((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
@@ -129,6 +137,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 1;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 output_h = (h + padding - i) / strides;
                 output_w = (w + padding - j) / strides;
                 data2 = vld1q_s64_x4((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
@@ -141,6 +151,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 1;
                 j = 0;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 data2 = vld1q_s64_x4((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 output_cache_1.val[0] = veorq_s64(input.val[0],data2.val[0]);
                 output_cache_1.val[1] = veorq_s64(input.val[1],data2.val[1]);
@@ -149,6 +161,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 0;
                 j = 2;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 data2 = vld1q_s64_x4((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 data1.val[0] = veorq_s64(input.val[0],data2.val[0]);
                 data1.val[1] = veorq_s64(input.val[1],data2.val[1]);
@@ -163,6 +177,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 0;
                 j = 1;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 output_h = (h + padding - i) / strides;
                 output_w = (w + padding - j) / strides;
                 data2 = vld1q_s64_x4((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
@@ -175,6 +191,8 @@ int main (int argc, char *argv[]) {
                 
                 i = 0;
                 j = 0;
+                output_h = floor((h - i) / strides);
+                output_w = floor((w - j) / strides);
                 data2 = vld1q_s64_x4((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
                 output_cache_2.val[0] = veorq_s64(input.val[0],data2.val[0]);
                 output_cache_2.val[1] = veorq_s64(input.val[1],data2.val[1]);
