@@ -90,76 +90,94 @@ int main (int argc, char *argv[]) {
                 j = 2;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                data1 = vmulq_s8(input,weight_cache_0);
-                output_cache_0 = vaddq_u8(output_cache_0,data1);
-                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(output_cache_0);
-                
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    data1 = vmulq_s8(input,weight_cache_0);
+                    output_cache_0 = vaddq_u8(output_cache_0,data1);
+                    outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(output_cache_0);
+                    
+                }
                 
                 i = 2;
                 j = 1;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                output_h = (h + padding - i) / strides;
-                output_w = (w + padding - j) / strides;
-                data1 = vmulq_s8(input,weight_cache_1);
-                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(data1);
-                
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    output_h = (h + padding - i) / strides;
+                    output_w = (w + padding - j) / strides;
+                    data1 = vmulq_s8(input,weight_cache_1);
+                    outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(data1);
+                    
+                }
                 
                 i = 2;
                 j = 0;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                output_cache_0 = vmulq_s8(input,weight_cache_2);
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    output_cache_0 = vmulq_s8(input,weight_cache_2);
+                }
                 
                 i = 1;
                 j = 2;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                data1 = vmulq_s8(input,weight_cache_3);
-                output_cache_1 = vaddq_u8(output_cache_1,data1);
-                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(output_cache_1);
-                
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    data1 = vmulq_s8(input,weight_cache_3);
+                    output_cache_1 = vaddq_u8(output_cache_1,data1);
+                    outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(output_cache_1);
+                    
+                }
                 
                 i = 1;
                 j = 1;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                output_h = (h + padding - i) / strides;
-                output_w = (w + padding - j) / strides;
-                data1 = vmulq_s8(input,weight_cache_4);
-                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(data1);
-                
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    output_h = (h + padding - i) / strides;
+                    output_w = (w + padding - j) / strides;
+                    data1 = vmulq_s8(input,weight_cache_4);
+                    outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(data1);
+                    
+                }
                 
                 i = 1;
                 j = 0;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                output_cache_1 = vmulq_s8(input,weight_cache_5);
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    output_cache_1 = vmulq_s8(input,weight_cache_5);
+                }
                 
                 i = 0;
                 j = 2;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                data1 = vmulq_s8(input,weight_cache_6);
-                output_cache_2 = vaddq_u8(output_cache_2,data1);
-                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(output_cache_2);
-                
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    data1 = vmulq_s8(input,weight_cache_6);
+                    output_cache_2 = vaddq_u8(output_cache_2,data1);
+                    outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(output_cache_2);
+                    
+                }
                 
                 i = 0;
                 j = 1;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                output_h = (h + padding - i) / strides;
-                output_w = (w + padding - j) / strides;
-                data1 = vmulq_s8(input,weight_cache_7);
-                outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(data1);
-                
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    output_h = (h + padding - i) / strides;
+                    output_w = (w + padding - j) / strides;
+                    data1 = vmulq_s8(input,weight_cache_7);
+                    outputs[output_h * out_width * num_filters + output_w * num_filters + f] += vaddvq_u8(data1);
+                    
+                }
                 
                 i = 0;
                 j = 0;
                 output_h = floor((h - i) / strides);
                 output_w = floor((w - j) / strides);
-                output_cache_2 = vmulq_s8(input,weight_cache_8);
+                if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                    output_cache_2 = vmulq_s8(input,weight_cache_8);
+                }
                 
                 
             }

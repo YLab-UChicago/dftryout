@@ -97,7 +97,7 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.indent()
 
     for i in range(num_input_cache):
-        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[("+str(i)+" * width * depth /"+str(vec_len)+" + "+str(i)+" * "+str(vec_len)+" /256) * "+str(vec_len)+" /64]);")
+        cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[("+str(i)+" * width * depth /"+str(vec_len)+" + "+str(i)+") * "+str(vec_len)+" /64]);")
 
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
@@ -144,11 +144,13 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 idx = (i * fw + j)
                 cw.add_line("i = "+str(i)+";")
                 cw.add_line("j = "+str(j)+";")
+                cw.add_line("input_h = h * strides +" + str(i)+";" )
+                cw.add_line("input_w = w * strides +" + str(j)+";")
+                cw.add_line("if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {")
+                cw.indent()
                 if idx in input_cache_indices:
                     input_var_name = "input_cache_"+str(icache_unroll_sequence[a][i][j])
                 else: 
-                    cw.add_line("input_h = h * strides +" + str(i)+";" )
-                    cw.add_line("input_w = w * strides +" + str(j)+";")
                     if num_icache_byrow[i] > 0:
                         if (idx - stride) in input_cache_indices:
                             input_var_name = "input_cache_"+str(icache_unroll_sequence[(a+1)%(fw-stride)][i][j-stride])
@@ -184,6 +186,8 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                         cw.add_line("output = vaddq_u8(output,data1);")
 
                 cw.add_line("")
+                cw.dedent()
+                cw.add_line("}")
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] = "
         if num_vec_op > 1:
             for n in range(num_vec_op):

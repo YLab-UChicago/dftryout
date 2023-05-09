@@ -79,10 +79,10 @@ int main (int argc, char *argv[]) {
     m5_reset_stats(0, 0);
     
     for (int f = 0; f < num_filters; f++) {
-        input_cache_0 = vld1q_s64((const int64_t *) &inputs[(0 * width * depth /128 + 0 * 128 /256) * 128 /64]);
-        input_cache_1 = vld1q_s64((const int64_t *) &inputs[(1 * width * depth /128 + 1 * 128 /256) * 128 /64]);
-        input_cache_2 = vld1q_s64((const int64_t *) &inputs[(2 * width * depth /128 + 2 * 128 /256) * 128 /64]);
-        input_cache_3 = vld1q_s64((const int64_t *) &inputs[(3 * width * depth /128 + 3 * 128 /256) * 128 /64]);
+        input_cache_0 = vld1q_s64((const int64_t *) &inputs[(0 * width * depth /128 + 0) * 128 /64]);
+        input_cache_1 = vld1q_s64((const int64_t *) &inputs[(1 * width * depth /128 + 1) * 128 /64]);
+        input_cache_2 = vld1q_s64((const int64_t *) &inputs[(2 * width * depth /128 + 2) * 128 /64]);
+        input_cache_3 = vld1q_s64((const int64_t *) &inputs[(3 * width * depth /128 + 3) * 128 /64]);
         weight_cache_0 = vld1q_s64((const int64_t*) &filters[(f * filter_height * filter_width +0)*128/64]);
         weight_cache_1 = vld1q_s64((const int64_t*) &filters[(f * filter_height * filter_width +1)*128/64]);
         weight_cache_2 = vld1q_s64((const int64_t*) &filters[(f * filter_height * filter_width +2)*128/64]);

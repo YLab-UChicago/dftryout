@@ -67,19 +67,19 @@ int main (int argc, char *argv[]) {
     m5_reset_stats(0, 0);
     
     for (int f = 0; f < num_filters; f++) {
-        int64x2x2_t input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[((0) * width * depth /256 + (0) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[((0) * width * depth /256 + (1) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[((0) * width * depth /256 + (2) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[((0) * width * depth /256 + (3) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[((0) * width * depth /256 + (4) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_5 = vld1q_s64_x2((const int64_t *) &inputs[((1) * width * depth /256 + (0) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_6 = vld1q_s64_x2((const int64_t *) &inputs[((1) * width * depth /256 + (1) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_7 = vld1q_s64_x2((const int64_t *) &inputs[((1) * width * depth /256 + (2) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_8 = vld1q_s64_x2((const int64_t *) &inputs[((1) * width * depth /256 + (3) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_9 = vld1q_s64_x2((const int64_t *) &inputs[((1) * width * depth /256 + (4) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_10 = vld1q_s64_x2((const int64_t *) &inputs[((2) * width * depth /256 + (0) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_11 = vld1q_s64_x2((const int64_t *) &inputs[((2) * width * depth /256 + (1) * depth /256) * 256 /64]);
-        int64x2x2_t input_cache_12 = vld1q_s64_x2((const int64_t *) &inputs[((2) * width * depth /256 + (2) * depth /256) * 256 /64]);
+        int64x2x2_t input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width + 0) * 256 /64]);
+        int64x2x2_t input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width + 1) * 256 /64]);
+        int64x2x2_t input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width + 2) * 256 /64]);
+        int64x2x2_t input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width + 3) * 256 /64]);
+        int64x2x2_t input_cache_4 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width + 4) * 256 /64]);
+        int64x2x2_t input_cache_5 = vld1q_s64_x2((const int64_t *) &inputs[(1 * width + 0) * 256 /64]);
+        int64x2x2_t input_cache_6 = vld1q_s64_x2((const int64_t *) &inputs[(1 * width + 1) * 256 /64]);
+        int64x2x2_t input_cache_7 = vld1q_s64_x2((const int64_t *) &inputs[(1 * width + 2) * 256 /64]);
+        int64x2x2_t input_cache_8 = vld1q_s64_x2((const int64_t *) &inputs[(1 * width + 3) * 256 /64]);
+        int64x2x2_t input_cache_9 = vld1q_s64_x2((const int64_t *) &inputs[(1 * width + 4) * 256 /64]);
+        int64x2x2_t input_cache_10 = vld1q_s64_x2((const int64_t *) &inputs[(2 * width + 0) * 256 /64]);
+        int64x2x2_t input_cache_11 = vld1q_s64_x2((const int64_t *) &inputs[(2 * width + 1) * 256 /64]);
+        int64x2x2_t input_cache_12 = vld1q_s64_x2((const int64_t *) &inputs[(2 * width + 2) * 256 /64]);
         int i;
         int j;
         for (i = 0; i < filter_height - 1; i ++) {

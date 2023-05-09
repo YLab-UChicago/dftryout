@@ -107,7 +107,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             cw.add_line("output_cache_"+str(i)+"=vdupq_n_u64(0);")
 
     for i in range(num_input_cache):
-        cw.add_line(vec_type+" input_cache_"+str(i)+" = " + load_func + "((const int64_t *) &inputs[(("+ str(i // fw)+ ") * width * depth /256 + ("+ str(i % fw)+") * depth /256) * "+str(vec_len)+" /64]);")
+        cw.add_line(vec_type+" input_cache_"+str(i)+" = " + load_func + "((const int64_t *) &inputs[("+ str(i // fw)+ " * width + "+ str(i % fw)+") * "+str(vec_len)+" /64]);")
 
     cw.add_line("int i;")
     cw.add_line("int j;")
