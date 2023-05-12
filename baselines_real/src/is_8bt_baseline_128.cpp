@@ -58,13 +58,16 @@ int main(int argc, char *argv[])
                 {
                     for (int j = 0; j < filter_width; j ++) 
                     {
-                        int output_h = floor((h - i) / strides);
-                        int output_w = floor((w - j) / strides);
-                        if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
-                            uint64x2_t data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
-                            uint64x2_t output = vaddq_u8(data1,data2);
-                            outputs[output_h * out_width * num_filters + output_w * num_filters + f] +=  vaddvq_u8(data1);
+                        if (!((w - j) % stride)) & (!(h - i) % stride) {
+                            int output_h = floor((h - i) / strides);
+                            int output_w = floor((w - j) / strides);
+                            if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                                uint64x2_t data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                                uint64x2_t output = vaddq_u8(data1,data2);
+                                outputs[output_h * out_width * num_filters + output_w * num_filters + f] +=  vaddvq_u8(data1);
+                            }
                         }
+                        
                     }
                 }
             }

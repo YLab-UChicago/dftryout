@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
     int64_t *inputs;
     int64_t *outputs;
     int64_t *filters;
+    std::clock_t c_start;
+    std::clock_t c_end;
+    double time_elapsed_ms;
 
     int output_depth;
     int pool_size;
@@ -42,7 +45,7 @@ int main(int argc, char *argv[])
     inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);
     outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);
     filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);
-
+    c_start = std::clock();
     for (int f = 0; f < num_filters; f ++)
     {
         for (int h = 0; h < height; h++) 
@@ -55,20 +58,25 @@ int main(int argc, char *argv[])
                 {
                     for (int j = 0; j < filter_width; j ++) 
                     {
-                        int output_h = floor((h - i) / strides);
-                        int output_w = floor((w - j) / strides);
-                        if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
-                            uint64x2_t data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
-                            uint64x2_t output = vaddq_u8(data1,data2);
-                            outputs[output_h * out_width * num_filters + output_w * num_filters + f] +=  vaddvq_u8(data1);
+                        if ((!((w - j) % strides)) && (!(h - i) % strides)) {
+                            int output_h = floor((h - i) / strides);
+                            int output_w = floor((w - j) / strides);
+                            if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {
+                                uint64x2_t data2 = vld1q_u64((const uint64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*depth/64]);
+                                uint64x2_t output = vaddq_u8(data1,data2);
+                                outputs[output_h * out_width * num_filters + output_w * num_filters + f] +=  vaddvq_u8(data1);
+                            }
                         }
+                        
                     }
                 }
             }
         }
     }
 
-
+c_end = std::clock();
+time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+printf("%lf\n", time_elapsed_ms);
     std::free(inputs);
     std::free(outputs);
     std::free(filters);
