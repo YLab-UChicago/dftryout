@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     /* Please type the following in the command line
         ./<program_name> <input_height> <input_width> <input_depth (plase use 256)> <num_filters>
     */
-
+FILE *pFile = fopen("durations/vgg19_conv2_bl.txt", "a");
     int height;
     int width;
     int depth;
@@ -54,7 +54,8 @@ int main(int argc, char *argv[])
     filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);
     uint64x2_t data1;
     uint64x2_t data2;
-    
+
+    c_start = std::clock();
 
 for (int f = 0; f < num_filters; f++)
                 {
@@ -84,7 +85,9 @@ for (int f = 0; f < num_filters; f++)
         }
     }
 
-
+c_end = std::clock();
+    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+    std::fprintf(pFile, "%lf\n", time_elapsed_ms);
     std::free(inputs);
     std::free(outputs);
     std::free(filters);

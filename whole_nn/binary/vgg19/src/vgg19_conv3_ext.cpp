@@ -11,6 +11,7 @@ using namespace std;
 
 
 int main (int argc, char *argv[]) {
+    FILE *pFile = fopen("durations/vgg19_conv3_ext.txt", "a");
     int height;
     int width;
     int depth;
@@ -60,7 +61,10 @@ int main (int argc, char *argv[]) {
     int64x2x2_t weight_cache_7;
     int64x2x2_t weight_cache_8;
     
-    m5_reset_stats(0, 0);
+    std::clock_t c_start;
+    std::clock_t c_end;
+    double time_elapsed_ms;
+    c_start = std::clock();
     
     for (int f = 0; f < num_filters; f++) {
         input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width * depth /256 + 0) * 256 /64]);
@@ -248,8 +252,9 @@ int main (int argc, char *argv[]) {
             }
         }
     }
-    
-    m5_dump_reset_stats(0, 0);
+    c_end = std::clock();
+    time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+    std::fprintf(pFile, "%lf\n", time_elapsed_ms);
     std::free(inputs);
     std::free(outputs);
     std::free(filters);

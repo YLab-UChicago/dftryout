@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
 
     std::clock_t c_start;
     std::clock_t c_end;
-    int layer_counter = 0;
     double time_elapsed_ms;
 
     height = 224;
