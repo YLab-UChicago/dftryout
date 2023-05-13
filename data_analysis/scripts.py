@@ -26,9 +26,9 @@ def replace_with_real_times(DIR, df):
     #avg_dict = {"os_8bt_baseline_512_hw_56_f_4_nf_8_s_2_ArmO3CPU": 10.051, ...}
     avg_dict = {}
     for pair in time_dict.values():
-        key, val = pair
-        assert len(val) == 20
-        avg_dict[key] = sum(val)/len(val)
+        key, time_lst = pair
+        assert len(time_lst) == 20
+        avg_dict[key] = sum(time_lst)/len(time_lst)
 
     #Now replace the simSeconds times in the dataframe with the real values
     for pair in len(avg_dict):
