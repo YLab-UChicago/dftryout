@@ -194,7 +194,7 @@ int main (int argc, char *argv[]) {
                 for (w = 5; w < out_width; w++) {
                     input_h = h * strides + i;
                     input_w = w * strides + j;
-                    data1 = vld1q_s64_x4((const int64_t *) &inputs[(input_h * width * depth /512 + input_w * depth /512) * 512 /64]);
+                    data1 = vld1q_s64_x4((const int64_t *) &inputs[(input_h * width * depth /512+ input_w * depth /512) * 512 /64]);
                     data1.val[0] = veorq_s64(data1.val[0],data2.val[0]);
                     data1.val[1] = veorq_s64(data1.val[1],data2.val[1]);
                     data1.val[2] = veorq_s64(data1.val[2],data2.val[2]);

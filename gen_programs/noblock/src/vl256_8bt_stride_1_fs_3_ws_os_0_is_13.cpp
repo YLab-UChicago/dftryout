@@ -316,7 +316,7 @@ int main (int argc, char *argv[]) {
                 for (w = 13; w < out_width; w++) {
                     input_h = h * strides + i;
                     input_w = w * strides + j;
-                    data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256 + input_w * depth /256) * 256 /64]);
+                    data1 = vld1q_s64_x2((const int64_t *) &inputs[(input_h * width * depth /256+ input_w * depth /256) * 256 /64]);
                     data1.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
                     data1.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
                     outputs[h * out_width * num_filters + w * num_filters + f] += vaddvq_u8(data1.val[0])+vaddvq_u8(data1.val[1]);

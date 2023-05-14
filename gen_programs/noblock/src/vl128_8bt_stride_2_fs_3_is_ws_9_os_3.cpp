@@ -183,6 +183,7 @@ int main (int argc, char *argv[]) {
             }
         }
     }
+m5_dump_reset_stats(0, 0);
 std::free(inputs);
 std::free(outputs);
 std::free(filters);
