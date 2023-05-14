@@ -134,7 +134,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             input_var_name = "input_cache_"+str(i)
         else:
             input_var_name = "data1"
-            cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
+            cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[ input_h * width + input_w * depth /64]);")
         if num_vec_op > 1:
             for n in range(num_vec_op):
                 cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+",data2.val["+str(n)+"]);")
@@ -235,7 +235,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             input_var_name = "input_cache_"+str(i)
         else:
             input_var_name = "data1"
-            cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
+            cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+"+ input_w * depth /"+str(vec_len)+") * "+str(vec_len)+" /64]);")
         if num_vec_op > 1:
             for n in range(num_vec_op):
                 cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+", data2.val["+str(n)+"]);")
@@ -282,7 +282,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.indent()
     cw.add_line("input_h = h * strides + i;")
     cw.add_line("input_w = w * strides + j;")
-    cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+" + input_w * depth /"+str(vec_len)+") * "+str(vec_len)+" /64]);")
+    cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+"+ input_w * depth /"+str(vec_len)+") * "+str(vec_len)+" /64]);")
 
     if num_vec_op > 1:
         for n in range(num_vec_op):
@@ -333,7 +333,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             input_var_name = "input_cache_"+str(i)
         else:
             input_var_name = "data1"
-            cw.add_line("data1 = "+load_func+"((const int64_t*)& filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
+            cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+"+ input_w * depth /"+str(vec_len)+") * "+str(vec_len)+" /64]);")
         if num_vec_op > 1:
             for n in range(num_vec_op):
                 cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+",data2.val["+str(n)+"]);")

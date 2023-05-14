@@ -1,5 +1,40 @@
+import os
 import pandas as pd
 
+REAL_DIR = '/home/zhouzikai/nn_ext_dataflows/gen_programs_noblock_real/log'
+
+def replace_with_real_times(DIR, df):
+    """
+    Takes a directory and dataframe. Modifies the dataframe in place and
+    replaces each simseconds value with the average real deployment time.
+    """
+
+    # Sort the simulations by name into a dictionary:
+    # time_dict = {"os_8bt_baseline_512_hw_56_f_4_nf_8_s_2_ArmO3CPU": [10.0233, 11.002, 9.998, ...], ...}
+    time_dict = {}
+    for filename in os.listdir(DIR):
+        with open(filename) as f:
+            time = f.read()
+            name_end = filename.find("CPU")
+            name = filename[:name_end + 3]
+            if time_dict.get(name):
+                time_dict[name].append(time)
+            else:
+                time_dict[name] = [time]
+
+    # Create another dictionary of just averages. Check to make sure there are 20 sims in each list in the time_dict
+    #avg_dict = {"os_8bt_baseline_512_hw_56_f_4_nf_8_s_2_ArmO3CPU": 10.051, ...}
+    avg_dict = {}
+    for pair in time_dict.values():
+        key, time_lst = pair
+        assert len(time_lst) == 20
+        avg_dict[key] = sum(time_lst)/len(time_lst)
+
+    #Now replace the simSeconds times in the dataframe with the real values
+    for pair in len(avg_dict):
+        key, value = pair
+        df_index = DIR + key + "__stats.txt"
+        df["simSeconds"].loc[df_index] = value
 
 def build_dataframe(files, headers=None):
     """Creates a pandas dataframe out of multiple data files. Optionally,
