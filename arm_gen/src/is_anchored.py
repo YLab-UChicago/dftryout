@@ -114,28 +114,31 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
     cw.add_line("")
 
-    # Initialization of Vector Variables for active computation
+    # Declaration of Vector Variables for active computation
     # (i.e. for anchoring stationarity and uncahced auxiliary stationarities)
     cw.add_line(vec_type+" input;")
     cw.add_line(vec_type+" data1;")
     cw.add_line(vec_type+" data2;")
 
-    
-    
+    # Declaration of Vector Variables for auxiliary stationarities
+    #   Vector Variables for auxiliary weight data
     for i in range(num_weight_cache):
         cw.add_line(vec_type+" weight_cache_"+str(i)+";")
     cw.add_line("")
-
+    #   Vector Variables for auxiliary output data
     for i in range(num_output_cache):
         cw.add_line(vec_type+" output_cache_"+str(i)+";")
     
+    #   Spacing
+    cw.add_line("")
     cw.add_line("")
 
 
-    cw.add_line("")
+    # Start of the computation loop
     cw.add_line("for (int f = 0; f < num_filters; f++) {")
     cw.indent()
 
+    # Initializations of the Vector Variables for auxiliary output
     for i in range(num_output_cache):
         if num_vec_op > 1:
             for n in range(num_vec_op):
@@ -143,6 +146,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         else:
             cw.add_line("output_cache_"+str(i)+"=vdupq_n_u64(0);")
 
+    # Initializations of the Vector Variables for auxiliary weight
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
