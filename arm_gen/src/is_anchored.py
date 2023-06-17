@@ -75,7 +75,6 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("int filter_width;")
     cw.add_line("int num_filters;")
     cw.add_line("int padding;")
-    cw.add_line("int strides;")
     cw.add_line("int h_block;")
     cw.add_line("int w_block;")
     cw.add_line("int f_block;")
@@ -104,9 +103,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("filter_height = "+ str(fh) +";")
     cw.add_line("filter_width = "+ str(fw)+";")
     cw.add_line("padding = "+str(fh-1)+";")
-    cw.add_line("strides = "+str(stride)+";")
-    cw.add_line("out_height = ceil((height - filter_height + 2 * padding) / strides + 1);")
-    cw.add_line("out_width = ceil((width - filter_width + 2 * padding) / strides + 1);")
+    cw.add_line("out_height = ceil((height - filter_height + 2 * padding)  + 1);")
+    cw.add_line("out_width = ceil((width - filter_width + 2 * padding)  + 1);")
 
     # Memory allocation for feature maps
     cw.add_line("inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);")
@@ -150,16 +148,19 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
+    # h and w loops
     cw.add_line("for (int h = 0; h < height; h++) {")
     cw.indent()
     cw.add_line("for (int w = 0; w < width; w ++) {")
     cw.indent()
-    cw.add_line("idx = h * width * depth / 64 + w * depth / 64;")
-    cw.add_line("input = "+load_func+"((const int64_t *)&inputs[idx]);")
 
+    # Calculate the current input index
+    cw.add_line("idx = h * width * depth / 64 + w * depth / 64;")
+
+    # Assigns the value to the input vector variable by loading
+    cw.add_line("input = "+load_func+"((const int64_t *)&inputs[idx]);")
     cw.add_line(" ")
 
-    output_cache_end = fw - stride;
     output_cache_indices = []
     num_ocache_byrow = {}
     curr_output_base = 0
@@ -168,15 +169,15 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     count = 0
     for i in range(fh):
         num_ocache_byrow[i] = 0
-        for j in range(output_cache_end):
+        for j in range(fw-1):
             if count < num_output_cache:
                 output_cache_indices.append(i*fw+j)
                 num_ocache_byrow[i] = num_ocache_byrow[i] + 1
                 count += 1
 
-    ocache_unroll_sequence = generate_inout_sequence(fw,fh,stride,num_ocache_byrow)
+    ocache_unroll_sequence = generate_inout_sequence(fw,fh,1,num_ocache_byrow)
 
-    for a in range(fw-stride):
+    for a in range(fw-1):
         if a > 0:
             cw.add_line("w ++;")
         for i in range(fh):
@@ -186,8 +187,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
                 cw.add_line("i = "+str(fh - 1 - i)+";")
                 cw.add_line("j = "+str(fw - 1 - j)+";")
-                cw.add_line("output_h = floor((h - i) / strides);")
-                cw.add_line("output_w = floor((w - j) / strides);")
+                cw.add_line("output_h = floor((h - i) );")
+                cw.add_line("output_w = floor((w - j) );")
                 cw.add_line("if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {")
                 cw.indent()
                 set_new_cache = False
@@ -197,19 +198,19 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 if idx in output_cache_indices:
                     add_to_cache = True
                     output_var_name = "output_cache_"+str(ocache_unroll_sequence[a][i][j])
-                    if idx % fw >= stride:
+                    if idx % fw >= 1:
                         write_output = False
                 else: 
-                    if num_ocache_byrow[i] > 0 and (idx - stride) in output_cache_indices:
-                        output_var_name = "output_cache_"+str(ocache_unroll_sequence[(a+1)%(fw-stride)][i][j-stride])
+                    if num_ocache_byrow[i] > 0 and (idx - 1) in output_cache_indices:
+                        output_var_name = "output_cache_"+str(ocache_unroll_sequence[(a+1)%(fw-1)][i][j-1])
 
                         set_new_cache = True
                         write_output = False
                         
                     else:
                         output_var_name = "data1"
-                        cw.add_line("output_h = (h + padding - i) / strides;")
-                        cw.add_line("output_w = (w + padding - j) / strides;")
+                        cw.add_line("output_h = (h + padding - i) ;")
+                        cw.add_line("output_w = (w + padding - j) ;")
 
             
     
@@ -273,7 +274,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
         cw.add_line("")
 
-        curr_output_base += stride
+        curr_output_base += 1
    
 
 
@@ -343,7 +344,6 @@ def gen_IS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux
     cw.add_line("int filter_width;")
     cw.add_line("int num_filters;")
     cw.add_line("int padding;")
-    cw.add_line("int strides;")
     cw.add_line("int h_block;")
     cw.add_line("int w_block;")
     cw.add_line("int f_block;")
@@ -372,9 +372,8 @@ def gen_IS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux
     cw.add_line("filter_height = "+ str(fh) +";")
     cw.add_line("filter_width = "+ str(fw)+";")
     cw.add_line("padding = "+str(fh-1)+";")
-    cw.add_line("strides = "+str(stride)+";")
-    cw.add_line("int out_height = ceil((height - filter_height + 2 * padding) / strides + 1);")
-    cw.add_line("int out_width = ceil((width - filter_width + 2 * padding) / strides + 1);")
+    cw.add_line("int out_height = ceil((height - filter_height + 2 * padding)  + 1);")
+    cw.add_line("int out_width = ceil((width - filter_width + 2 * padding)  + 1);")
     cw.add_line("inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);")
     cw.add_line("outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);")
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
@@ -421,7 +420,6 @@ def gen_IS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux
 
     cw.add_line(" ")
 
-    output_cache_end = fw - stride;
     output_cache_indices = []
     num_ocache_byrow = {}
     curr_output_base = 0
@@ -430,15 +428,15 @@ def gen_IS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux
     count = 0
     for i in range(fh):
         num_ocache_byrow[i] = 0
-        for j in range(output_cache_end):
+        for j in range(fw-1):
             if count < num_output_cache:
                 output_cache_indices.append(i*fw+j)
                 num_ocache_byrow[i] = num_ocache_byrow[i] + 1
                 count += 1
 
-    ocache_unroll_sequence = generate_inout_sequence(fw,fh,stride,num_ocache_byrow)
+    ocache_unroll_sequence = generate_inout_sequence(fw,fh,1,num_ocache_byrow)
 
-    for a in range(fw-stride):
+    for a in range(fw-1):
         if a > 0:
             cw.add_line("w ++;")
         for i in range(fh):
@@ -448,8 +446,8 @@ def gen_IS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux
 
                 cw.add_line("i = "+str(fh - 1 - i)+";")
                 cw.add_line("j = "+str(fw - 1 - j)+";")
-                cw.add_line("output_h = floor((h - i) / strides);")
-                cw.add_line("output_w = floor((w - j) / strides);")
+                cw.add_line("output_h = floor((h - i) );")
+                cw.add_line("output_w = floor((w - j) );")
                 cw.add_line("if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {")
                 cw.indent()
                 set_new_cache = False
@@ -459,19 +457,19 @@ def gen_IS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux
                 if idx in output_cache_indices:
                     add_to_cache = True
                     output_var_name = "output_cache_"+str(ocache_unroll_sequence[a][i][j])
-                    if idx % fw >= stride:
+                    if idx % fw >= 1:
                         write_output = False
                 else: 
-                    if num_ocache_byrow[i] > 0 and (idx - stride) in output_cache_indices:
-                        output_var_name = "output_cache_"+str(ocache_unroll_sequence[(a+1)%(fw-stride)][i][j-stride])
+                    if num_ocache_byrow[i] > 0 and (idx - 1) in output_cache_indices:
+                        output_var_name = "output_cache_"+str(ocache_unroll_sequence[(a+1)%(fw-1)][i][j-1])
 
                         set_new_cache = True
                         write_output = False
                         
                     else:
                         output_var_name = "data1"
-                        cw.add_line("output_h = (h + padding - i) / strides;")
-                        cw.add_line("output_w = (w + padding - j) / strides;")
+                        cw.add_line("output_h = (h + padding - i) ;")
+                        cw.add_line("output_w = (w + padding - j) ;")
 
             
     
@@ -535,7 +533,7 @@ def gen_IS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux
 
         cw.add_line("")
 
-        curr_output_base += stride
+        curr_output_base += 1
    
 
 
