@@ -143,42 +143,64 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 cw.add_line("output_cache_"+str(i)+".val["+str(n)+"]=vdupq_n_u64(0);")
         else:
             cw.add_line("output_cache_"+str(i)+"=vdupq_n_u64(0);")
-
+    #   Inputs are initialized by loading from feature map
     for i in range(num_input_cache):
         cw.add_line(vec_type+" input_cache_"+str(i)+" = " + load_func + "((const int64_t *) &inputs[("+ str(i // fw)+ " * width + "+ str(i % fw)+") * "+str(vec_len)+" /64]);")
 
-    cw.add_line("int i;")
-    cw.add_line("int j;")
-    cw.add_line("for (i = 0; i < filter_height - 1; i ++) {")
+
+    #   Loops with filter width and filter height
+    cw.add_line("for (int i = 0; i < filter_height - 1; i ++) {")
     cw.indent()
-    cw.add_line("for (j = 0; j < filter_width; j ++) {")
+    cw.add_line("for (int j = 0; j < filter_width; j ++) {")
     cw.indent()
     cw.add_line("h = 0;")
     cw.add_line("w = 0;")
     cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
     cw.add_line('')
 
+    #   Calculate the magnitude of unrolling for utilizing
+    #       Auxiliary Stationarity
+    #   This is determined by the maximum of number of 
+    #       caches allocated to auxiliary input stationarity 
+    #       and the number of caches allocated to auxiliary
+    #       output stationarity.
     should_unroll_num = max(num_input_cache,num_output_cache)
 
+    #   By default, we use the vector variable "data1" for
+    #       uncached input. This variable would be overwritten
+    #       if we find that the input is actually cached.
     input_var_name = "data1"
 
+    #   We perform unrolling by the previously determined magnitude. 
     for i in range(should_unroll_num):
         cw.add_line("")
+        # We assume that the number of elements to cache is smaller than
+        #   the width of both output and input feature maps
         if i > 0:
             cw.add_line("w++;")
+
+        # Calculate the corresponding input height and input width
         cw.add_line("input_h = h * strides + i;")
         cw.add_line("input_w = w * strides + j;")
+
+        # See if the input is already cached to determine the
+        #   vector variable for the input in this iteration
         if i < num_input_cache:
             input_var_name = "input_cache_"+str(i)
         else:
             input_var_name = "data1"
             cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[ (input_h * width + input_w )* depth /64]);")
+
+        # Performs multiplication
         if num_vec_op > 1:
             for n in range(num_vec_op):
                 cw.add_line("data1.val["+str(n)+"] = "+operation_func+"("+input_var_name+".val["+str(n)+"]"+",data2.val["+str(n)+"]);")
         else:
             cw.add_line("data1 = "+operation_func+"("+input_var_name+",data2);")
 
+        # If output is cached, accumulate to output
+        # Else, write back to feature map
+        # Performs Reduction Sum (and popcounts for binary precision)
         if i < num_output_cache:
             if num_vec_op > 1:
                 for n in range(num_vec_op):
