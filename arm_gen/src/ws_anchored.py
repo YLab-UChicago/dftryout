@@ -232,7 +232,9 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
             cw.add_line(res_string)
             cw.add_line("")
-        
+    
+    # The remaining part of the h-w loops do not get unrolled and utilize 
+    #   the vector variables assigned to active computation
     cw.add_line("for (h = 0; h < out_height; h++) {")
     cw.indent()
     input_var_name = "data1"
