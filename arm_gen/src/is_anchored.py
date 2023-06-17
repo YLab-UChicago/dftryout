@@ -1,5 +1,5 @@
 from csnake import CodeWriter
-from utils import generate_inout_sequence
+from nn_ext_dataflows.arm_gen.src.utils import generate_inout_sequence
 
 def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
     # Depending on the specified vector length
@@ -137,6 +137,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.indent()
 
     # Initializations of the Vector Variables for auxiliary output
+    #   Outputs are initialized to 0's for accumulation
     for i in range(num_output_cache):
         if num_vec_op > 1:
             for n in range(num_vec_op):
@@ -145,6 +146,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
             cw.add_line("output_cache_"+str(i)+"=vdupq_n_u64(0);")
 
     # Initializations of the Vector Variables for auxiliary weight
+    #   Weights are initialized by loading
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
@@ -165,7 +167,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     num_ocache_byrow = {}
     curr_output_base = 0
 
-    
+    # We perform sequential horizontal allocation for auxiliary
+    #   outputs under input-anchored dataflows
     count = 0
     for i in range(fh):
         num_ocache_byrow[i] = 0
@@ -175,20 +178,30 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 num_ocache_byrow[i] = num_ocache_byrow[i] + 1
                 count += 1
 
+    # Calling util function to determine the sequence of output
+    #   usage after we perform secondary unrolling to bypass
+    #   data transfer among vector registers.
     ocache_unroll_sequence = generate_inout_sequence(fw,fh,1,num_ocache_byrow)
 
+    # Secondary unrolling to create fw-1 units
     for a in range(fw-1):
+        # Manually increment the iterator w between 
+        #   two unrolled units
         if a > 0:
             cw.add_line("w ++;")
+
+        # Now, for each anchored input, we will want to have
+        #   loop through all corresponding filters to project onto
+        #   outputs. We determine the sequence of output utilization
+        #   based on previously obtained information.
         for i in range(fh):
             for j in range(fw):
-                
                 idx = (i * fw + j)
 
                 cw.add_line("i = "+str(fh - 1 - i)+";")
                 cw.add_line("j = "+str(fw - 1 - j)+";")
-                cw.add_line("output_h = floor((h - i) );")
-                cw.add_line("output_w = floor((w - j) );")
+                cw.add_line("output_h = floor((h - i));")
+                cw.add_line("output_w = floor((w - j));")
                 cw.add_line("if (output_h >= 0 && output_h < out_height && output_w >= 0 && output_w < out_width) {")
                 cw.indent()
                 set_new_cache = False
@@ -232,7 +245,8 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     else:
                         cw.add_line("data1 = "+operation_func+"(input,"+weight_var_name+");")
 
-
+                # We accumulate to vector variables for auxiliary outputs
+                #   whenever we can. The following code determines it.
                 if add_to_cache:
                     if num_vec_op > 1:
                         for n in range(num_vec_op):
@@ -240,8 +254,9 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                     else:
                         cw.add_line(output_var_name+" = vaddq_u8("+output_var_name+",data1);")
                 
+                # We reduce and write the vector variables back to the output
+                #   feature maps if the output has been completely reused.
                 if write_output:
-
                     if precision == 1:
                         res_string = "outputs[output_h * out_width * num_filters + output_w * num_filters + f] += 256 - 2 * ("
                         if num_vec_op > 1:
