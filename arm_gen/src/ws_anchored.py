@@ -244,12 +244,15 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("input_w = w * strides + j;")
     cw.add_line("data1 = "+load_func+"((const int64_t *) &inputs[(input_h * width * depth /"+str(vec_len)+"+ input_w * depth /"+str(vec_len)+") * "+str(vec_len)+" /64]);")
 
+    # Performs multiplication, depending on vector variable size
     if num_vec_op > 1:
         for n in range(num_vec_op):
             cw.add_line("data1.val["+str(n)+"] = "+operation_func+"(data1.val["+str(n)+"],data2.val["+str(n)+"]);")
     else:
         cw.add_line("data1 = "+operation_func+"(data1,data2);")
 
+    # Now, as the remaining portion of outputs is not cached, we
+    #   write back to the outputs feature map directly.
     if precision == 1:
         res_string = "outputs[h * out_width * num_filters + w * num_filters + f] += 256 - 2 * ("
         if num_vec_op > 1:
@@ -273,6 +276,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line(res_string)
     cw.dedent()
 
+    # Closing the loops
     cw.add_line("}")
     cw.dedent()
     cw.add_line("}")
@@ -280,8 +284,14 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("}")
     cw.dedent()
     cw.add_line("}")
+    # Spacing
     cw.add_line("")
     cw.add_line("")
+
+
+    # Now, similarly perform everything for the largest i
+    #   and j from 0 to the largest value - 1
+    # This leaves only the "seal" of the i-j loops unfinished
     cw.add_line("for (j = 0; j < filter_width - 1; j ++) {")
     cw.indent()
     cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
@@ -338,6 +348,7 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
     cw.add_line("")
     input_var_name = "data1"
+
     cw.add_line("for (h = 0; h < out_height; h++) {")
     cw.indent()
     cw.add_line("for (w = "+ str(should_unroll_num)+"; w < out_width; w++) {")
@@ -381,6 +392,10 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("}")
     cw.dedent()
     cw.add_line("}")
+
+    # Now, seal the i-j loops
+    # This time, write back all output caches
+    #   by performing reduction sums and popcounts for binary
     cw.add_line("data2 = "+load_func+"((const int64_t *) & filters[(f * filter_height * filter_width + i * filter_width + j)*"+str(vec_len)+"/64]);")
     cw.add_line("")
     
@@ -523,10 +538,11 @@ def gen_WS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
 
 
-def gen_WS_anchored_program_block(precision, vec_len, aux_stationarity, block_scheme):
-    num_input_cache = aux_stationarity["IS"]
-    num_output_cache = aux_stationarity["OS"]
-
+# This is basically the same as gen_WS_anchored_program
+# Nonetheless, the "real" function adds real timing
+#   for the process running this script. Instead of
+#   logging simulation stats to the /log folder,
+#   this function logs real timing in milliseconds.
 def gen_WS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
 
     if vec_len == 128:
