@@ -11,7 +11,7 @@ using namespace std;
 
 
 int main (int argc, char *argv[]) {
-     FILE *pFile = fopen("durations/mobilenet_conv2_s2_liu.txt", "a");
+    FILE *pFile = fopen("durations/mobilenet_conv2_s2_liu.txt", "a");
     int height;
     int width;
     int depth;

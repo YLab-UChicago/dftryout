@@ -2,6 +2,8 @@ from csnake import CodeWriter
 from utils import generate_inout_sequence
 
 def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
+    # Depending on the specified vector length
+    # We generate code with appropriate vector types
     if vec_len == 128:
         vec_type = "int64x2_t"
         load_func = "vld1q_s64"
@@ -14,6 +16,14 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     else:
         raise ValueError("invalid vector length")
 
+
+    # We have implemented both 1-bit (binary) and 8-bit precisions
+    # For each precision, we define the operation for
+    # performing multiplication (for binary we perform multiplication
+    # through exclusive-or/xor).
+    # We also define corresponding variables to aggregate results
+    # after calculation is done through reduction sums
+    # For binarized version, we also do popcount during this process
     if precision == 1:
         operation_func = "veorq_s64"
         getres_func_start = "vaddvq_u8(vcntq_u8"
@@ -23,9 +33,17 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         getres_func_start = "vaddvq_u8"
         getres_func_end = ")"
     
+
+    # We get the number of vector variables allocated to 
+    # each possible auxiliary stationarity from the parameter
+    # in this case, weight or output
     num_weight_cache = aux_stationarity["WS"]
     num_output_cache = aux_stationarity["OS"]
 
+    # As ARM ISA requires performing computations with strictly
+    # 128 bits as the unit, we divide vector length by 128 bits
+    # to determine the number of operations needed to perform
+    # in order to cover the whole vector variables.
     num_vec_op = int(vec_len / 128)
     
     cw.add_line("#include <stdio.h>")
