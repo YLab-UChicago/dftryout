@@ -59,8 +59,8 @@ int main (int argc, char *argv[]) {
     
     for (int f = 0; f < num_filters; f++) {
         input_cache_0 = vld1q_s64_x4((const int64_t *) &inputs[(0 * width * depth /512 + 0) * 512 /64]);
-        input_cache_1 = vld1q_s64_x4((const int64_t *) &inputs[(1 * width * depth /512 + 1) * 512 /64]);
-        input_cache_2 = vld1q_s64_x4((const int64_t *) &inputs[(2 * width * depth /512 + 2) * 512 /64]);
+        input_cache_1 = vld1q_s64_x4((const int64_t *) &inputs[(0 * width * depth /512 + 1) * 512 /64]);
+        input_cache_2 = vld1q_s64_x4((const int64_t *) &inputs[(0 * width * depth /512 + 2) * 512 /64]);
         weight_cache_0 = vld1q_s64_x4((const int64_t*) &filters[(f * filter_height * filter_width +0)*512/64]);
         weight_cache_1 = vld1q_s64_x4((const int64_t*) &filters[(f * filter_height * filter_width +1)*512/64]);
         int64x2x4_t output;

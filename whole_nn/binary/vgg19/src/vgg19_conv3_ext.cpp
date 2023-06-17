@@ -81,6 +81,7 @@ int main (int argc, char *argv[]) {
         weight_cache_7 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +7)*256/64]);
         weight_cache_8 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +8)*256/64]);
         int64x2x2_t output;
+        
         for (int h = 0; h < out_height; h++) {
             for (int w = 0; w < out_width; w ++) {
                 int i = 0;
@@ -168,6 +169,7 @@ int main (int argc, char *argv[]) {
                 
                 outputs[h * out_width * num_filters + w * num_filters + f] = vaddvq_u8(output.val[0]) + vaddvq_u8(output.val[1]);
                 
+            
                 w ++;
                 i = 0;
                 j = 0;

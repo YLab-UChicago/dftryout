@@ -90,7 +90,7 @@ int main (int argc, char *argv[]) {
                 
                 input_h = h * strides + i;
                 input_w = w * strides + j;
-                data1 = vld1q_s64_x4((const int64_t *) &inputs[ input_h * width + input_w * depth /64]);
+                data1 = vld1q_s64_x4((const int64_t *) &inputs[ (input_h * width + input_w )* depth /64]);
                 data1.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
                 data1.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
                 data1.val[2] = vmulq_s8(data1.val[2],data2.val[2]);
@@ -103,7 +103,7 @@ int main (int argc, char *argv[]) {
                 w++;
                 input_h = h * strides + i;
                 input_w = w * strides + j;
-                data1 = vld1q_s64_x4((const int64_t *) &inputs[ input_h * width + input_w * depth /64]);
+                data1 = vld1q_s64_x4((const int64_t *) &inputs[ (input_h * width + input_w )* depth /64]);
                 data1.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
                 data1.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
                 data1.val[2] = vmulq_s8(data1.val[2],data2.val[2]);
@@ -116,7 +116,7 @@ int main (int argc, char *argv[]) {
                 w++;
                 input_h = h * strides + i;
                 input_w = w * strides + j;
-                data1 = vld1q_s64_x4((const int64_t *) &inputs[ input_h * width + input_w * depth /64]);
+                data1 = vld1q_s64_x4((const int64_t *) &inputs[ (input_h * width + input_w )* depth /64]);
                 data1.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
                 data1.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
                 data1.val[2] = vmulq_s8(data1.val[2],data2.val[2]);
@@ -129,7 +129,7 @@ int main (int argc, char *argv[]) {
                 w++;
                 input_h = h * strides + i;
                 input_w = w * strides + j;
-                data1 = vld1q_s64_x4((const int64_t *) &inputs[ input_h * width + input_w * depth /64]);
+                data1 = vld1q_s64_x4((const int64_t *) &inputs[ (input_h * width + input_w )* depth /64]);
                 data1.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
                 data1.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
                 data1.val[2] = vmulq_s8(data1.val[2],data2.val[2]);
@@ -142,7 +142,7 @@ int main (int argc, char *argv[]) {
                 w++;
                 input_h = h * strides + i;
                 input_w = w * strides + j;
-                data1 = vld1q_s64_x4((const int64_t *) &inputs[ input_h * width + input_w * depth /64]);
+                data1 = vld1q_s64_x4((const int64_t *) &inputs[ (input_h * width + input_w )* depth /64]);
                 data1.val[0] = vmulq_s8(data1.val[0],data2.val[0]);
                 data1.val[1] = vmulq_s8(data1.val[1],data2.val[1]);
                 data1.val[2] = vmulq_s8(data1.val[2],data2.val[2]);

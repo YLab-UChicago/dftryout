@@ -40,10 +40,10 @@ FILE *pFile = fopen("durations/vgg19_conv2_bl.txt", "a");
     std::clock_t c_end;
     int layer_counter = 0;
     double time_elapsed_ms;
-    height = 112;
-    width = 112;
+    height = 28;
+    width = 28;
     depth = 512;
-    vec_d = depth / 64;
+    vec_d = 1;
     num_filters = 512;
     filter_height = 3;
     filter_width = 3;
@@ -58,36 +58,7 @@ FILE *pFile = fopen("durations/vgg19_conv2_bl.txt", "a");
     uint64x2_t data2;
 
     c_start = std::clock();
-
-    // for (int f = 0; f < num_filters; f++)
-    // {   
-    //     for (int v = 0; v < vec_d: v++ ) {
-    //         for (int h = 0; h < out_height; h++)
-    //         {
-    //             for (int w = 0; w < out_width; w++)
-    //             {
-                
-    //                 int sum_block = 0;
-    //                 for (int i = 0; i < filter_height; i++)
-    //                     {
-    //                     for (int j = 0; j < filter_width; j++)
-    //                         {
-    //                         int input_h = h * strides + i;
-    //                         int input_w = w * strides + j;
-    //                         if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {
-    //                             uint64x2_t data1 = vld1q_u64((const uint64_t *) &inputs[(v * input_h * input_w + input_h * width + input_w) * depth /64]);
-    //                             uint64x2_t data2 = vld1q_u64((const uint64_t*) &filters[(f * filter_height * filter_width * vec_d + v * filter_h + filter_w + i * filter_width + j)*depth/64]);
-    //                             uint64x2_t output = vmulq_s8(data1, data2);
-    //                             sum_block += vaddvq_u8(output);
-    //                         }
-
-    //                     }
-    //                 }
-    //                 outputs[h * out_width * num_filters + w * num_filters + f] = sum_block;
-    //             }
-    //         }
-    //     }
-    // }
+    
     for (int f = 0; f < num_filters; f++)
                 {
         for (int v = 0; v < vec_d; v++ ) {
@@ -104,7 +75,7 @@ FILE *pFile = fopen("durations/vgg19_conv2_bl.txt", "a");
                         int input_h = h * strides + i;
                         int input_w = w * strides + j;
                         if (input_h >= 0 && input_h < height && input_w >= 0 && input_w < width) {
-                            uint64x2x4_t data1 = vld1q_u64_x4((const uint64_t *) &inputs[(v * input_h * input_w + input_h * width+ input_w) * depth /64]); 
+                            uint64x2x4_t data1 = vld1q_u64_x4((const uint64_t *) &inputs[(v * height * width + input_h * width+ input_w) * depth /64]); 
                             uint64x2x4_t data2 = vld1q_u64_x4((const uint64_t*) &filters[(f * filter_height * filter_width * vec_d + v * filter_height + filter_width + i * filter_width + j)*depth/64]);
                             uint64x2x4_t output;
                             output.val[0] = vmulq_s8(data1.val[0], data2.val[0]);

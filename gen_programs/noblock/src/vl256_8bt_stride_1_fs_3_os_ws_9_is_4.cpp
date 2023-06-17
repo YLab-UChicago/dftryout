@@ -67,9 +67,9 @@ int main (int argc, char *argv[]) {
     
     for (int f = 0; f < num_filters; f++) {
         input_cache_0 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width * depth /256 + 0) * 256 /64]);
-        input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[(1 * width * depth /256 + 1) * 256 /64]);
-        input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[(2 * width * depth /256 + 2) * 256 /64]);
-        input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[(3 * width * depth /256 + 3) * 256 /64]);
+        input_cache_1 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width * depth /256 + 1) * 256 /64]);
+        input_cache_2 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width * depth /256 + 2) * 256 /64]);
+        input_cache_3 = vld1q_s64_x2((const int64_t *) &inputs[(0 * width * depth /256 + 3) * 256 /64]);
         weight_cache_0 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +0)*256/64]);
         weight_cache_1 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +1)*256/64]);
         weight_cache_2 = vld1q_s64_x2((const int64_t*) &filters[(f * filter_height * filter_width +2)*256/64]);
