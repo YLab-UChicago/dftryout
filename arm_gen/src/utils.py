@@ -1,8 +1,14 @@
 def generate_inout_sequence(filter_width,filter_height,stride,num_cache_byrow):
+    '''
+    Function:
+        This method generates the sequence of auxiliary cache
+        usage for both input auxiliary caches under output-anchored
+        dataflows and output auxiliary caches under input-anchored
+        dataflow. This sequence is used assuming secondary unrolling.
+    '''
 
     unroll_num = filter_width - stride
     sequence_list = []
-    num_cache_count = 0
     for un in range(unroll_num):
         this_unroll_iter = []
         for fh in range(filter_height):
