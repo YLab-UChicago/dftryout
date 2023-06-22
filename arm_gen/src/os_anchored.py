@@ -156,11 +156,15 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("int input_w;")
     cw.add_line(" ")
 
+    # Calculate the horizontal position at which
+    #   the input auxiliary cache ends
     input_cache_end = fw - stride;
     input_cache_indices = []
     num_icache_byrow = {}
     curr_input_base = 0
     
+    # We perform sequential horizontal allocation for auxiliary
+    #   outputs under input-anchored dataflows
     count = 0
     for i in range(fh):
         num_icache_byrow[i] = 0
@@ -170,9 +174,14 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
                 num_icache_byrow[i] = num_icache_byrow[i] + 1
                 count += 1
     
+    # Initialize input and weight varaibles to vector variables
+    #   for active computation first. Overwrite when necessary
     input_var_name = "data1"
     weight_var_name = "data2"
 
+    # Calling util function to determine the sequence of input
+    #   usage after we perform secondary unrolling to bypass
+    #   data transfer among vector registers.
     icache_unroll_sequence = generate_inout_sequence(fw,fh,stride,num_icache_byrow)
 
     for a in range(fw-stride):
