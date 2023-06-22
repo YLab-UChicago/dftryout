@@ -276,7 +276,11 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("}")
 
 
-
+# This is basically the same as gen_OS_anchored_program
+# Nonetheless, the "real" function adds real timing
+#   for the process running this script. Instead of
+#   logging simulation stats to the /log folder,
+#   this function logs real timing in milliseconds.
 def gen_OS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
 
     if vec_len == 128:
