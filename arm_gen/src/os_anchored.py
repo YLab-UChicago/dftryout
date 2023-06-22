@@ -277,11 +277,6 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
 
 
 
-
-def gen_OS_anchored_program_block(precision, vec_len, aux_stationarity, block_scheme):
-    num_weight_cache = aux_stationarity["WS"]
-    num_input_cache = aux_stationarity["IS"]
-
 def gen_OS_anchored_program_real(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
 
     if vec_len == 128:
