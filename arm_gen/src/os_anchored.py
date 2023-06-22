@@ -101,26 +101,34 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("strides = "+str(stride)+";")
     cw.add_line("out_height = ceil((height - filter_height + 2 * padding) / strides + 1);")
     cw.add_line("out_width = ceil((width - filter_width + 2 * padding) / strides + 1);")
+
+    # Memory allocation for feature maps
     cw.add_line("inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);")
     cw.add_line("outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);")
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
     cw.add_line("")
 
+    # Declaration of Vector Variables for active computation
+    # (i.e. for anchoring stationarity and uncahced auxiliary stationarities)
     cw.add_line(vec_type+" data1;")
     cw.add_line(vec_type+" data2;")
 
+    # Declaration of Vector Variables for auxiliary stationarities
+    #   Vector Variables for auxiliary input data
     for i in range(num_input_cache):
         cw.add_line(vec_type+" input_cache_"+str(i)+";")
     
     cw.add_line("")
-    
+    #   Vector Variables for auxiliary weight data
     for i in range(num_weight_cache):
         cw.add_line(vec_type+" weight_cache_"+str(i)+";")
     cw.add_line("")
 
+    #   Start taking Stats for GEM5
     cw.add_line("m5_reset_stats(0, 0);")
-
     cw.add_line("")
+
+    # Start of the computation loop
     cw.add_line("for (int f = 0; f < num_filters; f++) {")
     cw.indent()
 
