@@ -184,10 +184,17 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     #   data transfer among vector registers.
     icache_unroll_sequence = generate_inout_sequence(fw,fh,stride,num_icache_byrow)
 
+    # Secondary unrolling to create fw-stride units
     for a in range(fw-stride):
+        # Manually increment the iterator w between 
+        #   two unrolled units
         if a > 0:
             cw.add_line("w ++;")
 
+        # Now, for each anchored output, we will want to have
+        #   loop through all corresponding filters to project onto
+        #   inpnuts. We determine the sequence of output utilization
+        #   based on previously obtained information.
         for i in range(fh):
             for j in range(fw):
                 
