@@ -3,6 +3,8 @@ from nn_ext_dataflows.arm_gen.src.utils import generate_inout_sequence
 
 def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stationarity,stride):
 
+    # Depending on the specified vector length
+    # We generate code with appropriate vector types
     if vec_len == 128:
         vec_type = "int64x2_t"
         load_func = "vld1q_s64"
@@ -15,6 +17,13 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     else:
         raise ValueError("invalid vector length")
 
+    # We have implemented both 1-bit (binary) and 8-bit precisions
+    # For each precision, we define the operation for
+    # performing multiplication (for binary we perform multiplication
+    # through exclusive-or/xor).
+    # We also define corresponding variables to aggregate results
+    # after calculation is done through reduction sums
+    # For binarized version, we also do popcount during this process
     if precision == 1:
         operation_func = "veorq_s64"
         getres_func_start = "vaddvq_u8(vcntq_u8"
@@ -24,11 +33,19 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
         getres_func_start = "vaddvq_u8"
         getres_func_end = ")"
 
+    # We get the number of vector variables allocated to 
+    # each possible auxiliary stationarity from the parameter
+    # in this case, weight or output
     num_weight_cache = aux_stationarity["WS"]
     num_input_cache = aux_stationarity["IS"]
 
+    # As ARM ISA requires performing computations with strictly
+    # 128 bits as the unit, we divide vector length by 128 bits
+    # to determine the number of operations needed to perform
+    # in order to cover the whole vector variables.
     num_vec_op = int(vec_len / 128)
     
+    # Generate code for importing required C++ modules
     cw.add_line("#include <stdio.h>")
     cw.add_line("#include <string.h>")
     cw.add_line("#include <math.h>")
@@ -38,12 +55,17 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("#include <m5ops.h>")
     cw.add_line("#include <algorithm>")
     cw.add_line("using namespace std;")
+
+    # Spacing
     cw.add_line("")
     cw.add_line("")
     cw.add_line("")
 
+    # Start of the main function
     cw.add_line("int main (int argc, char *argv[]) {")
     cw.indent()
+
+    # Generate code for Declaration of required variables
     cw.add_line("int height;")
     cw.add_line("int width;")
     cw.add_line("int depth;")
@@ -64,8 +86,11 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("std::clock_t c_start;")
     cw.add_line("std::clock_t c_end;")
     cw.add_line("double time_elapsed_ms;")
+    cw.add_line("int out_height;")
+    cw.add_line("int out_width;")
     cw.add_line("")
-
+    
+    # Initializing of local variable values
     cw.add_line("height = atoi(argv[1]);")
     cw.add_line("width = atoi(argv[2]);")
     cw.add_line("depth = "+str(vec_len)+";")
@@ -74,8 +99,8 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("filter_width = "+ str(fw)+";")
     cw.add_line("padding = "+str(fh-1)+";")
     cw.add_line("strides = "+str(stride)+";")
-    cw.add_line("int out_height = ceil((height - filter_height + 2 * padding) / strides + 1);")
-    cw.add_line("int out_width = ceil((width - filter_width + 2 * padding) / strides + 1);")
+    cw.add_line("out_height = ceil((height - filter_height + 2 * padding) / strides + 1);")
+    cw.add_line("out_width = ceil((width - filter_width + 2 * padding) / strides + 1);")
     cw.add_line("inputs = (int64_t *)malloc(sizeof(int64_t) * (height + 2 * padding) * (width + 2 * padding) * depth / 64);")
     cw.add_line("outputs = (int64_t *)malloc(sizeof(int64_t) * out_height * out_width * num_filters);")
     cw.add_line("filters = (int64_t *)malloc(sizeof(int64_t) * filter_height * filter_width * num_filters * depth / 64);")
