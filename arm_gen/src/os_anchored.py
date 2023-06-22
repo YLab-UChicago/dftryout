@@ -109,9 +109,10 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("")
 
     # Declaration of Vector Variables for active computation
-    # (i.e. for anchoring stationarity and uncahced auxiliary stationarities)
+    # (i.e. for anchoring stationarity and uncached auxiliary stationarities)
     cw.add_line(vec_type+" data1;")
     cw.add_line(vec_type+" data2;")
+    cw.add_line(vec_type+" output;")
 
     # Declaration of Vector Variables for auxiliary stationarities
     #   Vector Variables for auxiliary input data
@@ -132,19 +133,23 @@ def gen_OS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("for (int f = 0; f < num_filters; f++) {")
     cw.indent()
 
+    # Initializations of the Vector Variables for auxiliary input
+    #   Inputs are initialized by loading
     for i in range(num_input_cache):
         cw.add_line("input_cache_"+str(i)+" = "+load_func+"((const int64_t *) &inputs[(0 * width * depth /"+str(vec_len)+" + "+str(i)+") * "+str(vec_len)+" /64]);")
 
+    # Initializations of the Vector Variables for auxiliary weight
+    #   Weights are initialized by loading
     for i in range(num_weight_cache):
         cw.add_line("weight_cache_"+str(i)+" = "+load_func+"((const int64_t*) &filters[(f * filter_height * filter_width +"+ str(i) +")*"+str(vec_len)+"/64]);")
 
-
-    cw.add_line(vec_type+" output;")
-
+    # h and w loops
     cw.add_line("for (int h = 0; h < out_height; h++) {")
     cw.indent()
     cw.add_line("for (int w = 0; w < out_width; w ++) {")
     cw.indent()
+
+    # Declare and initialize useful variables
     cw.add_line("int i = 0;")
     cw.add_line("int j = 0;")
     cw.add_line("int input_h;")

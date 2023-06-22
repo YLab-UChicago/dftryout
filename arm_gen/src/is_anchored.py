@@ -113,7 +113,7 @@ def gen_IS_anchored_program(cw: CodeWriter, precision, vec_len, fh, fw, aux_stat
     cw.add_line("")
 
     # Declaration of Vector Variables for active computation
-    # (i.e. for anchoring stationarity and uncahced auxiliary stationarities)
+    # (i.e. for anchoring stationarity and uncached auxiliary stationarities)
     cw.add_line(vec_type+" input;")
     cw.add_line(vec_type+" data1;")
     cw.add_line(vec_type+" data2;")
