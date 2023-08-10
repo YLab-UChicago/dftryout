@@ -10,8 +10,8 @@
 #include <fstream>
 
 #define VOCAB_SIZE 5000
-#define EMBEDDING_SIZE 128
-#define SEQUENCE_LENGTH 3
+#define EMBEDDING_SIZE 1280
+#define SEQUENCE_LENGTH 30
 #define NUM_HEADS 2
 #define QKV_MATRIX_WIDTH (EMBEDDING_SIZE / NUM_HEADS)
 #define FINAL_DIMENSIONALITY 128
@@ -23,6 +23,7 @@ void run_transformer_optimized();
 // or "make" if using the makefile.
 // Run with ./output <number of runs>
 // program crashes if EMBEDDING_SIZE < SEQUENCE_LENGTH or EMBEDDING_SIZE > 561
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // SHARED FUNCTIONS
@@ -110,6 +111,7 @@ void fill_output_weights(float *output_weights){
         output_weights[i] = ((float)rand() / (RAND_MAX)) - 0.5;
     }
 }
+
 
 // Perform final transform on concatenated attention matrix
 void final_transform(float *result, float *concat_attnts, float *output_weights){
@@ -421,16 +423,23 @@ int main(int argc, char* argv[]) {
   // Time the transformer
   int trials = atoi(argv[1]);
   std::chrono::duration<double, std::milli> difference_sum(0);
+  std::chrono::duration<double, std::milli> unopt_sum(0);
+  std::chrono::duration<double, std::milli> opt_sum(0);
   for (int i = 0; i < trials; i++){
     std::chrono::duration<double, std::milli> unopt_time = time_transformer(0); // Time unoptimized transformer
     std::chrono::duration<double, std::milli> opt_time = time_transformer(1); // Time optimized transformer
     std::chrono::duration<double, std::milli> difference = (opt_time - unopt_time);
     difference_sum += difference;
-    resultFile << std::fixed << EMBEDDING_SIZE << "," << std::setprecision(4) << difference.count()
-    << "," << opt_time.count() << "," << unopt_time.count() << std::endl;
+    unopt_sum += unopt_time;
+    opt_sum += opt_time;
+    resultFile << std::fixed << EMBEDDING_SIZE << ", " << std::setprecision(4) << difference.count() 
+    << " ms" << ", " << opt_time.count() << " ms" << ", " << unopt_time.count() << " ms" << std::endl;
+    std::cout << "Trial " << i + 1 << " of " << trials << " done." << std::endl;
   }
   std::chrono::duration<double, std::milli> avg_diff = difference_sum / trials;
-  resultFile << "avg speedup: " << std::fixed << std::setprecision(4) << avg_diff.count() << std::endl;
+  double factor = unopt_sum / opt_sum;
+  resultFile << "avg speedup time: " << std::fixed << std::setprecision(4) << avg_diff.count() << " ms" << std::endl;
+  resultFile << "avg speedup factor: " << std::fixed << factor << "x" << std::endl;
 
 return 0;
 
