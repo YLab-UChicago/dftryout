@@ -19,7 +19,7 @@
 void run_transformer();
 void run_transformer_optimized();
 
-// compile with: "g++ -std=c++11 -lm optimized_transformer.cpp -o output"
+// compile with: "g++ -std=c++11 -lm transformer.cpp -o output"
 // or "make" if using the makefile.
 // Run with ./output <number of runs>
 // program crashes if EMBEDDING_SIZE < SEQUENCE_LENGTH or EMBEDDING_SIZE > 561
