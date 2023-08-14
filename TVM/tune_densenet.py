@@ -53,11 +53,11 @@ with auto_scheduler.ApplyHistoryBest(json_name):
 # Run the Model
 dev = tvm.device(str(target), 0)
 module = graph_executor.GraphModule(lib["default"](dev))
-input_data = np.random.uniform(size=input_shape).astype("float32") # Using the custom shape
+input_data = np.random.uniform(size=input_shape).astype("float32") 
 module.set_input("data", input_data)
 
 # Create a time evaluator function
-timer = module.module.time_evaluator("run", dev, number=10) # You can adjust the number of repetitions
+timer = module.module.time_evaluator("run", dev, number=10) 
 
 # Run the model and measure the time
 timing = timer()
