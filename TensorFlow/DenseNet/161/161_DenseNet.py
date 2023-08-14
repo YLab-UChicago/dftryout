@@ -29,7 +29,7 @@ def DenseNet161(input_shape=(224, 224, 3), classes=1000):
     
     # Initial Convolution
     x = Conv2D(96, (7, 7), strides=(2, 2), padding='same', activation='relu')(inputs)
-    x = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), padding='same')(x)
 
     # Dense Blocks and Transition Blocks
     x = dense_block(x, 6, 48)
