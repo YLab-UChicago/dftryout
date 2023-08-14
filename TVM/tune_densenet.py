@@ -28,7 +28,7 @@ with relay.quantize.qconfig(global_scale=8.0, skip_conv_layers=[0]):
     mod = relay.quantize.quantize(mod, params)
 
 # Define Target Hardware
-target = tvm.target.Target("llvm") # Example for CPU
+target = tvm.target.Target('llvm -mattr=+neon,+neoversen1,+i8mm')
 
 json_name = f"{name}_densenet_tuning.json"
 # Extract Tasks
