@@ -113,8 +113,7 @@ def tune_kernels(
         tuner_obj = GridSearchTuner(task)
 
         # perform tuning
-        n_trial=1
-        # n_trial = len(task.config_space)
+        n_trial = len(task.config_space)
         tuner_obj.tune(
             n_trial=n_trial,
             early_stopping=early_stopping,
@@ -163,14 +162,7 @@ def tune_and_evaluate(tuning_opt):
     )
 
     # run tuning tasks
-    # tune_kernels(tasks, **tuning_opt)
-    tune_kernels(
-    tasks,
-    measure_option=tuning_option["measure_option"],
-    early_stopping=tuning_option["early_stopping"],
-    log_filename=tuning_option["log_filename"],
-)
-
+    tune_kernels(tasks, **tuning_opt)
     tune_graph(mod["main"], data_shape, log_file, graph_opt_sch_file)
 
     # compile, time, and record results
