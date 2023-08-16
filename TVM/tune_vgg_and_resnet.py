@@ -134,6 +134,7 @@ def tune_and_evaluate(tuning_opt):
 
     # compile, time, and record results
     with open(f'{model_name}_eval_times.txt', 'w') as f:
+        f.write(f"Num threads used: {num_threads}\n\n")
 
         # default
         with tvm.transform.PassContext(opt_level=3):
